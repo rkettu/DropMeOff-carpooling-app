@@ -12,3 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+
+app/src/main/java/com/example/mobproj2020new/secrets.java
+
+app/src/main/res/values/test.xml
