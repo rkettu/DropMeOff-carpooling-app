@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RouteActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map2"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.polygons.PolyActivity"
+        app:layout_constraintTop_toBottomOf="@id/haeButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lähtö"
+        android:id="@+id/lahtoEdit"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Määränpää"
+        android:id="@+id/maaranpaaEdit"
+        app:layout_constraintTop_toBottomOf="@id/lahtoEdit"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hae reitti"
+        android:id="@+id/haeButton"
+        app:layout_constraintTop_toBottomOf="@id/maaranpaaEdit"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

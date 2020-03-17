@@ -20,9 +20,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    //FusedLocationProviderClient mFusedLocationClient;
-    //private Double latitude = 0.0;
-    //private Double longitude = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
 
         // Add a marker in Sydney and move the camera
         LatLng oulu = new LatLng(65.04, 25.56);

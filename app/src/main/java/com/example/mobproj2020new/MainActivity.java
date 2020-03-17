@@ -14,11 +14,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.startButton).setOnClickListener(this);
+        findViewById(R.id.startButton2).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        Intent maps_testi = new Intent(this, MapsActivity.class);
-        startActivity(maps_testi);
+        if(v.getId() == R.id.startButton) {
+            Intent maps_testi = new Intent(this, MapsActivity.class);
+            startActivity(maps_testi);
+        }
+        else if (v.getId() == R.id.startButton2){
+            Intent route = new Intent(this, RouteActivity.class);
+            startActivity(route);
+        }
     }
 }
