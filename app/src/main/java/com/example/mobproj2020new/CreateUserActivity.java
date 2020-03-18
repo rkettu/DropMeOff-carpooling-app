@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private EditText pass2Field;
 
     private FirebaseAuth mAuth;
+    private DatabaseHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +78,20 @@ public class CreateUserActivity extends AppCompatActivity {
                 CreateUserBtnFunc();
             }
         });
+
+        dbHandler = new DatabaseHandler();
     }
 
     private void CreateUserBtnFunc()
     {
-        String email = emailField.getText().toString();
-        String pass1 = pass1Field.getText().toString();
-        String pass2 = pass2Field.getText().toString();
-        String phone = phoneField.getText().toString();         // CURRENTLY UNUSED
-        final String dname = fnameField.getText().toString() + " " + lnameField.getText().toString(); // SAME
+        final String email = emailField.getText().toString();
+        final String pass1 = pass1Field.getText().toString();
+        final String pass2 = pass2Field.getText().toString();
+        final String phone = phoneField.getText().toString();
+        final String fname = fnameField.getText().toString();
+        final String lname = lnameField.getText().toString();
 
-        if(email.equals("") || pass1.equals("") || phone.equals("") || dname.equals(""))
+        if(email.equals("") || pass1.equals("") || phone.equals("") || fname.equals("") || lname.equals(""))
         {
             Toast.makeText(CreateUserActivity.this, "Some fields empty",
                     Toast.LENGTH_SHORT).show();
@@ -104,9 +109,11 @@ public class CreateUserActivity extends AppCompatActivity {
                         Log.d(TAG, "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(dname).build();
+                                .setDisplayName(fname).build();
                         user.updateProfile(profileUpdates);
-
+                        // Init dbHandler object for this class only
+                        dbHandler.init(user);
+                        dbHandler.setUserCreationInfo(fname, lname, phone);
                     } else {
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
                         Toast.makeText(CreateUserActivity.this, "Authentication failed.",

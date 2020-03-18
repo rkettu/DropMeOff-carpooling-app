@@ -3,6 +3,7 @@ package com.example.mobproj2020new;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,8 +35,11 @@ public class LoggedInActivity extends AppCompatActivity {
             }
         });
 
+        DatabaseHandler db = new DatabaseHandler();
+        db.init(mUser);
+
         TextView userInfo = (TextView)findViewById(R.id.userInfoTextView);
-        userInfo.setText(mUser.getDisplayName()+"\n"+mUser.getEmail()+"\n"+mUser.getPhoneNumber());
+        userInfo.setText(mUser.getDisplayName()+"\n"+mUser.getEmail()+"\n");
     }
 
     private void ReturnToLogin()
