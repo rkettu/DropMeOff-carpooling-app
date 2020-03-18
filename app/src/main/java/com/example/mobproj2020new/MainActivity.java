@@ -58,4 +58,9 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         return;
     }
+
+    public void testi(View v){
+        Intent testiIntent = new Intent(this, ChoosePickUpOrTransportationActivity.class);
+        startActivity(testiIntent);
+    }
 }
