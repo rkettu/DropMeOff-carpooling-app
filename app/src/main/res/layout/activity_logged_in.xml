@@ -30,4 +30,15 @@
         android:id="@+id/userInfoTextView"
         android:text="UserInfo"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UPLOAD PROF PIC"
+        android:id="@+id/uploadBtn"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profPicImageView"
+        />
 </LinearLayout>
