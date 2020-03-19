@@ -91,5 +91,11 @@
         android:src="@android:drawable/ic_menu_mylocation"
         android:tint="@color/colorPrimaryDark"
         />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/testiTxt"
+            app:layout_constraintTop_toBottomOf="@id/sijaintiButton"
+            android:hint="moro"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

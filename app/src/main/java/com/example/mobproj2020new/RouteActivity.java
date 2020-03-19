@@ -1,17 +1,25 @@
 package com.example.mobproj2020new;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.loader.content.AsyncTaskLoader;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,7 +36,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,8 +50,10 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     MarkerOptions place1, place2;
     Polyline currentPolyline;
     private FusedLocationProviderClient fusedLocationClient;
-
-
+    private String latitude;
+    private String longitude;
+    private String strLahto;
+    private SearchView lahtoEditori;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,21 +64,22 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        //final Geocoder geocoder2 = new Geocoder(this);
+
 
         findViewById(R.id.haeButton).setOnClickListener(this);
         findViewById(R.id.sijaintiButton).setOnClickListener(this);
 
+        lahtoEditori = (SearchView) findViewById(R.id.lahtoEdit);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.haeButton)
         {
-            SearchView lahtoEditori = (SearchView) findViewById(R.id.lahtoEdit);
+
             SearchView loppuEditori = (SearchView) findViewById(R.id.maaranpaaEdit);
 
-            String strLahto = lahtoEditori.getQuery().toString();
+            strLahto = lahtoEditori.getQuery().toString();
             String strLoppu = loppuEditori.getQuery().toString();
 
             if (strLahto.trim().equals("") || strLoppu.trim().equals(""))
@@ -84,22 +98,40 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
         else if (v.getId() == R.id.sijaintiButton)
         {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if(location != null){
-                                String latitude = String.valueOf(location.getLatitude());
-                                String longitude = String.valueOf(location.getLongitude());
-                                Toast.makeText(getApplicationContext(),latitude + "," + longitude, Toast.LENGTH_SHORT).show();
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},1);
+            }
+            else
+            {
+                final Geocoder geocoder = new Geocoder(this);
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if( location != null ){
+                                    latitude = String.valueOf(location.getLatitude());
+                                    longitude = String.valueOf(location.getLongitude());
+
+                                    try{
+                                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                        String address = addresses.get(0).getAddressLine(0);
+                                        String kaupunki = addresses.get(0).getLocality();
+                                        lahtoEditori.setQuery(address, false);
+                                    }
+                                    catch (IOException e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(getApplicationContext(),"Ei sijaintia", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                            else {
-                                Toast.makeText(getApplicationContext(),"Ei sijaintia", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                        });
+            }
         }
     }
+
 
     public void geoLocate(String start, String stop) throws IOException {
         mMap.clear();
@@ -118,7 +150,17 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         double stopLat = add2.getLatitude();
         double stopLon = add2.getLongitude();
 
-        place1 = new MarkerOptions().position(new LatLng(startLat, startLon)).title("Location 1");
+        if(latitude != null && !latitude.isEmpty()){
+            Double gpsLat = Double.valueOf(latitude);
+            Double gpsLon = Double.valueOf(longitude);
+            place1 = new MarkerOptions().position(new LatLng(gpsLat, gpsLon)).title("Location 1");
+            latitude = null;
+            longitude = null;
+        }
+        else{
+            place1 = new MarkerOptions().position(new LatLng(startLat, startLon)).title("Location 1");
+        }
+
         place2 = new MarkerOptions().position(new LatLng(stopLat, stopLon)).title("Location 2");
 
         new FetchURL(RouteActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
