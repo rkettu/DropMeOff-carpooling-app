@@ -207,6 +207,9 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         if(currentPolyline!=null)
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+
+        TextView distance = (TextView) findViewById(R.id.testiTxt);
+        distance.setText(Constant.DISTANCE);
     }
 
 }

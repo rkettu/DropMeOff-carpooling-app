@@ -1,5 +1,7 @@
 package com.example.mobproj2020new;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -17,6 +19,8 @@ public class DataParser {
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
+        JSONObject jDistance;
+        long totalDistance = 0;
         try {
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
@@ -26,6 +30,9 @@ public class DataParser {
                 /** Traversing all legs */
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
+
+                    jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
+                    totalDistance = totalDistance + Long.parseLong(jDistance.getString("value"));
 
                     /** Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
@@ -42,6 +49,9 @@ public class DataParser {
                         }
                     }
                     routes.add(path);
+
+                    double dist = totalDistance / 1000.0;
+                    Constant.DISTANCE = String.valueOf(dist);
                 }
             }
 
