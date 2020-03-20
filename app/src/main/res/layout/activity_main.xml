@@ -20,17 +20,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="maps_testi"
-    android:id="@+id/startButton"
-    />
-    <Button
+        android:id="@+id/startButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="maps_testi2"
-        android:id="@+id/startButton2"
-        app:layout_constraintLeft_toRightOf="@id/startButton"
-        />
+        tools:layout_editor_absoluteX="108dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
