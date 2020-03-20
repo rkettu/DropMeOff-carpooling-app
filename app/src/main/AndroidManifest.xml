@@ -18,7 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".ChoosePickUpOrTransportationActivity"></activity>
+
+
         <activity android:name=".EditProfileActivity"></activity>
+
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
 
