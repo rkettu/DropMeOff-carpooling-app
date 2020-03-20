@@ -179,11 +179,9 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        //LatLng oulu = new LatLng(-34.364, 147.891);
-       // mMap.addMarker(new MarkerOptions().position(oulu).title("Marker in Oulu"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(oulu));
-
+        LatLng suomi = new LatLng(65.55, 25.55);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(suomi));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(suomi, 5));
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode){
