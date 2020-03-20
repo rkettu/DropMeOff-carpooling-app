@@ -1,5 +1,6 @@
 package com.example.mobproj2020new;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -20,7 +21,9 @@ public class DataParser {
         JSONArray jLegs;
         JSONArray jSteps;
         JSONObject jDistance;
+        JSONObject jDuration;
         long totalDistance = 0;
+        int totalSeconds = 0;
         try {
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
@@ -31,8 +34,13 @@ public class DataParser {
                 for (int j = 0; j < jLegs.length(); j++) {
                     jSteps = ((JSONObject) jLegs.get(j)).getJSONArray("steps");
 
+                    //Kokonaismatkan haku jsonista
                     jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
                     totalDistance = totalDistance + Long.parseLong(jDistance.getString("value"));
+
+                    //Kokonaisajan haku jsonista
+                    jDuration = ((JSONObject) jLegs.get(j)).getJSONObject("duration");
+                    totalSeconds = totalSeconds + Integer.parseInt(jDuration.getString("value"));
 
                     /** Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
@@ -50,8 +58,14 @@ public class DataParser {
                     }
                     routes.add(path);
 
+                    //matkan pituuden määritys
                     double dist = totalDistance / 1000.0;
-                    Constant.DISTANCE = String.valueOf(dist);
+                    Constant.DISTANCE = String.valueOf(dist + " km");
+
+                    //matka ajan määritys
+                    int hours = (totalSeconds / 3600);
+                    int minutes = ((totalSeconds - hours * 3600) / 60);
+                    Constant.DURATION = String.valueOf(hours + " h" + minutes + " mins");
                 }
             }
 

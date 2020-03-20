@@ -54,6 +54,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private String longitude;
     private String strLahto;
     private SearchView lahtoEditori;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,9 +99,9 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         }
         else if (v.getId() == R.id.sijaintiButton)
         {
-            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
             }
             else
             {
@@ -209,7 +210,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
 
         TextView distance = (TextView) findViewById(R.id.testiTxt);
-        distance.setText(Constant.DISTANCE);
+        distance.setText(Constant.DISTANCE + " " + Constant.DURATION);
     }
 
 }
