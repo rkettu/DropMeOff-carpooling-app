@@ -1,9 +1,12 @@
 package com.example.mobproj2020new;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Maybe make everything static?
-public class DatabaseHandler extends AppCompatActivity {
+public class DatabaseHandler {
     private DocumentReference mDocRef;
     private String uid;
     private String FNAMEKEY = "fname";
@@ -72,7 +75,49 @@ public class DatabaseHandler extends AppCompatActivity {
         });
     }
 
+    public void checkProfileCreated(Context context)
+    {
+        final Context varContext = context;
+        mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()) {
+                        // Creating User object based on document and getting bool
+                        boolean created = doc.toObject(User.class).getProfileCreated();
+                        if(created)
+                        {
+                            Intent intent = new Intent(varContext, LoggedInActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            varContext.startActivity(intent);
+                        }
+                        else
+                        {
+                            Intent intent = new Intent(varContext, EditProfileActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            varContext.startActivity(intent);
+                        }
+                    }
+                }
+            }
+        });
+    }
 
+    public void setProfileCreated(final boolean value)
+    {
+        mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    User user = doc.toObject(User.class);
+                    user.setProfCreated(value);
+                    mDocRef.set(user);
+                }
+            }
+        });
+    }
 
     public void putImageToStorage(Uri imageUri)
     {

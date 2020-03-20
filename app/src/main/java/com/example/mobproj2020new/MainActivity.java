@@ -1,19 +1,33 @@
 package com.example.mobproj2020new;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 
 import android.graphics.Color;
 
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.EditText;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+    private DatabaseHandler db;
+
+    private final String TAG = "HALOOOOO";
 
     EditText userEdit;
     EditText passEdit;
@@ -25,31 +39,66 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
-      Button dbTestButton = (Button) findViewById(R.id.myDbBtn);
-        dbTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DbTestActivity.class);
-                startActivity(intent);
-            }
-        });
-      
+
+        mAuth = FirebaseAuth.getInstance();
+        db = new DatabaseHandler();
+
         userEdit = findViewById(R.id.usernameEdit);
         passEdit = findViewById(R.id.passwordEdit);
+
+        FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(mAuth.getCurrentUser() != null)
+                {
+                    CheckProfileCreated();
+                }
+                else
+                {
+                    // User not logged in anymore...
+                    // Maybe return to MainActivity here?
+                }
+            }
+        };
+        mAuth.addAuthStateListener(als);
+    }
+
+    private void CheckProfileCreated()
+    {
+        Log.d("HALOOOOOOOOOOOOOOOOOO", "Taalla ollaan");
+        db.init(mAuth.getCurrentUser());
+        db.checkProfileCreated(getApplicationContext());
     }
 
     //Login button press
     public void login(View V){
-        if (userEdit != null && userEdit.length() > 0){
+        String email = userEdit.getText().toString();
+        String password = passEdit.getText().toString();
 
-        }else {
+        if(email.equals(""))
+        {
             noEntry(userEdit);
         }
-        if(passEdit != null && passEdit.length() > 0){
-
-        }else {
+        else if(password.equals(""))
+        {
             noEntry(passEdit);
+        }
+        else {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithEmail:success");
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(MainActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 

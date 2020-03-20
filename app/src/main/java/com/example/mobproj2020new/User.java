@@ -4,6 +4,7 @@ public class User {
     private String fname;
     private String lname;
     private String phone;
+    private boolean profileCreated;
 
     public User() {}
 
@@ -12,6 +13,7 @@ public class User {
         this.fname = fname;
         this.lname = lname;
         this.phone = phone;
+        this.profileCreated = false;
     }
 
 
@@ -27,7 +29,8 @@ public class User {
         return phone;
     }
 
+    public boolean getProfileCreated() { return profileCreated; }
 
-
+    public void setProfCreated(boolean value) { profileCreated = value; }
 
 }

@@ -9,12 +9,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
+// TODO: saving info from profile to database, getting info from database to fill fname, lname etc.
 public class EditProfileActivity extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
@@ -27,10 +33,28 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText passEdit;
     EditText passConfEdit;
 
+    private FirebaseAuth mAuth;
+    private DatabaseHandler db;
+    private Button applyButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        mAuth = FirebaseAuth.getInstance();
+        db = new DatabaseHandler();
+        db.init(mAuth.getCurrentUser());
+
+        applyButton = (Button) findViewById(R.id.saveProfileDetailButton);
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Maybe add checks that need to be met for profile creation success
+                db.setProfileCreated(true);
+                startActivity(new Intent(EditProfileActivity.this, LoggedInActivity.class));
+            }
+        });
 
         profileImage = findViewById(R.id.profile_image);
         fNameEdit = findViewById(R.id.firstNameedit);
