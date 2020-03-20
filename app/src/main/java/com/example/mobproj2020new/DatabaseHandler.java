@@ -88,7 +88,7 @@ public class DatabaseHandler {
                         boolean created = doc.toObject(User.class).getProfileCreated();
                         if(created)
                         {
-                            Intent intent = new Intent(varContext, LoggedInActivity.class);
+                            Intent intent = new Intent(varContext, ChoosePickUpOrTransportationActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             varContext.startActivity(intent);
                         }

@@ -94,14 +94,6 @@
         android:onClick="login"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"
-        android:id="@+id/testibtn"
-        android:onClick="testi"
-        />
-
-    <Button
         android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

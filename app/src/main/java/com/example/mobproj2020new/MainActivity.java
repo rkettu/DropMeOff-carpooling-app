@@ -123,8 +123,4 @@ public class MainActivity extends AppCompatActivity {
         return;
     }
 
-    public void testi(View v){
-        Intent testiIntent = new Intent(this, ChoosePickUpOrTransportationActivity.class);
-        startActivity(testiIntent);
-    }
 }

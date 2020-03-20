@@ -24,6 +24,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.w3c.dom.Text;
 
 import java.nio.channels.AlreadyBoundException;
@@ -57,7 +59,10 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
                         break;
                     case 3:
                         //Log.d("SWAG", "onClick: Sign Out");
-                        onBackPressed();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         break;
                 }
             }

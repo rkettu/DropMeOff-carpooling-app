@@ -52,7 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO: Maybe add checks that need to be met for profile creation success
                 db.setProfileCreated(true);
-                startActivity(new Intent(EditProfileActivity.this, LoggedInActivity.class));
+                startActivity(new Intent(EditProfileActivity.this, ChoosePickUpOrTransportationActivity.class));
             }
         });
 
