@@ -92,6 +92,7 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
 
     //------------Button Offer A Ride--------------//
     public void SelectOfferARide(View v){
-
+        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, RouteActivity.class);
+        startActivity(intent);
     }
 }
