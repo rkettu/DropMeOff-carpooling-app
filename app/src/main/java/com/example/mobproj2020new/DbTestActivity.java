@@ -4,54 +4,63 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-
-import android.graphics.Color;
-
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.EditText;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+public class DbTestActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity {
+    private final String TAG = "HEYYYY";
 
     private FirebaseAuth mAuth;
-    private DatabaseHandler db;
-
-    private final String TAG = "HALOOOOO";
-
-    EditText userEdit;
-    EditText passEdit;
-
-    String userNameStr = "";
-    String passwordStr = "";
+    private Button loginBtn;
+    private Button logoutBtn;
+    private Button createUserBtn;
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_db_test);
 
         mAuth = FirebaseAuth.getInstance();
-        db = new DatabaseHandler();
 
-        userEdit = findViewById(R.id.usernameEdit);
-        passEdit = findViewById(R.id.passwordEdit);
+        emailEditText = findViewById(R.id.emailField);
+        passwordEditText = findViewById(R.id.passwordField);
+        loginBtn = findViewById(R.id.loginBtn);
+        createUserBtn = findViewById(R.id.passwordBtn);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogInBtnFunc();
+            }
+        });
+        createUserBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateUserBtnFunc();
+            }
+        });
 
         FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(mAuth.getCurrentUser() != null)
                 {
-                    CheckProfileCreated();
+                    // Go to logged in activity whenever auth state changes to logged in
+                    LogInSuccess();
                 }
                 else
                 {
@@ -63,25 +72,19 @@ public class MainActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(als);
     }
 
-    private void CheckProfileCreated()
+    private void LogOutBtnFunc()
     {
-        Log.d("HALOOOOOOOOOOOOOOOOOO", "Taalla ollaan");
-        db.init(mAuth.getCurrentUser());
-        db.checkProfileCreated(getApplicationContext());
+        mAuth.signOut();
     }
 
-    //Login button press
-    public void login(View V){
-        String email = userEdit.getText().toString();
-        String password = passEdit.getText().toString();
-
-        if(email.equals(""))
+    private void LogInBtnFunc()
+    {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        if(email.equals("") || password.equals(""))
         {
-            noEntry(userEdit);
-        }
-        else if(password.equals(""))
-        {
-            noEntry(passEdit);
+            Toast.makeText(DbTestActivity.this, "Email or password empty",
+                    Toast.LENGTH_SHORT).show();
         }
         else {
             mAuth.signInWithEmailAndPassword(email, password)
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(MainActivity.this, "Authentication failed.",
+                                Toast.makeText(DbTestActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -102,25 +105,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //SignUp button press
-    public void signUp(View v){
-        Intent signUpIntent = new Intent(this, SignUp.class);
-        startActivity(signUpIntent);
+    private void CreateUserBtnFunc()
+    {
+        // Go to create user activity
+        Intent intent = new Intent(DbTestActivity.this, CreateUserActivity.class);
+        startActivity(intent);
     }
 
-    //execute if username or password is empty
-    public void noEntry(EditText et){
-        et.setText("");
-        et.setHintTextColor(Color.parseColor("#B75252"));
-        if (et.getId() == R.id.usernameEdit) userEdit.setHint("Username*");
-        else passEdit.setHint("Password*");
+    private void LogInSuccess()
+    {
+        // Logging in to main service
+        Intent intent = new Intent(DbTestActivity.this, LoggedInActivity.class);
+        startActivity(intent);
     }
-
-    //Exit app with pressing back putton on your phone
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        return;
-    }
-
 }

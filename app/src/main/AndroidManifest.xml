@@ -6,7 +6,7 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />/>
+
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -15,6 +15,11 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +27,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".RouteActivity"></activity>
+
+
+        <activity android:name=".ChoosePickUpOrTransportationActivity"></activity>
+
+
+        <activity android:name=".EditProfileActivity"></activity>
+
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SignUp" />
+
+        <activity android:name=".CreateUserActivity"></activity>
+        <activity android:name=".LoggedInActivity" />
+        <activity android:name=".DbTestActivity" />
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,9 +66,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
 
     </application>
 
