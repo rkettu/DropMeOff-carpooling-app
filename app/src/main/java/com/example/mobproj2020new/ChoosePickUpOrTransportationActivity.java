@@ -40,7 +40,7 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
 
     //-----------Applications settings button------------//
     public void AppSettings(View v) {
-        final String[] itemList = {"Settings", "About", "Sign Out"};
+        final String[] itemList = {"Settings", "My Profile", "About", "Sign Out"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(itemList, new DialogInterface.OnClickListener() {
             @Override
@@ -50,9 +50,12 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
                         //Log.d("SWAG", "onClick: settings");
                         break;
                     case 1:
-                        //Log.d("SWAG", "onClick: About");
+                        //Log.d("SWAG", "onClick: My Profile");
                         break;
                     case 2:
+                        //Log.d("SWAG", "onClick: About");
+                        break;
+                    case 3:
                         //Log.d("SWAG", "onClick: Sign Out");
                         onBackPressed();
                         break;
@@ -86,16 +89,4 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
     public void SelectOfferARide(View v){
 
     }
-
-    //---------------Back Button-------------------//
-    public void BackArrow(View v){
-        onBackPressed();
-    }
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        return;
-    }
-
-
 }
