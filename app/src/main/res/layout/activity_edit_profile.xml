@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity"
+    android:background="@drawable/background_login">
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="30dp"
+    tools:context=".EditProfileActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:onClick="pickImage"
+        android:src="@drawable/ic_person_add_black_100dp"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewfName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="First Name"
+        android:paddingTop="24dp"
+        android:paddingLeft="5dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@+id/textViewlName"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+    <EditText
+        android:id="@+id/firstNameedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="Firstname*"
+        android:inputType="text"
+        android:maxLines="1"
+        android:text="fName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/lastNameedit"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/textViewfName" />
+
+    <TextView
+        android:id="@+id/textViewlName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Last Name"
+        android:paddingTop="24dp"
+        android:paddingLeft="5dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toEndOf="@+id/textViewfName"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+    <EditText
+        android:id="@+id/lastNameedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="Lastname*"
+        android:inputType="text"
+        android:maxLines="1"
+        android:text="lName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toEndOf="@+id/firstNameedit"
+        app:layout_constraintTop_toBottomOf="@+id/textViewlName" />
+
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/firstNameedit" />
+
+    <EditText
+        android:id="@+id/emailedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="Email"
+        android:hint="Email*"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        android:drawableStart="@drawable/ic_mail_outline_black_24dp"
+        android:drawablePadding="16dp"/>
+
+    <TextView
+        android:id="@+id/textViewPhoNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cell"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/emailedit" />
+
+    <EditText
+        android:id="@+id/phoNumedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="phoNum"
+        android:hint="Cell*"
+        android:maxLines="1"
+        android:inputType="phone"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPhoNum"
+        android:drawableStart="@drawable/ic_call_black_24dp"
+        android:drawablePadding="16dp"/>
+
+    <TextView
+        android:id="@+id/textViewBio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Bio"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/phoNumedit" />
+
+    <EditText
+        android:id="@+id/bioedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:inputType="textMultiLine"
+        android:hint="Max 255"
+        android:maxLength="255"
+        android:lines="17"
+        android:maxLines="17"
+        android:gravity="top"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBio"
+        android:background="@drawable/custom_edittext1"/>
+
+    <Button
+        android:id="@+id/saveProfileDetailButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button1"
+        android:text="Apply Changes"
+        android:textAllCaps="false"
+        android:textColor="@color/pastelGreen"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/bioedit"/>
+
+    <TextView
+        android:id="@+id/textViewPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Change Password"
+        android:textColor="@color/white"
+        android:paddingTop="24dp"
+        android:paddingLeft="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/saveProfileDetailButton" />
+
+    <EditText
+        android:id="@+id/oldPassedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="Old Password"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPassword" />
+
+    <EditText
+        android:id="@+id/passedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="New Password"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/oldPassedit" />
+
+
+    <EditText
+        android:id="@+id/passtwoedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="Confirm Password"
+        android:maxLines="1"
+        android:inputType="textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/passedit" />
+
+    <Button
+        android:id="@+id/changePasswordButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button1"
+        android:text="Change Password"
+        android:textAllCaps="false"
+        android:textColor="@color/pastelGreen"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/passtwoedit"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
