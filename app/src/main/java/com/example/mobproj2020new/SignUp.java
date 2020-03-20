@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SignUp extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    ImageView profileImage;
+    CircleImageView profileImage;
     EditText fNameEdit;
     EditText lNameEdit;
     EditText eMailEdit;
@@ -46,7 +48,7 @@ public class SignUp extends AppCompatActivity {
         cellEdit = findViewById(R.id.phoNumedit);
         passEdit = findViewById(R.id.passedit);
         passConfEdit = findViewById(R.id.passtwoedit);
-        textEditArray = new ArrayList<EditText>();
+        textEditArray = new ArrayList<>();
         textEditArray.add(fNameEdit);
         textEditArray.add(lNameEdit);
         textEditArray.add(eMailEdit);
@@ -83,9 +85,12 @@ public class SignUp extends AppCompatActivity {
                 et.setHintTextColor(Color.parseColor("#B75252"));
             }
         }
-        if (entryCheck == true){
+        if (entryCheck){
             //Check password and confirmation
             if (pass1.equals(pass2)){
+
+                //startActivity(new Intent(this, ProfileActivity.class));
+                startActivity(new Intent(this, EditProfileActivity.class));
 
             }else {
                 passEdit.setText("");
@@ -111,7 +116,8 @@ public class SignUp extends AppCompatActivity {
     }
 
 /////////////Check permissions for picking images from phones external storage. Nothing else below/////////////////
-    public void pickImage(View v){
+
+   public void pickImage(View v){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_DENIED){
