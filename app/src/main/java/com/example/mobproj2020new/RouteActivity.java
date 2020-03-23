@@ -1,5 +1,6 @@
 package com.example.mobproj2020new;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -8,6 +9,7 @@ import androidx.loader.content.AsyncTaskLoader;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -46,6 +48,7 @@ import java.util.Locale;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener{
 
+    int INTENT_ID = 8976;
     private GoogleMap mMap;
     MarkerOptions place1, place2;
     Polyline currentPolyline;
@@ -54,6 +57,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private String longitude;
     private String strLahto;
     private SearchView lahtoEditori;
+    private Button nextBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +70,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        Button nextBtn = (Button) findViewById(R.id.nextBtn);
+        nextBtn.setEnabled(false);
 
         findViewById(R.id.haeButton).setOnClickListener(this);
         findViewById(R.id.sijaintiButton).setOnClickListener(this);
+        findViewById(R.id.nextBtn).setOnClickListener(this);
 
         lahtoEditori = (SearchView) findViewById(R.id.lahtoEdit);
     }
@@ -131,6 +138,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                         });
             }
         }
+        else if (v.getId() == R.id.nextBtn)
+        {
+            Intent details = new Intent(this, RideDetailsActivity.class);
+            startActivityForResult(details, INTENT_ID);
+        }
+
     }
 
 
@@ -209,6 +222,20 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         TextView distance = (TextView) findViewById(R.id.testiTxt);
         distance.setText(Constant.DISTANCE + " " + Constant.DURATION);
+
+
+        Button nextBtn = (Button) findViewById(R.id.nextBtn);
+        nextBtn.setEnabled(true);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == INTENT_ID && resultCode == Activity.RESULT_OK)
+        {
+            String koko_aika;
+
+        }
     }
 
 }
