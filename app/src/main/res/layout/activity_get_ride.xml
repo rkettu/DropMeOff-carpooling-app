@@ -11,8 +11,13 @@
         android:id="@+id/startPointEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="90dp"
+        android:hint="Set your start point"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="50dp"
+        android:textColorHint="@color/hintlog"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:inputType="text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
@@ -22,17 +27,23 @@
         android:id="@+id/endPointEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
+        android:hint="Set your destination"
+        android:textColorHint="@color/hintlog"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:inputType="text"
+        android:backgroundTint="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/startPointEditText"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         />
 
-    <RadioButton
-        android:id="@+id/luggageRadioButton"
+    <CheckBox
+        android:id="@+id/luggageCheckBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Matkatavaroita?"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/endPointEditText"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
@@ -45,16 +56,19 @@
         android:layout_height="wrap_content"
         android:background="@drawable/settings_dialog_background"
         android:gravity="top"
-        app:layout_constraintTop_toBottomOf="@id/luggageRadioButton"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
-        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        android:hint="Write your items..."
+        android:textColorHint="@color/hintlog"
         android:inputType="textMultiLine"
         android:lines="5"
         android:scrollbars="vertical"
         android:scrollHorizontally="false"
-        />
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/btnSearch"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/luggageCheckBox" />
 
     <Button
+        android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
@@ -69,14 +83,14 @@
     <ListView
         android:id="@+id/tripsListView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
-        app:layout_constraintTop_toBottomOf="@id/luggageEditText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="10dp"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/luggageEditText"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_middle"
