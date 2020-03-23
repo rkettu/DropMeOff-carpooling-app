@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseHandler db;
-    private int number = 1;
+
 
     private final String TAG = "HALOOOOO";
 

@@ -77,12 +77,55 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Booked trips");
 
+        //------------List to test AlertDialog---------//
+        final List<String> trips = new ArrayList<>();
+        trips.add("Oulu - Helsinki");
+        trips.add("Oulu - Kannus");
+        trips.add("Oulu - Pyhäjärvi");
+        trips.add("Helsinki - Oulu");
+        trips.add("Helsinki - Jyväskylä - Oulu");
+
+        ArrayAdapter<String> bookedTrips = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, trips);
+        builder.setAdapter(bookedTrips, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ChoosePickUpOrTransportationActivity.this, trips.get(which) + " trip chosen ", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //---------------Button OfferTrips---------------//
     public void SelectOfferedTrips(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Offered rides");
 
+
+        //------------List to test AlertDialog---------//
+        final List<String> rides = new ArrayList<>();
+        rides.add("Oulu - Helsinki");
+        rides.add("Oulu - Kannus");
+        rides.add("Oulu - Pyhäjärvi");
+        rides.add("Helsinki - Oulu");
+        rides.add("Helsinki - Jyväskylä - Oulu");
+
+        ArrayAdapter<String> offeredRides = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, rides);
+        builder.setAdapter(offeredRides, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ChoosePickUpOrTransportationActivity.this, rides.get(which) + " ride chosen ", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //-------------Button Get A Ride----------------//
