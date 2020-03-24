@@ -72,9 +72,12 @@ public class GetRideActivity extends AppCompatActivity{
         for(int i = 0; i < arrayList.size(); i++){
             tripListViewItemStartPoint = arrayList.get(i).getStartPoint();
             tripListViewItemEndPoint = arrayList.get(i).getEndPoint();
-            if(startPoint.equals(tripListViewItemStartPoint)) {
-                if (endPoint.equals(tripListViewItemEndPoint)) {
-                    tripListView.
+            boolean sp = startPoint.equals(tripListViewItemStartPoint);
+            boolean ep = endPoint.equals(tripListViewItemEndPoint);
+            if(sp) {
+                if(ep) {
+                    //---en tiiä mitä vittua minä teen---//
+                    //---Ihan pää lyö tyhjää, mutta jos start ja end point vastaa jotain arraylistissä nii ollaan täällä---//
                 }
             }
         }
