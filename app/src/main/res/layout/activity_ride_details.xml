@@ -24,7 +24,9 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:inputType="date"
-        android:id="@+id/dateEdit"/>
+        android:id="@+id/dateEdit"
+        android:gravity="center" />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,7 +44,9 @@
         app:layout_constraintTop_toBottomOf="@id/timeTxt"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:id="@+id/timeEdit"/>
+        android:inputType="time"
+        android:id="@+id/timeEdit"
+        android:gravity="center"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,4 +67,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passengerTxt"
         android:id="@+id/numberPicker"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/examplePrice"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="30dp"
+        android:textSize="15dp"
+        android:text="CONFIRM"
+        android:background="@drawable/bs_round"
+        android:id="@+id/confirmBtn"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBarText"
+        app:layout_constraintTop_toBottomOf="@id/numberPicker"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:textSize="30dp"
+        android:hint="Price"
+        android:gravity="center"/>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/seekBarText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/seekBar"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/examplePrice"
+        app:layout_constraintTop_toBottomOf="@id/seekBar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp"
+        android:gravity="center"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

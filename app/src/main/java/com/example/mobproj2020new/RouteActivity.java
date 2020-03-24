@@ -18,6 +18,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
@@ -41,12 +42,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener{
+
+    ArrayList<RideDetailPart> fullDetails = new ArrayList<>();
 
     int INTENT_ID = 8976;
     private GoogleMap mMap;
@@ -84,6 +88,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onClick(View v) {
         if (v.getId() == R.id.haeButton)
         {
+
+            hideKeyboard(RouteActivity.this);
 
             SearchView loppuEditori = (SearchView) findViewById(R.id.maaranpaaEdit);
 
@@ -227,15 +233,32 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         Button nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setEnabled(true);
     }
+
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View v = activity.getCurrentFocus();
+        if (v == null) { v = new View(activity); }
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == INTENT_ID && resultCode == Activity.RESULT_OK)
         {
-            String koko_aika;
+
+            RideDetailPart newPart = (RideDetailPart) data.getSerializableExtra("DETAILS");
+            fullDetails.add(newPart);
+
+            String date = newPart.date;
+            String time = newPart.time;
+            int passenger = newPart.passenger;
+            float price = newPart.price;
+
+            TextView teksti = (TextView) findViewById(R.id.testailua);
+            teksti.setText(date + time + passenger + price);
 
         }
     }
-
 }
