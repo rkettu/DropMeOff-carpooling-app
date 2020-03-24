@@ -9,6 +9,10 @@ public class GetARideUtility implements Serializable {
     private String endPoint;
     private String user;
 
+    public GetARideUtility(){
+
+    }
+
     public GetARideUtility(String tripLength, String tripTime, String startPoint, String endPoint, String user){
         this.tripLength = tripLength;
         this.tripTime = tripTime;

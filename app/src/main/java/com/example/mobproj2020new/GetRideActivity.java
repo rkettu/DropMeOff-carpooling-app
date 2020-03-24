@@ -3,25 +3,25 @@ package com.example.mobproj2020new;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GetRideActivity extends AppCompatActivity{
 
     String tripListViewItemStartPoint;
+    String tripListViewItemEndPoint;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
     CheckBox luggageCheckBox;
     EditText luggageEditText;
@@ -52,7 +52,6 @@ public class GetRideActivity extends AppCompatActivity{
         luggageCheckBox = findViewById(R.id.luggageCheckBox);
         luggageEditText = findViewById(R.id.luggageEditText);
         luggageEditText.setVisibility(View.INVISIBLE);
-        tripListView.setVisibility(View.INVISIBLE);
 
         luggageCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,16 +67,30 @@ public class GetRideActivity extends AppCompatActivity{
         startPointEditText = findViewById(R.id.startPointEditText);
         endPointEditText = findViewById(R.id.endPointEditText);
         final String startPoint = startPointEditText.getText().toString();
-        String endPoint = endPointEditText.getText().toString();
+        final String endPoint = endPointEditText.getText().toString();
 
-        tripListView.setVisibility(View.VISIBLE);
+        for(int i = 0; i < arrayList.size(); i++){
+            tripListViewItemStartPoint = arrayList.get(i).getStartPoint();
+            tripListViewItemEndPoint = arrayList.get(i).getEndPoint();
+            if(startPoint.equals(tripListViewItemStartPoint)) {
+                if (endPoint.equals(tripListViewItemEndPoint)) {
+                    tripListView.
+                }
+            }
+        }
+
+        //-----------Changing start point and end point to coordinates----------//
+        try {
+            geoLocate(startPoint, endPoint);
+        } catch (IOException e) { e.printStackTrace(); }
 
         tripListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                tripListViewItemStartPoint = ((TextView) view.findViewById(R.id.tv2)).getText().toString();
-                Log.d(TAG, tripListViewItemStartPoint);
-                }
+
+                //-------Trip Info-------//
+
+            }
         });
     }
 
@@ -86,5 +99,23 @@ public class GetRideActivity extends AppCompatActivity{
         View v = activity.getCurrentFocus();
         if (v == null) { v = new View(activity); }
         inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    public void geoLocate(String startPoint, String endPoint) throws IOException {
+        Geocoder gc = new Geocoder(this);
+
+        List<Address> listStart = gc.getFromLocationName(startPoint, 1);
+        Address add = listStart.get(0);
+
+        List<Address> listStop = gc.getFromLocationName(endPoint, 1);
+        Address add2 = listStop.get(0);
+
+        double startLat = add.getLatitude();
+        double startLon = add.getLongitude();
+
+        double stopLat = add2.getLatitude();
+        double stopLon = add2.getLongitude();
+
+        Log.d(TAG, "geoLocate: " + startLat + " " + startLon + " " + stopLat + " " + stopLon);
     }
 }
