@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class ReservationInfoActivity extends AppCompatActivity implements View.OnClickListener {
+public class OfferedTripsInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String name;
-    private String phone;
     private float distance;
     private float price;
     private String dateOfTrip;
@@ -18,7 +16,7 @@ public class ReservationInfoActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservation_info);
+        setContentView(R.layout.activity_offered_trips_info);
         }
 
     @Override

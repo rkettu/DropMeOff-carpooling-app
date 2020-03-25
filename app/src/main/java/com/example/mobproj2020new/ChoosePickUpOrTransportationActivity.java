@@ -4,31 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
-import java.nio.channels.AlreadyBoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +80,8 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ChoosePickUpOrTransportationActivity.this, trips.get(which) + " trip chosen ", Toast.LENGTH_LONG).show();
 
-                Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+                ///////////////////Varattujen matkojen info näkymä\\\\\\\\\\\\\\\\\\\\
+                Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, BookedTripsInfoActivity.class);
                 startActivity(i);
             }
         });
@@ -125,7 +111,8 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ChoosePickUpOrTransportationActivity.this, rides.get(which) + " ride chosen ", Toast.LENGTH_LONG).show();
 
-                Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+                /////////////////Tarjottujen matkojen info näkymä\\\\\\\\\\\\\\\\\\
+                Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, OfferedTripsInfoActivity.class);
                 startActivity(i);
             }
         });
@@ -144,22 +131,5 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
         Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, RouteActivity.class);
         startActivity(intent);
     }
-
-    /*
-    public void OpenTripInfo (View v) {
-        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
-        startActivty(intent);
-    }
-
-    private void startActivty(Intent intent) {
-        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
-        startActivty(intent);
-    }
-
-    /*
-    public void onClick(View v) {
-        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
-        startActivty(intent);
-    }*/
 
 }
