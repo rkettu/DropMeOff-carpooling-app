@@ -22,22 +22,41 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
     private String strDate;
     private String strTime;
-    private int passengers;
+    private int passengers = 1;
     private float hinta;
+    private int range;
+
     EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
     SeekBar seekBar;
-    TextView hintaTxt;
-    TextView exampleTxt;
+    SeekBar seekBar2;
+    TextView hintaTxt, exampleTxt, minRange;
     private Button confirmBtn;
-
+    String newMatka;
+    Double doubleMatka;
+    int intMatka;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_details);
 
+        if(savedInstanceState == null){
+            Bundle extras = getIntent().getExtras();
+            if(extras == null){
+                newMatka = null;
+            }else{
+                newMatka = extras.getString("MATKA");
+        }
+        }
+        else {
+            newMatka = (String)savedInstanceState.getSerializable("MATKA");
+        }
+
+        if(newMatka != null && !newMatka.isEmpty()){
+            doubleMatka = Double.valueOf(newMatka);
+            intMatka = Integer.valueOf(doubleMatka.intValue());
+        }
         NumberPicker np = findViewById(R.id.numberPicker);
-        passengers = np.getValue();
         np.setMinValue(1);
         np.setMaxValue(10);
 
@@ -54,25 +73,47 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
         hintaTxt = (TextView)findViewById(R.id.seekBarText);
         exampleTxt = (TextView)findViewById(R.id.examplePrice);
+        minRange = (TextView) findViewById(R.id.minimumRangeTxt);
+        minRange.setText("Min range: " + newMatka);
 
         seekBar=(SeekBar)findViewById(R.id.seekBar);
+        seekBar2=(SeekBar)findViewById(R.id.rangeValue);
+        seekBar2.setProgress(100);
+
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                passengers = newVal;
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 hinta = ((float) progress / 1000);
-                hintaTxt.setText("" + hinta + " per kilometer");
-                exampleTxt.setText("Example: between Jyväskylä - Helsinki ( 270km ): \n" + 270 * hinta + " eur");
-
-                if(txtDate.toString().trim().length() > 0 & txtTime.toString().trim().length() > 0)
-                {
-                    Button confirmBtn = (Button) findViewById(R.id.confirmBtn);
+                hintaTxt.setText(String.format("%.3f", hinta) + " per kilometer");
+                exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: " + String.format("%.2f", doubleMatka * hinta) + " eur") ;
+                if(strTime != null & strDate!= null & hinta > 0 ){
                     confirmBtn.setEnabled(true);
                 }
-                else
-                {
-                    confirmBtn.setEnabled(false);
-                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                range = ((intMatka / 100) * progress);
+                minRange.setText("Min range: " + range);
             }
 
             @Override
@@ -124,7 +165,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (v.getId() == R.id.confirmBtn)
         {
-            RideDetailPart part = new RideDetailPart(strDate, strTime, passengers, hinta);
+            RideDetailPart part = new RideDetailPart(strDate, strTime, passengers, hinta, range);
             Intent resultIntent = new Intent();
             resultIntent.putExtra("DETAILS", part);
             setResult(RideDetailsActivity.RESULT_OK, resultIntent);

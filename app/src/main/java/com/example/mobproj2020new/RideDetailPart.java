@@ -9,13 +9,15 @@ public class RideDetailPart implements Serializable {
     public String time;
     public int passenger;
     public float price;
+    public int range;
 
-    public RideDetailPart(String date, String time, int passenger, float price)
+    public RideDetailPart(String date, String time, int passenger, float price, int range)
     {
         this.date = date;
         this.time = time;
         this.passenger = passenger;
         this.price = price;
+        this.range = range;
     }
 
     public String getDate() {
@@ -49,5 +51,9 @@ public class RideDetailPart implements Serializable {
     public void setPrice(float price) {
         this.price = price;
     }
+
+    public int getRange() { return range; }
+
+    public void setRange(int range) { this.range = range; }
 
 }

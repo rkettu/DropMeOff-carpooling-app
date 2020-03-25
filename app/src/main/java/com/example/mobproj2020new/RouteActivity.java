@@ -60,6 +60,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private String latitude;
     private String longitude;
     private String strLahto;
+    private String matka;
     private SearchView lahtoEditori;
     private Button nextBtn;
 
@@ -147,6 +148,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         else if (v.getId() == R.id.nextBtn)
         {
             Intent details = new Intent(this, RideDetailsActivity.class);
+            details.putExtra("MATKA", matka);
             startActivityForResult(details, INTENT_ID);
         }
 
@@ -227,7 +229,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
 
         TextView distance = (TextView) findViewById(R.id.testiTxt);
-        distance.setText(Constant.DISTANCE + " " + Constant.DURATION);
+        matka = Constant.DISTANCE;
+        distance.setText(Constant.DISTANCE + " km " + Constant.DURATION);
 
 
         Button nextBtn = (Button) findViewById(R.id.nextBtn);
@@ -255,9 +258,10 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             String time = newPart.time;
             int passenger = newPart.passenger;
             float price = newPart.price;
+            int range = newPart.range;
 
             TextView teksti = (TextView) findViewById(R.id.testailua);
-            teksti.setText(date + time + passenger + price);
+            teksti.setText(date+ " " + time + " " + passenger + " " + price + " " + range);
 
         }
     }
