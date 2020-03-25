@@ -60,7 +60,7 @@ public class DataParser {
 
                     //matkan pituuden määritys
                     double dist = totalDistance / 1000.0;
-                    Constant.DISTANCE = String.valueOf(dist + " km");
+                    Constant.DISTANCE = String.valueOf(dist);
 
                     //matka ajan määritys
                     int hours = (totalSeconds / 3600);
