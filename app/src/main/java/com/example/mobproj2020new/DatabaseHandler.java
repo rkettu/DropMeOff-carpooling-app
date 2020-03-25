@@ -1,19 +1,12 @@
 package com.example.mobproj2020new;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,18 +15,20 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 // Maybe make everything static?
 public class DatabaseHandler {
-    private DocumentReference mDocRef;
+    private DocumentReference mUsersDocRef;
+    private CollectionReference mRoutesColRef = FirebaseFirestore.getInstance().collection("rides");
     private String uid;
     private String FNAMEKEY = "fname";
     private String LNAMEKEY = "lname";
@@ -49,18 +44,37 @@ public class DatabaseHandler {
         uid = user.getUid();
         fbs = FirebaseStorage.getInstance();
         storageRef = fbs.getReference();
-        mDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
     }
 
     public void setUserCreationInfo(String fname, String lname, String phone)
     {
         User user = new User(fname,lname,phone);
-        mDocRef.set(user); // add on success, on failure event listeners for checking for errors if needed
+        mUsersDocRef.set(user); // add on success, on failure event listeners for checking for errors if needed
+    }
+
+    // Saves route to database, informing of success, failure
+    public void createRide(Route route, final Context context)
+    {
+        DocumentReference mRoutesDocRef = mRoutesColRef.document();
+        mRoutesDocRef.set(route).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Return to main activity...
+                    // Show Toast text / pop up text or whatever in main instead...
+                    Toast.makeText(context, "Ride Created", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void getPhone()
     {
-        mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
@@ -78,7 +92,7 @@ public class DatabaseHandler {
     public void checkProfileCreated(Context context)
     {
         final Context varContext = context;
-        mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
@@ -106,14 +120,14 @@ public class DatabaseHandler {
 
     public void setProfileCreated(final boolean value)
     {
-        mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     User user = doc.toObject(User.class);
                     user.setProfCreated(value);
-                    mDocRef.set(user);
+                    mUsersDocRef.set(user);
                 }
             }
         });
@@ -124,5 +138,56 @@ public class DatabaseHandler {
         StorageReference ppRef = storageRef.child("profpics/"+uid);
         UploadTask upTask = ppRef.putFile(imageUri);
         // Add listeners for fail/complete/success?
+    }
+
+    public void getMatchingRoutes(final float pickupDistance, final float startLat, final float startLng, final float endLat, final float endLng)
+    {
+        // Checking all rides with free passenger slots
+        Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        List<HashMap<String,String>> points = (List) doc.get("points");
+                        // Getting start and end latitude/longitude
+                        float routeStartLat = Float.parseFloat(points.get(0).get("lat"));
+                        float routeStartLng = Float.parseFloat(points.get(0).get("lng"));
+                        float routeEndLat = Float.parseFloat(points.get(points.size()-1).get("lat"));
+                        float routeEndLng = Float.parseFloat(points.get(points.size()-1).get("lng"));
+                        // Checking if distance between start points and end points is less than pickup distance
+                        if(distanceBetweenCoordinates(startLat, startLng, routeStartLat, routeStartLng) <= pickupDistance
+                        && distanceBetweenCoordinates(endLat, endLng, routeEndLat, routeEndLng) <= pickupDistance)
+                        {
+                            // Start and end are both within radius!
+                            // Update listview... or something
+                        }
+                    }
+                }
+                else
+                {
+                    Log.d("VITTUJENPERKELE", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+
+    // Move to some Math class?
+    // Returns distance in km
+    private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
+    {
+        // Haversine Algorithm
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLon = Math.toRadians(lng2-lng1);
+
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        return c * 6371;
     }
 }
