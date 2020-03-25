@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
-    tools:context=".ReservationInfo">
+    tools:context=".ReservationInfoActivity">
 
     <TextView
         android:id="@+id/tripHeadline"
-        android:hint="Start - Destination headline"
-        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="28dp"
+        android:hint="Start - Destination headline"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -30,17 +30,20 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline"/>
+        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
 
     <TextView
         android:id="@+id/nameText"
-        android:layout_width="wrap_content"
+        android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="59dp"
         android:layout_marginTop="28dp"
-        android:hint="Nimi tähän"
+        android:layout_marginEnd="45dp"
+        android:hint="Matkan ilmoittajan nimi tähän"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/Name"
         app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
 
@@ -59,13 +62,15 @@
 
     <TextView
         android:id="@+id/phoneNum"
-        android:layout_width="wrap_content"
+        android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="18dp"
-        android:hint="Puh. tähän"
+        android:layout_marginEnd="45dp"
+        android:hint="Matkan ilmoittajan Puh. tähän"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Phone"
         app:layout_constraintTop_toBottomOf="@+id/nameText" />
 
@@ -83,23 +88,25 @@
 
     <TextView
         android:id="@+id/distanceNum"
-        android:layout_width="wrap_content"
+        android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="18dp"
+        android:layout_marginEnd="45dp"
         android:hint="Matkan pituus tähän"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Distance"
         app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
 
     <TextView
-        android:id="@+id/cost"
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="18dp"
-        android:text="Cost"
+        android:text="Price"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,15 +114,44 @@
 
     <TextView
         android:id="@+id/costSum"
-        android:layout_width="wrap_content"
+        android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="18dp"
         android:hint="Matkan hinta tähän"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/cost"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toEndOf="@+id/price"
         app:layout_constraintTop_toBottomOf="@+id/distanceNum" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="18dp"
+        android:text="Date of trip"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/price" />
+
+    <TextView
+        android:id="@+id/infoDate"
+        android:layout_width="236dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="18dp"
+        android:hint="Matkan lähtöpäivä ja aika tähän"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/date"
+        app:layout_constraintTop_toBottomOf="@+id/costSum" />
+
 
     <TextView
         android:id="@+id/info"
@@ -123,53 +159,100 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="18dp"
-        android:text="Other info"
+        android:text="Info"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cost" />
+        app:layout_constraintTop_toBottomOf="@+id/duration" />
 
     <TextView
         android:id="@+id/infoBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:hint="Matkan muut infot"
+        android:layout_width="236dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="18dp"
+        android:hint="Muu info tähän esim. matkustajien määrä/vapaat paikat"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/info"
-        app:layout_constraintTop_toBottomOf="@+id/costSum" />
+        app:layout_constraintTop_toBottomOf="@+id/durationTime" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="18dp"
+        android:text="Duration"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+    <TextView
+        android:id="@+id/durationTime"
+        android:layout_width="236dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="18dp"
+        android:hint="Matkan kesto"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/duration"
+        app:layout_constraintTop_toBottomOf="@+id/infoDate" />
 
     <Button
         android:id="@+id/removeTrip"
-        android:layout_width="107dp"
+        android:layout_width="113dp"
         android:layout_height="60dp"
-        android:layout_marginTop="420dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginTop="480dp"
+        android:layout_marginEnd="84dp"
         android:background="@drawable/custom_button1"
         android:text="Remove trip"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="removeTripBtn"/>
 
     <Button
         android:id="@+id/editTrip"
         android:layout_width="113dp"
         android:layout_height="60dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="420dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="480dp"
         android:background="@drawable/custom_button1"
         android:text="Edit trip"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toStartOf="@+id/removeTrip"
-        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintHorizontal_bias="0.037"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="editTripBtn"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="45dp" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="130dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

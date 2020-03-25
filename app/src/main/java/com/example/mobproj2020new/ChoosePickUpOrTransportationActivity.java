@@ -94,6 +94,9 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ChoosePickUpOrTransportationActivity.this, trips.get(which) + " trip chosen ", Toast.LENGTH_LONG).show();
+
+                Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+                startActivity(i);
             }
         });
 
@@ -113,7 +116,7 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
         rides.add("Oulu - Kannus");
         rides.add("Oulu - Pyhäjärvi");
         rides.add("Helsinki - Oulu");
-        rides.add("Helsinki - Jyväskylä - Oulu");
+        rides.add("Jyväskylä - Oulu");
 
         ArrayAdapter<String> offeredRides = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, rides);
@@ -121,6 +124,9 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ChoosePickUpOrTransportationActivity.this, rides.get(which) + " ride chosen ", Toast.LENGTH_LONG).show();
+
+                Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+                startActivity(i);
             }
         });
 
@@ -138,4 +144,22 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
         Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, RouteActivity.class);
         startActivity(intent);
     }
+
+    /*
+    public void OpenTripInfo (View v) {
+        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+        startActivty(intent);
+    }
+
+    private void startActivty(Intent intent) {
+        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+        startActivty(intent);
+    }
+
+    /*
+    public void onClick(View v) {
+        Intent intent = new Intent(ChoosePickUpOrTransportationActivity.this, ReservationInfoActivity.class);
+        startActivty(intent);
+    }*/
+
 }
