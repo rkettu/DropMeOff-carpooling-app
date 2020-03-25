@@ -36,6 +36,60 @@
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         />
 
+    <TextView
+        android:id="@+id/dateOfTraverTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Date of travel"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/endPointEditText"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        />
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:gravity="center"
+        android:hint="dd-mm-yyyy"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintTop_toBottomOf="@id/dateOfTraverTextView"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        android:onClick="dateOfTimeClicked"
+        />
+
+    <TextView
+        android:id="@+id/estTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Time of departure"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/endPointEditText"
+        app:layout_constraintLeft_toRightOf="@id/guideline_middle"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        />
+
+    <EditText
+        android:id="@+id/estTimeEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="hh:mm"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintTop_toBottomOf="@id/estTimeTextView"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        app:layout_constraintLeft_toRightOf="@id/guideline_middle"
+        android:onClick="estTimeClicked"
+        />
+
+    <!--
     <CheckBox
         android:id="@+id/luggageCheckBox"
         android:layout_width="0dp"
@@ -63,6 +117,7 @@
         app:layout_constraintRight_toLeftOf="@id/btnSearch"
         android:layout_marginRight="10dp"
         app:layout_constraintTop_toBottomOf="@id/luggageCheckBox" />
+        -->
 
     <Button
         android:id="@+id/btnSearch"
@@ -71,9 +126,10 @@
         android:text="Search"
         android:textColor="@color/pastelGreen"
         android:background="@drawable/custom_button1"
-
-        app:layout_constraintRight_toRightOf="@id/guideline_right"
-        app:layout_constraintBottom_toBottomOf="@id/luggageEditText"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/estTimeEditText"
         android:onClick="searchButton"
         />
 
@@ -86,7 +142,7 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
-        app:layout_constraintTop_toBottomOf="@+id/luggageEditText"
+        app:layout_constraintTop_toBottomOf="@id/btnSearch"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline

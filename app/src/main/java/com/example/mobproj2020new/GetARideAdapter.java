@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
-import static java.security.AccessController.getContext;
 
 public class GetARideAdapter extends ArrayAdapter<GetARideUtility> {
 
@@ -31,10 +30,10 @@ public class GetARideAdapter extends ArrayAdapter<GetARideUtility> {
         startpoint.setText(tripList.get(position).getStartPoint());
 
         TextView triptime = listItem.findViewById(R.id.tv3);
-        triptime.setText(tripList.get(position).getTripTime());
+        triptime.setText(tripList.get(position).getTripStartTime());
 
-        TextView triplength = listItem.findViewById(R.id.tv4);
-        triplength.setText(tripList.get(position).getTripLength());
+        TextView tripDate = listItem.findViewById(R.id.tv4);
+        tripDate.setText(tripList.get(position).getTripDate());
 
         TextView user = listItem.findViewById(R.id.tv5);
         user.setText(tripList.get(position).getUser());
