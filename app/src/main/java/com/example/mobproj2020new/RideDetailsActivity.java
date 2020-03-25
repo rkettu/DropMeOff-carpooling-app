@@ -7,6 +7,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,7 +18,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 public class RideDetailsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -33,6 +43,9 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     TextView hintaTxt, exampleTxt, minRange;
     private Button confirmBtn;
     String newMatka;
+    String newAika;
+    String newLahtoOs;
+    String newLoppuOs;
     Double doubleMatka;
     int intMatka;
     @Override
@@ -46,10 +59,16 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 newMatka = null;
             }else{
                 newMatka = extras.getString("MATKA");
+                newAika = extras.getString("AIKA");
+                newLahtoOs = extras.getString("ALKUOSOITE");
+                newLoppuOs = extras.getString("LOPPUOSOITE");
         }
         }
         else {
             newMatka = (String)savedInstanceState.getSerializable("MATKA");
+            newAika = (String)savedInstanceState.getSerializable("AIKA");
+            newLahtoOs = (String)savedInstanceState.getSerializable("ALKUOSOITE");
+            newLoppuOs = (String)savedInstanceState.getSerializable("LOPPUOSOITE");
         }
 
         if(newMatka != null && !newMatka.isEmpty()){
@@ -165,11 +184,28 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (v.getId() == R.id.confirmBtn)
         {
+            /*
             RideDetailPart part = new RideDetailPart(strDate, strTime, passengers, hinta, range);
             Intent resultIntent = new Intent();
             resultIntent.putExtra("DETAILS", part);
             setResult(RideDetailsActivity.RESULT_OK, resultIntent);
-            finish();
+            finish();*/
+            DatabaseHandler db = new DatabaseHandler();
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String duration = newAika;
+            String startDate = strDate;
+            String startTime = strTime;
+            String startAddress = newLahtoOs;
+            String endAddress = newLoppuOs;
+            int freeSlots = passengers;
+            float price = hinta;
+            List<HashMap<String,String>> points = new ArrayList<>();
+            points = Constant.pointsList;
+            List<String> waypointAddresses = new ArrayList<>(); // TODO: implement this!
+            Route route = new Route(uid, duration, startDate, startTime, startAddress, endAddress,
+                                    freeSlots, price, points, waypointAddresses);
+            db.createRide(route, RideDetailsActivity.this);
         }
     }
 

@@ -60,9 +60,11 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private String latitude;
     private String longitude;
     private String strLahto;
+    private String strLoppu;
     private String matka;
     private SearchView lahtoEditori;
     private Button nextBtn;
+    private String aika;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             SearchView loppuEditori = (SearchView) findViewById(R.id.maaranpaaEdit);
 
             strLahto = lahtoEditori.getQuery().toString();
-            String strLoppu = loppuEditori.getQuery().toString();
+            strLoppu = loppuEditori.getQuery().toString();
 
             if (strLahto.trim().equals("") || strLoppu.trim().equals(""))
             {
@@ -149,6 +151,10 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         {
             Intent details = new Intent(this, RideDetailsActivity.class);
             details.putExtra("MATKA", matka);
+            details.putExtra("AIKA", aika);
+            details.putExtra("ALKUOSOITE", strLahto);
+            details.putExtra("LOPPUOSOITE", strLoppu);
+
             startActivityForResult(details, INTENT_ID);
         }
 
@@ -188,7 +194,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         new FetchURL(RouteActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
 
         mMap.addMarker(place1);
-        mMap.addMarker(place2);
+        mMap.addMarker(place2); 
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(place1.getPosition()));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place1.getPosition(),10));
@@ -230,6 +236,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         TextView distance = (TextView) findViewById(R.id.testiTxt);
         matka = Constant.DISTANCE;
+        aika = Constant.DURATION;
         distance.setText(Constant.DISTANCE + " km " + Constant.DURATION);
 
 

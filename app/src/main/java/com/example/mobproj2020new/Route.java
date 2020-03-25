@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class Route{
+public class Route {
     private String uid;
     private String duration;
     private String startDate;

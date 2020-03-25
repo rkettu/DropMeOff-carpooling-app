@@ -67,6 +67,7 @@ public class DatabaseHandler {
                 }
                 else {
                     Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();
+                    Log.d("FAILURETEXT", task.getException().toString());
                 }
             }
         });

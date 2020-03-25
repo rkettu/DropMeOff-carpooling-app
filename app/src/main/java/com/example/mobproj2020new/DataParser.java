@@ -15,7 +15,6 @@ import java.util.List;
 
 public class DataParser {
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
-
         List<List<HashMap<String, String>>> routes = new ArrayList<>();
         JSONArray jRoutes;
         JSONArray jLegs;
@@ -24,6 +23,8 @@ public class DataParser {
         JSONObject jDuration;
         long totalDistance = 0;
         int totalSeconds = 0;
+        int myIndex = 0;
+        List<HashMap<String,String>> myList = new ArrayList<>();
         try {
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
@@ -54,6 +55,11 @@ public class DataParser {
                             hm.put("lat", Double.toString((list.get(l)).latitude));
                             hm.put("lng", Double.toString((list.get(l)).longitude));
                             path.add(hm);
+                            if(myIndex % 100 == 0)
+                            {
+                                myList.add(hm);
+                            }
+                            myIndex++;
                         }
                     }
                     routes.add(path);
@@ -73,6 +79,7 @@ public class DataParser {
             e.printStackTrace();
         } catch (Exception e) {
         }
+        Constant.pointsList = myList;
         return routes;
     }
 
