@@ -30,6 +30,7 @@ import java.util.List;
 
 public class RideDetailsActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Calendar mC;
     private String strDate;
     private String strTime;
     private int passengers = 1;
@@ -38,6 +39,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
     EditText txtDate, txtTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private int pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute;
     SeekBar seekBar;
     SeekBar seekBar2;
     TextView hintaTxt, exampleTxt, minRange;
@@ -52,6 +54,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_details);
+
+        mC = Calendar.getInstance();
 
         if(savedInstanceState == null){
             Bundle extras = getIntent().getExtras();
@@ -162,6 +166,9 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             strDate = (dayOfMonth + "-" + (month + 1) + "-" + year);
                             txtDate.setText(strDate);
+                            pickedYear = year;
+                            pickedMonth = month;
+                            pickedDate = dayOfMonth;
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -177,6 +184,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                             strTime = (hourOfDay + ":" + minute);
                             txtTime.setText(strTime);
+                            pickedHour = hourOfDay;
+                            pickedMinute = minute;
                         }
                     }, mHour, mMinute, true);
 
@@ -192,10 +201,13 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             finish();*/
             DatabaseHandler db = new DatabaseHandler();
 
+            mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
+            long leaveTime = mC.getTimeInMillis();
+
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String duration = newAika;
-            String startDate = strDate;
-            String startTime = strTime;
+            //String startDate = strDate;
+            //String startTime = strTime;
             String startAddress = newLahtoOs;
             String endAddress = newLoppuOs;
             int freeSlots = passengers;
@@ -203,7 +215,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             List<HashMap<String,String>> points = new ArrayList<>();
             points = Constant.pointsList;
             List<String> waypointAddresses = new ArrayList<>(); // TODO: implement this!
-            Route route = new Route(uid, duration, startDate, startTime, startAddress, endAddress,
+            Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
                                     freeSlots, price, points, waypointAddresses);
             db.createRide(route, RideDetailsActivity.this);
         }
