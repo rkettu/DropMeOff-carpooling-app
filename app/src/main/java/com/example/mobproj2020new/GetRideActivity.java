@@ -13,12 +13,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,69 +24,56 @@ import java.util.List;
 
 public class GetRideActivity extends AppCompatActivity {
 
-    String tripListViewItemStartPoint, tripListViewItemEndPoint, tripListViewItemDateTime, tripListViewItemEstTime;
     String stringDate, stringEstTime;
-    ArrayList<GetARideUtility> arrayList = new ArrayList<>();
+    ArrayList<GetARideUtility> arrayList = new ArrayList<GetARideUtility>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText;
     ListView tripListView;
-    private GetARideAdapter getARideAdapter;
-    String TAG = "SWAG";
-    private int newYear, newMonth, newDay, newHour, newMinute;
+    GetARideAdapter getARideAdapter;
+    int newYear, newMonth, newDay, newHour, newMinute;
+    private static final String TAG = "GetARideActivityTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_ride);
-
         startPointEditText = findViewById(R.id.startPointEditText);
         endPointEditText = findViewById(R.id.endPointEditText);
         dateEditText = findViewById(R.id.dateEditText);
         estTimeEditText = findViewById(R.id.estTimeEditText);
-
+        dummyData();
         tripListView = findViewById(R.id.tripsListView);
-        getARideAdapter = new GetARideAdapter(this, R.layout.adapter_get_a_ride, arrayList);
-
-        arrayList.add(new GetARideUtility("30.3.2020", "12:30", "Oulu", "Helsinki", "JiiKorni"));
-        arrayList.add(new GetARideUtility("1.4.2020", "11:30", "Oulu", "Helsinki", "SJaMsa"));
-        arrayList.add(new GetARideUtility("5.4.2020", "15:15", "Oulu", "Rovaniemi", "SMH"));
-        arrayList.add(new GetARideUtility("3.4.2020", "16:00", "Oulu", "Kittilä", "JKampela"));
-        arrayList.add(new GetARideUtility("27.3.2020", "18:00", "Tornio", "Keminmaa", "RooPeK"));
-        arrayList.add(new GetARideUtility("15.4.2020", "19:00", "Vaasa", "Landia", "muita"));
-        arrayList.add(new GetARideUtility("3.5.2020", "8:00", "Oulu", "Pyhäjärvi", "kayttajia"));
+        getARideAdapter = new GetARideAdapter(this, arrayList);
+        tripListView.setAdapter(getARideAdapter);
 
     }
 
-    public void searchButton(View v) {
+    private void dummyData(){
+        String [] sp = new String [] {"Oulu", "Pyhäjärvi", "Helsinki", "Oulu", "Oulu", "Tornio", "Rovaniemi", "Kuopio"};
+        String [] ep = new String [] {"Helsinki", "Oulu", "Oulu", "Helsinki", "Pyhäjärvi", "Keminmaa", "Tornio", "Kajaani"};
+        String [] tp = new String[] {"1.4.2020", "3.4.2020", "5.4.2020", "29.3.2020", "30.3.2020", "30.3.2020", "1.4.2020", "2.4.2020"};
+        String [] tst = new String[] {"9:30", "10:30", "11:15", "10:30", "9:30", "8:00", "19:00", "1:00"};
+        String [] tu = new String[] {"Jiikorni", "SJMS", "JKampela", "RooPK", "SMH", "jami", "muita", "kayttajia"};
+        for(int i = 0; i < sp.length; i++){
+            GetARideUtility utility = new GetARideUtility(sp[i], ep[i], tp[i], tst[i], tu[i]);
+            arrayList.add(utility);
+        }
+    }
+
+    public void searchButton (View v){
         hideKeyboard(this);
-        tripListView.setAdapter(getARideAdapter);
-        final String startPoint = startPointEditText.getText().toString();
-        final String endPoint = endPointEditText.getText().toString();
-        final String dateTime = dateEditText.getText().toString();
-        final String estTime = estTimeEditText.getText().toString();
+        String startPoint = startPointEditText.getText().toString().toLowerCase();
+        String endPoint = endPointEditText.getText().toString().toLowerCase();
+        String[] filterString = {startPoint, endPoint};
+        getARideAdapter.filter(filterString);
 
-        for (int i = 0; i < arrayList.size(); i++) {
-            tripListViewItemStartPoint = arrayList.get(i).getStartPoint();
-            tripListViewItemEndPoint = arrayList.get(i).getEndPoint();
-            tripListViewItemDateTime = arrayList.get(i).getTripDate();
-            tripListViewItemEstTime = arrayList.get(i).getTripStartTime();
-            
+        //-----Search matching data from db-----//
 
-            //-----------Changing start point and end point to coordinates----------//
+        //-----------Changing start point and end point to coordinates----------//
             try {
                 geoLocate(startPoint, endPoint);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            tripListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    //-------Trip Info-------//
-
-                }
-            });
-        }
     }
 
     public void dateOfTimeClicked(View v){
@@ -99,7 +84,7 @@ public class GetRideActivity extends AppCompatActivity {
         DatePickerDialog dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                stringDate = (dayOfMonth + "-" + (month + 1) + "-" + year);
+                stringDate = (dayOfMonth + "." + (month + 1) + "." + year);
                 dateEditText.setText(stringDate);
             }
         }, newYear, newMonth, newDay); dpd.show();
@@ -143,4 +128,14 @@ public class GetRideActivity extends AppCompatActivity {
 
         Log.d(TAG, "geoLocate: " + startLat + " " + startLon + " " + stopLat + " " + stopLon);
     }
+
+    public void btnBackArrow(View v){
+        onBackPressed();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        return;
+    }
 }
+

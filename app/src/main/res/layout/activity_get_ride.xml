@@ -7,17 +7,25 @@
     android:background="@drawable/background_login"
     tools:context=".GetRideActivity">
 
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="btnBackArrow"/>
+
     <EditText
         android:id="@+id/startPointEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Set your start point"
         android:backgroundTint="@color/white"
-        android:layout_marginTop="50dp"
         android:textColor="@color/white"
         android:maxLines="1"
         android:inputType="text"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         />

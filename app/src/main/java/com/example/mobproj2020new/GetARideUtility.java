@@ -3,19 +3,20 @@ package com.example.mobproj2020new;
 import java.io.Serializable;
 
 public class GetARideUtility implements Serializable {
+
     private String tripDate;
     private String tripStartTime;
-    private String startPoint;
-    private String endPoint;
-    private String user;
+    private String tripStartPoint;
+    private String tripEndPoint;
+    private String tripUser;
 
 
-    public GetARideUtility(String tripDate, String tripStartTime, String startPoint, String endPoint, String user){
+    public GetARideUtility(String tripStartPoint, String tripEndPoint, String tripDate, String tripStartTime, String tripUser){
         this.tripDate = tripDate;
         this.tripStartTime = tripStartTime;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        this.user = user;
+        this.tripStartPoint = tripStartPoint;
+        this.tripEndPoint = tripEndPoint;
+        this.tripUser = tripUser;
     }
 
     public String getTripDate() {
@@ -35,26 +36,26 @@ public class GetARideUtility implements Serializable {
     }
 
     public String getStartPoint() {
-        return startPoint;
+        return tripStartPoint;
     }
 
-    public void setStartPoint(String startPoint) {
-        this.startPoint = startPoint;
+    public void setStartPoint(String tripStartPoint) {
+        this.tripStartPoint = tripStartPoint;
     }
 
     public String getEndPoint() {
-        return endPoint;
+        return tripEndPoint;
     }
 
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+    public void setEndPoint(String tripEndPoint) {
+        this.tripEndPoint = tripEndPoint;
     }
 
-    public String getUser() {
-        return user;
+    public String getTripUser() {
+        return tripUser;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setTripUser(String tripUser) {
+        this.tripUser = tripUser;
     }
 }
