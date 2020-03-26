@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void CheckProfileCreated()
     {
-        Log.d("HALOOOOOOOOOOOOOOOOOO", "Taalla ollaan");
+        Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
         db.init(mAuth.getCurrentUser());
         db.checkProfileCreated(getApplicationContext());
     }

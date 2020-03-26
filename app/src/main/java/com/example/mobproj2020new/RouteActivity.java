@@ -1,5 +1,6 @@
 package com.example.mobproj2020new;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -8,6 +9,7 @@ import androidx.loader.content.AsyncTaskLoader;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -16,6 +18,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
@@ -39,6 +42,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +50,9 @@ import java.util.Locale;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener{
 
+    ArrayList<RideDetailPart> fullDetails = new ArrayList<>();
+
+    int INTENT_ID = 8976;
     private GoogleMap mMap;
     MarkerOptions place1, place2;
     Polyline currentPolyline;
@@ -53,7 +60,11 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private String latitude;
     private String longitude;
     private String strLahto;
+    private String strLoppu;
+    private String matka;
     private SearchView lahtoEditori;
+    private Button nextBtn;
+    private String aika;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +77,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        Button nextBtn = (Button) findViewById(R.id.nextBtn);
+        nextBtn.setEnabled(false);
 
         findViewById(R.id.haeButton).setOnClickListener(this);
         findViewById(R.id.sijaintiButton).setOnClickListener(this);
+        findViewById(R.id.nextBtn).setOnClickListener(this);
 
         lahtoEditori = (SearchView) findViewById(R.id.lahtoEdit);
     }
@@ -78,10 +92,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         if (v.getId() == R.id.haeButton)
         {
 
+            hideKeyboard(RouteActivity.this);
+
             SearchView loppuEditori = (SearchView) findViewById(R.id.maaranpaaEdit);
 
             strLahto = lahtoEditori.getQuery().toString();
-            String strLoppu = loppuEditori.getQuery().toString();
+            strLoppu = loppuEditori.getQuery().toString();
 
             if (strLahto.trim().equals("") || strLoppu.trim().equals(""))
             {
@@ -131,6 +147,17 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                         });
             }
         }
+        else if (v.getId() == R.id.nextBtn)
+        {
+            Intent details = new Intent(this, RideDetailsActivity.class);
+            details.putExtra("MATKA", matka);
+            details.putExtra("AIKA", aika);
+            details.putExtra("ALKUOSOITE", strLahto);
+            details.putExtra("LOPPUOSOITE", strLoppu);
+
+            startActivityForResult(details, INTENT_ID);
+        }
+
     }
 
 
@@ -167,7 +194,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         new FetchURL(RouteActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
 
         mMap.addMarker(place1);
-        mMap.addMarker(place2);
+        mMap.addMarker(place2); 
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(place1.getPosition()));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place1.getPosition(),10));
@@ -208,7 +235,41 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
 
         TextView distance = (TextView) findViewById(R.id.testiTxt);
-        distance.setText(Constant.DISTANCE + " " + Constant.DURATION);
+        matka = Constant.DISTANCE;
+        aika = Constant.DURATION;
+        distance.setText(Constant.DISTANCE + " km " + Constant.DURATION);
+
+
+        Button nextBtn = (Button) findViewById(R.id.nextBtn);
+        nextBtn.setEnabled(true);
     }
 
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View v = activity.getCurrentFocus();
+        if (v == null) { v = new View(activity); }
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == INTENT_ID && resultCode == Activity.RESULT_OK)
+        {
+
+            RideDetailPart newPart = (RideDetailPart) data.getSerializableExtra("DETAILS");
+            fullDetails.add(newPart);
+
+            String date = newPart.date;
+            String time = newPart.time;
+            int passenger = newPart.passenger;
+            float price = newPart.price;
+            int range = newPart.range;
+
+            TextView teksti = (TextView) findViewById(R.id.testailua);
+            teksti.setText(date+ " " + time + " " + passenger + " " + price + " " + range);
+
+        }
+    }
 }

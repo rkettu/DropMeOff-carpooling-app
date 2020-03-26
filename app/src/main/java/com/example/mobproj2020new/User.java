@@ -1,12 +1,14 @@
 package com.example.mobproj2020new;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String fname;
     private String lname;
     private String phone;
     private boolean profileCreated;
 
-    public User() {}
+    public User()  {}
 
     public User(String fname, String lname, String phone)
     {
