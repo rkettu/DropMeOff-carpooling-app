@@ -80,43 +80,13 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
-        DatabaseHandler db = new DatabaseHandler();
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String duration = "4h 5min";
-        String startDate = "1.2.2021";
-        String startTime = "04:12:00";
-        String startAddress = "Oulunsalo";
-        String endAddress = "Kotka";
-        int freeSlots = 3;
-        float price = 50;
-
-        List points = new ArrayList<>();
-
-        HashMap<String, String> myHashMap1 = new HashMap<>();
-        myHashMap1.put("lat", "45.21");
-        myHashMap1.put("lng", "27.99");
-        points.add(myHashMap1);
-
-        HashMap<String, String> myHashMap2 = new HashMap<>();
-        myHashMap2.put("lat", "46.66");
-        myHashMap2.put("lng", "29.03");
-        points.add(myHashMap2);
-
-        List waypointAddresses = new ArrayList<>();
-        waypointAddresses.add("Jyväskylä");
-        waypointAddresses.add("Turku");
-
-        db.createRide(new Route(uid, duration, startDate, startTime,
-                        startAddress, endAddress, freeSlots, price,
-                        points, waypointAddresses),
-                ChoosePickUpOrTransportationActivity.this);
     }
 
     //---------------Button OfferTrips---------------//
     public void SelectOfferedTrips(View v){
         DatabaseHandler db = new DatabaseHandler();
-        db.getMatchingRoutes(5f, 45.12f, 21.25f, 50.12f, 19.17f);
+        db.getMatchingRoutes(30f, 64.99960786f, 25.50759315f, 62.27942323f, 25.7258606f);
     }
 
     //-------------Button Get A Ride----------------//

@@ -141,28 +141,36 @@ public class DatabaseHandler {
         // Add listeners for fail/complete/success?
     }
 
+    // TODO: do this in another thread ???
     public void getMatchingRoutes(final float pickupDistance, final float startLat, final float startLng, final float endLat, final float endLng)
     {
         // Checking all rides with free passenger slots
-        Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1);
+        Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful())
                 {
                     for (QueryDocumentSnapshot doc : task.getResult()) {
-                        List<HashMap<String,String>> points = (List) doc.get("points");
-                        // Getting start and end latitude/longitude
-                        float routeStartLat = Float.parseFloat(points.get(0).get("lat"));
-                        float routeStartLng = Float.parseFloat(points.get(0).get("lng"));
-                        float routeEndLat = Float.parseFloat(points.get(points.size()-1).get("lat"));
-                        float routeEndLng = Float.parseFloat(points.get(points.size()-1).get("lng"));
-                        // Checking if distance between start points and end points is less than pickup distance
-                        if(distanceBetweenCoordinates(startLat, startLng, routeStartLat, routeStartLng) <= pickupDistance
-                        && distanceBetweenCoordinates(endLat, endLng, routeEndLat, routeEndLng) <= pickupDistance)
-                        {
+                        try {
+                            List<HashMap<String, String>> points = (List) doc.get("points");
+                            if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
+                                Route route = doc.toObject(Route.class);
+                                Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
+                            }
+                            //float routeStartLat = Float.parseFloat(points.get(0).get("lat"));
+                            //float routeStartLng = Float.parseFloat(points.get(0).get("lng"));
+                            //float routeEndLat = Float.parseFloat(points.get(points.size()-1).get("lat"));
+                            //float routeEndLng = Float.parseFloat(points.get(points.size()-1).get("lng"));
+                            // Checking if distance between start points and end points is less than pickup distance
+                            //if(distanceBetweenCoordinates(startLat, startLng, routeStartLat, routeStartLng) <= pickupDistance
+                            //&& distanceBetweenCoordinates(endLat, endLng, routeEndLat, routeEndLng) <= pickupDistance)
+                            //{
                             // Start and end are both within radius!
                             // Update listview... or something
+                            //}
+                        } catch(Exception e) {
+                            Log.d("EXCEPTIONALERT", e.toString());
                         }
                     }
                 }
@@ -190,5 +198,45 @@ public class DatabaseHandler {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         return c * 6371;
+    }
+
+    private boolean isRouteInRange(float pickupDist, double lat1, double lng1, double lat2, double lng2, List<HashMap<String,String>> points)
+    {
+        Log.d("HEREWEARE", "again");
+        double minDist1 = 10000000;
+        double minDist2 = 10000000;
+        int index1 = -1;
+        int index2 = -1;
+        for(int i = 0; i < points.size(); i++)
+        {
+            // Comparing user start coordinates one at a time with route coordinates
+            double routePointLat = Double.parseDouble(points.get(i).get("lat"));
+            double routePointLng = Double.parseDouble(points.get(i).get("lng"));
+            double dist1 = distanceBetweenCoordinates(lat1,lng1,routePointLat,routePointLng);
+            double dist2 = distanceBetweenCoordinates(lat2,lng2,routePointLat,routePointLng);
+            if(dist1<minDist1)
+            {
+                // Minimum distance between start coordinate and some route coordinate
+                minDist1 = dist1;
+                index1 = i;
+            }
+            if(dist2<minDist2)
+            {
+                // Between end coord and some route coordinate
+                minDist2 = dist2;
+                index2 = i;
+            }
+        }
+        Log.d("HEIHEIHEI", (minDist1 + " " + minDist2 + " " + pickupDist + " " + index1 + " " +index2));
+        // If start coordinate is matched before end coordinate route is going the right way...
+        if(index1 < index2)
+        {
+            // If start and end coordinates are within pickup distance from the route points
+            if(minDist1 <= pickupDist && minDist2 <= pickupDist)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
