@@ -66,12 +66,12 @@ public class GetARideAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.startPoint.setText(list.get(position).getStartPoint());
+/*        holder.startPoint.setText(list.get(position).getStartPoint());
         holder.endPoint.setText(list.get(position).getEndPoint());
         holder.tripEstTime.setText(list.get(position).getTripStartTime());
         holder.tripDate.setText(list.get(position).getTripDate());
         holder.tripUser.setText(list.get(position).getTripUser());
-
+*/
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

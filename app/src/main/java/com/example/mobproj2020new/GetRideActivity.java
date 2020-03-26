@@ -7,7 +7,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +19,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
+
+import org.w3c.dom.CDATASection;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,21 +66,24 @@ public class GetRideActivity extends AppCompatActivity {
 
     public void searchButton (View v){
         hideKeyboard(this);
-        String startPoint = startPointEditText.getText().toString().toLowerCase();
-        String endPoint = endPointEditText.getText().toString().toLowerCase();
+        String startPoint = startPointEditText.getText().toString();
+        String endPoint = endPointEditText.getText().toString();
+
+        try {
+            geoLocate(startPoint, endPoint);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //new myAsyncClass().execute(startPoint, endPoint);
+/*
         String[] filterString = {startPoint, endPoint};
         getARideAdapter.filter(filterString);
-
+*/
         //-----Search matching data from db-----//
 
         //-----------Changing start point and end point to coordinates----------//
-            try {
-                geoLocate(startPoint, endPoint);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    }
 
+    }
     public void dateOfTimeClicked(View v){
         final Calendar calendar = Calendar.getInstance();
         newYear = calendar.get(Calendar.YEAR);
@@ -120,13 +128,16 @@ public class GetRideActivity extends AppCompatActivity {
         List<Address> listStop = gc.getFromLocationName(endPoint, 1);
         Address add2 = listStop.get(0);
 
-        double startLat = add.getLatitude();
-        double startLon = add.getLongitude();
+        float startLat = (float)add.getLatitude();
+        float startLon = (float) add.getLongitude();
+        float stopLat = (float) add2.getLatitude();
+        float stopLon = (float) add2.getLongitude();
+        float distanceRange = 5;
 
-        double stopLat = add2.getLatitude();
-        double stopLon = add2.getLongitude();
-
-        Log.d(TAG, "geoLocate: " + startLat + " " + startLon + " " + stopLat + " " + stopLon);
+        Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
+        DatabaseHandler dbh = new DatabaseHandler();
+        DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
+        gmr.execute(distanceRange, startLat, startLon, stopLat, stopLon);
     }
 
     public void btnBackArrow(View v){

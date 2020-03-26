@@ -87,7 +87,7 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
     //---------------Button OfferTrips---------------//
     public void SelectOfferedTrips(View v){
         DatabaseHandler db = new DatabaseHandler();
-        db.getMatchingRoutes(30f, 64.99960786f, 25.50759315f, 62.27942323f, 25.7258606f);
+        //db.getMatchingRoutes(30f, 64.99960786f, 25.50759315f, 62.27942323f, 25.7258606f);
     }
 
     //-------------Button Get A Ride----------------//
