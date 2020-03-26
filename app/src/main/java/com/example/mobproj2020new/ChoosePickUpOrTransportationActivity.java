@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,8 +29,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.nio.channels.AlreadyBoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
@@ -77,12 +80,14 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
-
+        DatabaseHandler db = new DatabaseHandler();
+        db.GoToProfile(ChoosePickUpOrTransportationActivity.this, FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     //---------------Button OfferTrips---------------//
     public void SelectOfferedTrips(View v){
-
+        DatabaseHandler db = new DatabaseHandler();
+        db.getMatchingRoutes(30f, 64.99960786f, 25.50759315f, 62.27942323f, 25.7258606f);
     }
 
     //-------------Button Get A Ride----------------//
