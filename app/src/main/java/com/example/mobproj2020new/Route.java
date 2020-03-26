@@ -7,8 +7,9 @@ import java.util.List;
 public class Route {
     private String uid;
     private String duration;
-    private String startDate;
-    private String startTime;
+    //private String startDate;
+    //private String startTime;
+    private long leaveTime;
     private String startAddress;
     private String endAddress;
     private int freeSlots;
@@ -18,14 +19,15 @@ public class Route {
 
     public Route() {}
 
-    public Route(String uid, String duration, String startDate, String startTime,
+    public Route(String uid, String duration, long leaveTime,
                  String startAddress, String endAddress, int freeSlots, float price,
                  List<HashMap<String,String>> points, List<String> waypointAddresses)
     {
         this.uid = uid;
         this.duration = duration;
-        this.startDate = startDate;
-        this.startTime = startTime;
+        //this.startDate = startDate;
+        //this.startTime = startTime;
+        this.leaveTime = leaveTime;
         this.startAddress = startAddress;
         this.endAddress = endAddress;
         this.freeSlots = freeSlots;
@@ -40,12 +42,10 @@ public class Route {
     public String getDuration() {
         return duration;
     }
-    public String getStartDate(){
-        return startDate;
-    }
-    public String getStartTime() {
-        return startTime;
-    }
+    //public String getStartDate(){return startDate;}
+    //public String getStartTime() {return startTime;}
+    public long getLeaveTime() { return leaveTime; }
+
     public String getStartAddress() {
         return startAddress;
     }

@@ -80,7 +80,8 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
-
+        DatabaseHandler db = new DatabaseHandler();
+        db.GoToProfile(ChoosePickUpOrTransportationActivity.this, FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     //---------------Button OfferTrips---------------//

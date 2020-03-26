@@ -239,4 +239,42 @@ public class DatabaseHandler {
         }
         return false;
     }
+
+    public void GoToProfile(final Context context, String uid)
+    {
+        FirebaseFirestore myFirestoreRef = FirebaseFirestore.getInstance();
+        DocumentReference myDocRef = myFirestoreRef.collection("users").document(uid);;
+
+        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                        if(doc.exists()) {
+                            User user = doc.toObject(User.class);
+                            Intent intent = new Intent(context, ProfileActivity.class);
+                            intent.putExtra("JOKUKEY", user);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                    }
+                }
+            }
+        });
+    }
+    /*
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
+        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()) {
+                        // Creating User object based on document and getting phone string
+                        String phone = doc.toObject(User.class).getPhone();   // Currently only printing this value
+                        Log.d("HALOOOO", ("phone number from db: " + phone));
+                    }
+                }
+            }
+        });
+    }*/
 }
