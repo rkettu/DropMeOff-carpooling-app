@@ -21,7 +21,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,17 +56,18 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     int INTENT_ID = 8976;
     private GoogleMap mMap;
-    MarkerOptions place1, place2;
+    MarkerOptions place1, place2, wayPoint1, wayPoint2;
     Polyline currentPolyline;
     private FusedLocationProviderClient fusedLocationClient;
     private String latitude;
     private String longitude;
-    private String strLahto;
-    private String strLoppu;
+    private String strLahto, strWaypoint1, strWaypoint2, strLoppu;
     private String matka;
-    private SearchView lahtoEditori;
+    private SearchView lahtoEditori, etappiEditori, etappiEditori2, loppuEditori;
     private Button nextBtn;
     private String aika;
+    private ImageButton etappiRemoveBtn, etappiRemoveBtn2;
+    private int lukitus = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,21 +86,34 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         findViewById(R.id.haeButton).setOnClickListener(this);
         findViewById(R.id.sijaintiButton).setOnClickListener(this);
         findViewById(R.id.nextBtn).setOnClickListener(this);
+        findViewById(R.id.etappiBtn).setOnClickListener(this);
+
+        etappiRemoveBtn = (ImageButton)findViewById(R.id.etappiRemoveBtn);
+        etappiRemoveBtn2 = (ImageButton)findViewById(R.id.etappiRemoveBtn2);
+
+        etappiRemoveBtn.setOnClickListener(this);
+        etappiRemoveBtn2.setOnClickListener(this);
 
         lahtoEditori = (SearchView) findViewById(R.id.lahtoEdit);
+        etappiEditori = (SearchView) findViewById(R.id.etappiEdit);
+        etappiEditori2 = (SearchView) findViewById(R.id.etappiEdit2);
+
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.haeButton)
         {
-
+            wayPoint1 = null;
+            wayPoint2 = null;
             hideKeyboard(RouteActivity.this);
 
-            SearchView loppuEditori = (SearchView) findViewById(R.id.maaranpaaEdit);
+            loppuEditori = (SearchView) findViewById(R.id.maaranpaaEdit);
 
             strLahto = lahtoEditori.getQuery().toString();
             strLoppu = loppuEditori.getQuery().toString();
+            strWaypoint1 = etappiEditori.getQuery().toString();
+            strWaypoint2 = etappiEditori2.getQuery().toString();
 
             if (strLahto.trim().equals("") || strLoppu.trim().equals(""))
             {
@@ -106,7 +122,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             else
             {
                 try {
-                    geoLocate(strLahto, strLoppu);
+                    geoLocate(strLahto, strLoppu, strWaypoint1, strWaypoint2);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,11 +173,38 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
             startActivityForResult(details, INTENT_ID);
         }
+        else if (v.getId() == R.id.etappiBtn & lukitus == 0)
+        {
+            etappiEditori.setVisibility(View.VISIBLE);
+            etappiRemoveBtn.setVisibility(View.VISIBLE);
+            lukitus = 1;
+
+        }
+        else if (v.getId() == R.id.etappiBtn & lukitus == 1)
+        {
+            etappiEditori2.setVisibility(View.VISIBLE);
+            etappiRemoveBtn2.setVisibility(View.VISIBLE);
+        }
+        else if (v.getId() == R.id.etappiRemoveBtn)
+        {
+            etappiEditori.setVisibility(View.GONE);
+            etappiRemoveBtn.setVisibility(View.GONE);
+            strWaypoint1 = "";
+            etappiEditori.setQuery(strWaypoint1, true);
+            lukitus = 0;
+        }
+        else if (v.getId() == R.id.etappiRemoveBtn2)
+        {
+            etappiEditori2.setVisibility(View.GONE);
+            etappiRemoveBtn2.setVisibility(View.GONE);
+            strWaypoint2 = "";
+            etappiEditori2.setQuery(strWaypoint2, true);
+        }
 
     }
 
 
-    public void geoLocate(String start, String stop) throws IOException {
+    public void geoLocate(String start, String stop, String waypoint1, String waypoint2) throws IOException {
         mMap.clear();
 
         Geocoder gc = new Geocoder(this);
@@ -178,6 +221,24 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         double stopLat = add2.getLatitude();
         double stopLon = add2.getLongitude();
 
+        if(strWaypoint1 != null && !strWaypoint1.isEmpty())
+        {
+            List<Address> listWay1 = gc.getFromLocationName(waypoint1,1);
+            Address add3 = listWay1.get(0);
+            double way1Lat = add3.getLatitude();
+            double way1Lon = add3.getLongitude();
+            wayPoint1 = new MarkerOptions().position(new LatLng(way1Lat, way1Lon)).title("WayPoint1");
+            mMap.addMarker(wayPoint1);
+        }
+        if(strWaypoint2 != null && !strWaypoint2.isEmpty())
+        {
+            List<Address> listWay2 = gc.getFromLocationName(waypoint2,1);
+            Address add4 = listWay2.get(0);
+            double way2Lat = add4.getLatitude();
+            double way2Lon = add4.getLongitude();
+            wayPoint2 = new MarkerOptions().position(new LatLng(way2Lat, way2Lon)).title("WayPoint2");
+            mMap.addMarker(wayPoint2);
+        }
         if(latitude != null && !latitude.isEmpty()){
             Double gpsLat = Double.valueOf(latitude);
             Double gpsLon = Double.valueOf(longitude);
@@ -185,7 +246,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             latitude = null;
             longitude = null;
         }
-        else{
+        else {
             place1 = new MarkerOptions().position(new LatLng(startLat, startLon)).title("Location 1");
         }
 
@@ -198,9 +259,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(place1.getPosition()));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(place1.getPosition(),10));
-
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -212,6 +271,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode){
+
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         // Destination of route
@@ -220,7 +280,21 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         String mode = "mode=" + directionMode;
         // Building the parameters to the web service
         String parameters = str_origin + "&" + str_dest + "&" + mode;
-        //String parameters = "origin=address=kaarnatie%205" + "&" + str_dest + "&" + mode;
+
+        if(wayPoint1 != null)
+        {
+            parameters = str_origin + "&" + str_dest + "&waypoints=via:" + wayPoint1.getPosition().latitude + "," + wayPoint1.getPosition().longitude + "&" + mode;
+        }
+        if(wayPoint1 != null & wayPoint2 != null)
+        {
+            parameters = str_origin + "&" + str_dest + "&waypoints=via:" + wayPoint1.getPosition().latitude + "," +
+                    wayPoint1.getPosition().longitude + "|via:" + wayPoint2.getPosition().latitude + "," + wayPoint2.getPosition().longitude + "&" + mode;
+        }
+        if(wayPoint2 != null & wayPoint1 == null)
+        {
+            parameters = str_origin + "&" + str_dest + "&waypoints=via:" + wayPoint2.getPosition().latitude + "," + wayPoint2.getPosition().longitude + "&" + mode;
+        }
+        //String parameters = str_origin + "&" + str_dest + 64.080600,%2024.533221" + "&" + mode;
         // Output format
         String output = "json";
         // Building the url to the web service
@@ -239,7 +313,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         aika = Constant.DURATION;
         distance.setText(Constant.DISTANCE + " km " + Constant.DURATION);
 
-
         Button nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setEnabled(true);
     }
@@ -257,7 +330,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         if(requestCode == INTENT_ID && resultCode == Activity.RESULT_OK)
         {
-
             RideDetailPart newPart = (RideDetailPart) data.getSerializableExtra("DETAILS");
             fullDetails.add(newPart);
 
