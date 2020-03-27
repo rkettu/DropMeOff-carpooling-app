@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -143,6 +145,7 @@ public class DatabaseHandler {
         // Add listeners for fail/complete/success?
     }
 
+    //---Async task to take care of matching routes from GetRideActivity---//
     public class getMatchingRoutes extends AsyncTask<Float, Integer, String> {
 
         @Override
@@ -162,7 +165,10 @@ public class DatabaseHandler {
                 getMatchingRoutes(dist, startlat, startlon, stoplat, stoplon);
                 Log.d("TAG", "doInBackground: doInBackgoruasoaadsa");
             }
-            catch (Exception e){e.printStackTrace();}
+            catch (Exception e){
+                e.printStackTrace();
+                Log.d("TAG", "doInBackground: catch");
+            }
             return null;
         }
 
@@ -173,7 +179,8 @@ public class DatabaseHandler {
 
         public void getMatchingRoutes(final float pickupDistance, final float startLat, final float startLng, final float endLat, final float endLng)
         {
-            Log.d("hahaahoa", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
+            GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
+            Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
             // Checking all rides with free passenger slots
             Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -185,9 +192,12 @@ public class DatabaseHandler {
                             try {
                                 List<HashMap<String, String>> points = (List) doc.get("points");
                                 if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                    Route route = doc.toObject(Route.class);
                                     Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
-
+                                    GetARideUtility utility = doc.toObject(GetARideUtility.class);
+                                    GetARideUtility.arrayList.add(utility);
+                                }
+                                else{
+                                    Log.d("HALOOOOOOOO", "onComplete: " + points);
                                 }
                             } catch(Exception e) {
                                 Log.d("EXCEPTIONALERT", e.toString());
@@ -204,9 +214,6 @@ public class DatabaseHandler {
 
 
     }
-
-
-
 
     // Move to some Math class?
     // Returns distance in km

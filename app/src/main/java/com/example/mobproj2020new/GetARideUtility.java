@@ -1,61 +1,110 @@
 package com.example.mobproj2020new;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 public class GetARideUtility implements Serializable {
 
-    private String tripDate;
-    private String tripStartTime;
-    private String tripStartPoint;
-    private String tripEndPoint;
-    private String tripUser;
+    private String startAddress;
+    private String endAddress;
+    private float price;
+    private String duration;
+    Long leaveTime;
+    private int freeSlots;
+    private String uid;
+    private List<String> waypointAddresses;
+    private List <HashMap<String, String>> points;
 
+    public GetARideUtility() {
 
-    public GetARideUtility(String tripStartPoint, String tripEndPoint, String tripDate, String tripStartTime, String tripUser){
-        this.tripDate = tripDate;
-        this.tripStartTime = tripStartTime;
-        this.tripStartPoint = tripStartPoint;
-        this.tripEndPoint = tripEndPoint;
-        this.tripUser = tripUser;
     }
 
-    public String getTripDate() {
-        return tripDate;
+    public GetARideUtility(String tripaUser, String startAddress, String endAddress, String tripDuration, Long leaveTime, int freeSlots, float price) {
+        this.startAddress = startAddress;
+        this.endAddress = endAddress;
+        this.freeSlots = freeSlots;
+        this.uid = tripaUser;
+        this.duration = tripDuration;
+        this.price = price;
+        this.leaveTime = leaveTime;
     }
 
-    public void setTripDate(String tripDate) {
-        this.tripDate = tripDate;
+    public static ArrayList<GetARideUtility> arrayList = new ArrayList<>();
+
+    public String getStartAddress() {
+        return startAddress;
     }
 
-    public String getTripStartTime() {
-        return tripStartTime;
+    public void setStartAddress(String startAddress) {
+        this.startAddress = startAddress;
     }
 
-    public void setTripStartTime(String tripStartTime) {
-        this.tripStartTime = tripStartTime;
+    public String getEndAddress() {
+        return endAddress;
     }
 
-    public String getStartPoint() {
-        return tripStartPoint;
+    public void setEndAddress(String endAddress) {
+        this.endAddress = endAddress;
     }
 
-    public void setStartPoint(String tripStartPoint) {
-        this.tripStartPoint = tripStartPoint;
+    public float getPrice() {
+        return price;
     }
 
-    public String getEndPoint() {
-        return tripEndPoint;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
-    public void setEndPoint(String tripEndPoint) {
-        this.tripEndPoint = tripEndPoint;
+    public String getDuration() {
+        return duration;
     }
 
-    public String getTripUser() {
-        return tripUser;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-    public void setTripUser(String tripUser) {
-        this.tripUser = tripUser;
+    public int getFreeSlots() {
+        return freeSlots;
+    }
+
+    public void setFreeSlots(int freeSlots) {
+        this.freeSlots = freeSlots;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public List<String> getWaypointAddresses() {
+        return waypointAddresses;
+    }
+
+    public void setWaypointAddresses(List<String> waypointAddresses) {
+        this.waypointAddresses = waypointAddresses;
+    }
+
+    public List<HashMap<String, String>> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<HashMap<String, String>> points) {
+        this.points = points;
+    }
+
+    public Long getLeaveTime() {
+        return leaveTime;
+    }
+
+    public void setLeaveTime(Long leaveTime) {
+        this.leaveTime = leaveTime;
     }
 }
+
