@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,15 +43,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = new DatabaseHandler();
-        db.init(mAuth.getCurrentUser());
 
         applyButton = (Button) findViewById(R.id.saveProfileDetailButton);
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: Maybe add checks that need to be met for profile creation success
+                FirebaseHelper.loggedIn = true;
                 db.setProfileCreated(true);
-                startActivity(new Intent(EditProfileActivity.this, ChoosePickUpOrTransportationActivity.class));
+                startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
             }
         });
 

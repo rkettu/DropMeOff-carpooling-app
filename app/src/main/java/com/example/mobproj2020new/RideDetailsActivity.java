@@ -193,30 +193,28 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         else if (v.getId() == R.id.confirmBtn)
         {
-            /*
-            RideDetailPart part = new RideDetailPart(strDate, strTime, passengers, hinta, range);
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("DETAILS", part);
-            setResult(RideDetailsActivity.RESULT_OK, resultIntent);
-            finish();*/
-            DatabaseHandler db = new DatabaseHandler();
+            if(FirebaseHelper.loggedIn) {
+                DatabaseHandler db = new DatabaseHandler();
 
-            mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
-            long leaveTime = mC.getTimeInMillis();
+                mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
+                long leaveTime = mC.getTimeInMillis();
 
-            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            String duration = newAika;
-            //String startDate = strDate;
-            //String startTime = strTime;
-            String startAddress = newLahtoOs;
-            String endAddress = newLoppuOs;
-            int freeSlots = passengers;
-            float price = hinta;
-            List<HashMap<String,String>> points = Constant.pointsList;
-            List<String> waypointAddresses = Constant.waypointAddressesList;
-            Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                                    freeSlots, price, points, waypointAddresses);
-            db.createRide(route, RideDetailsActivity.this);
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String duration = newAika;
+                //String startDate = strDate;
+                //String startTime = strTime;
+                String startAddress = newLahtoOs;
+                String endAddress = newLoppuOs;
+                int freeSlots = passengers;
+                float price = hinta;
+                List<HashMap<String,String>> points = Constant.pointsList;
+                List<String> waypointAddresses = Constant.waypointAddressesList;
+                Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
+                        freeSlots, price, points, waypointAddresses);
+                db.createRide(route, RideDetailsActivity.this);
+            } else {
+                FirebaseHelper.GoToLogin(getApplicationContext());
+            }
         }
     }
 
