@@ -112,7 +112,6 @@ public class CreateUserActivity extends AppCompatActivity {
                                 .setDisplayName(fname).build();
                         user.updateProfile(profileUpdates);
                         // Init dbHandler object for this class only
-                        dbHandler.init(user);
                         dbHandler.setUserCreationInfo(fname, lname, phone);
                     } else {
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());

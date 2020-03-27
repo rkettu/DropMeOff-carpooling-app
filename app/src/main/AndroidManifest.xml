@@ -30,19 +30,19 @@
         <activity android:name=".RideDetailsActivity"></activity>
 
         <activity android:name=".RouteActivity" />
-        <activity android:name=".ChoosePickUpOrTransportationActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".CreateUserActivity" />
-        <activity android:name=".LoggedInActivity" />
-        <activity android:name=".DbTestActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".CreateUserActivity" />
+        <activity android:name=".LogInActivity">
+
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
