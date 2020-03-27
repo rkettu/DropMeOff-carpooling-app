@@ -212,9 +212,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             String endAddress = newLoppuOs;
             int freeSlots = passengers;
             float price = hinta;
-            List<HashMap<String,String>> points = new ArrayList<>();
-            points = Constant.pointsList;
-            List<String> waypointAddresses = new ArrayList<>(); // TODO: implement this!
+            List<HashMap<String,String>> points = Constant.pointsList;
+            List<String> waypointAddresses = Constant.waypointAddressesList;
             Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
                                     freeSlots, price, points, waypointAddresses);
             db.createRide(route, RideDetailsActivity.this);

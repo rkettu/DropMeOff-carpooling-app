@@ -114,6 +114,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             strLoppu = loppuEditori.getQuery().toString();
             strWaypoint1 = etappiEditori.getQuery().toString();
             strWaypoint2 = etappiEditori2.getQuery().toString();
+            Constant.waypointAddressesList.set(0, strWaypoint1);
+            Constant.waypointAddressesList.set(1, strWaypoint2);
 
             if (strLahto.trim().equals("") || strLoppu.trim().equals(""))
             {
