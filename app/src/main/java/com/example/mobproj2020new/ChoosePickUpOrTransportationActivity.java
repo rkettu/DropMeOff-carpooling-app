@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
@@ -56,6 +58,8 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
                         break;
                     case 1:
                         //Log.d("SWAG", "onClick: My Profile");
+                        DatabaseHandler db = new DatabaseHandler();
+                        db.GoToProfile(ChoosePickUpOrTransportationActivity.this, FirebaseAuth.getInstance().getCurrentUser().getUid());
                         break;
                     case 2:
                         //Log.d("SWAG", "onClick: About");
