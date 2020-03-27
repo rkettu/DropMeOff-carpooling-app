@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +38,12 @@ public class DatabaseHandler {
     private String LNAMEKEY = "lname";
     private String PHONEKEY = "phone";
     private String mPhone = "empty";
+    private String struri = "DEF_URI";
     public static final int REQKEY = 1212;
     private StorageReference storageRef;
 
+    private Context profileContext;
+    private String profileUid;
 
 
     public void setUserCreationInfo(String fname, String lname, String phone)
@@ -240,26 +246,57 @@ public class DatabaseHandler {
         return false;
     }
 
-    public void GoToProfile(final Context context, String uid)
+    public void GoToProfile(final Context context, final String uid)
     {
+        profileContext = context;
+        profileUid = uid;
+
         FirebaseFirestore myFirestoreRef = FirebaseFirestore.getInstance();
-        DocumentReference myDocRef = myFirestoreRef.collection("users").document(uid);;
+        DocumentReference myDocRef = myFirestoreRef.collection("users").document(profileUid);
+        final User mUser = new User();
 
         myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
-                        if(doc.exists()) {
-                            User user = doc.toObject(User.class);
-                            Intent intent = new Intent(context, ProfileActivity.class);
-                            intent.putExtra("JOKUKEY", user);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+                    if(doc.exists()) {
+                        final User user = doc.toObject(User.class);
+
+                        getProfilepick(user);
+                       /* Intent intent = new Intent(context, ProfileActivity.class);
+                        intent.putExtra("JOKUKEY", user);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);*/
                     }
                 }
             }
         });
+    }
+
+    private void getProfilepick(final User user){
+        //GET users (profile) image From FirebaseStorage
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + profileUid);
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                struri = String.valueOf(task.getResult());
+
+                //set Users image Uri and Uid
+                user.setImgUid(struri);
+                user.setUid(profileUid);
+                gotoProfileActivity(user);
+            }
+        });
+        //return user;
+    }
+
+    private void gotoProfileActivity(final User user){
+        Intent intent = new Intent(profileContext, ProfileActivity.class);
+        intent.putExtra("JOKUKEY", user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        profileContext.startActivity(intent);
     }
     /*
         mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
