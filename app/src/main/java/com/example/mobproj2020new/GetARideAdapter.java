@@ -1,28 +1,55 @@
 package com.example.mobproj2020new;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GetARideAdapter extends BaseAdapter {
 
+    private List<User> userList;
     private ArrayList<GetARideUtility> tripList;
     private List<GetARideUtility> list;
     LayoutInflater inflater;
     Context mContext;
+    private String newName = "";
+    private String imageUri = "";
+    GetARideUtility utility;
 
-    public GetARideAdapter(){}
+    public GetARideAdapter(){
 
-    public GetARideAdapter(ArrayList<GetARideUtility> arrayList){
+    }
+
+    public GetARideAdapter(Context context, ArrayList<GetARideUtility> arrayList){
         //inflater = LayoutInflater.from(mContext);
         this.tripList = new ArrayList<>();
+        mContext = context;
     }
 
     @Override
@@ -68,6 +95,10 @@ public class GetARideAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
+
+        DatabaseHandler dbh = new DatabaseHandler();
+        dbh.getRideProfile(mContext, GetARideUtility.arrayList.get(position).getUid());
+
         final ViewHolder holder;
         if(view == null){
             holder = new ViewHolder();
@@ -85,25 +116,30 @@ public class GetARideAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
+        holder.tripUser.setText(newName);
         holder.startPoint.setText(GetARideUtility.arrayList.get(position).getStartAddress());
         holder.endPoint.setText(GetARideUtility.arrayList.get(position).getEndAddress());
         holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
-        holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(0).getFreeSlots()));
-        holder.tripUser.setText(GetARideUtility.arrayList.get(position).getUid());
+        holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
         holder.price.setText(String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
         holder.date.setText(String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
 
-
         notifyDataSetChanged();
-/*        view.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TAG", "onClick: " + tripList.get(position).getaTripUser());
-                Intent profileIntent = new Intent(mContext, ProfileActivity.class);
-                profileIntent.putExtra("user", tripList.get(position).getaTripUser());
+                Log.d("TAG", "onClick: " + GetARideUtility.arrayList.get(position).getUid());
+                Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
+                profileIntent.putExtra("user", newName);
+                profileIntent.putExtra("start", GetARideUtility.arrayList.get(position).getStartAddress());
+                profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
+                profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());
+                profileIntent.putExtra("seats", String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
+                profileIntent.putExtra("price", String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
+                profileIntent.putExtra("date", String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
                 mContext.startActivity(profileIntent);
             }
-        });*/
+        });
         return view;
     }
 

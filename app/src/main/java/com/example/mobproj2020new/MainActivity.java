@@ -123,7 +123,8 @@ public class MainActivity extends AppCompatActivity{
 
     //-------------Button Get A Ride----------------//
     public void SelectGetARide(View v){
-
+        Intent selectRideIntent = new Intent(MainActivity.this, GetRideActivity.class);
+        startActivity(selectRideIntent);
     }
 
     //------------Button Offer A Ride--------------//

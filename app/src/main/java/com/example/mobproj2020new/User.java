@@ -3,6 +3,7 @@ package com.example.mobproj2020new;
 import android.net.Uri;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
     private String uid;
@@ -22,7 +23,10 @@ public class User implements Serializable {
         this.profileCreated = false;
     }
 
+    public static ArrayList<User> arrayList = new ArrayList<>();
+
     public String getUid() { return uid; }
+
     public String getImgUri() { return imgUri; }
 
     public String getFname() {

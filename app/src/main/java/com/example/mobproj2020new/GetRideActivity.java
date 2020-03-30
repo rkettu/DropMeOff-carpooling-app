@@ -42,7 +42,7 @@ public class GetRideActivity extends AppCompatActivity {
         estTimeEditText = findViewById(R.id.estTimeEditText);
         dummyData();
         tripListView = findViewById(R.id.tripsListView);
-        getARideAdapter = new GetARideAdapter(GetARideUtility.arrayList);
+        getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
         tripListView.setAdapter(getARideAdapter);
     }
 

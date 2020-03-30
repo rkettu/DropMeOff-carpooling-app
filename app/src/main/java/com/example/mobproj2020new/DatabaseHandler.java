@@ -11,11 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +22,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.google.firebase.firestore.CollectionReference;
 
 import java.util.HashMap;
@@ -330,20 +326,55 @@ public class DatabaseHandler {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         profileContext.startActivity(intent);
     }
-    /*
-        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
-        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+
+
+
+    private Context c;
+    private String profUid;
+    private String stringUri;
+
+    public void getRideProfile(Context context, String uid){
+        profUid = uid;
+        c = context;
+        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
+        DocumentReference myDocRef = myFireStoreRef.collection("users").document(profUid);
+        final User mUser = new User();
+
+        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     if(doc.exists()) {
-                        // Creating User object based on document and getting phone string
-                        String phone = doc.toObject(User.class).getPhone();   // Currently only printing this value
-                        Log.d("HALOOOO", ("phone number from db: " + phone));
+                        final User user = doc.toObject(User.class);
+                        getProfImage(user);
                     }
                 }
             }
         });
-    }*/
+    }
+
+    private void getProfImage(final User user){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + profUid);
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                stringUri = String.valueOf(task.getResult());
+
+                //set Users image Uri and Uid
+                user.setImgUid(stringUri);
+                user.setUid(profUid);
+                gotoGetARideProfileActivity(user);
+            }
+        });
+    }
+
+    public GetARideUtility gotoGetARideProfileActivity(final User user){
+        String hoho = user.getFname();
+        String haha = user.getImgUri();
+        Log.d("TAG", "gotoGetARideProfileActivity: " + haha + hoho);
+        return new GetARideUtility(hoho, haha);
+    }
 }
