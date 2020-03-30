@@ -78,15 +78,6 @@ public class GetRideActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //new myAsyncClass().execute(startPoint, endPoint);
-/*
-        String[] filterString = {startPoint, endPoint};
-        getARideAdapter.filter(filterString);
-*/
-        //-----Search matching data from db-----//
-
-        //-----------Changing start point and end point to coordinates----------//
-
     }
     public void dateOfTimeClicked(View v){
         final Calendar calendar = Calendar.getInstance();
