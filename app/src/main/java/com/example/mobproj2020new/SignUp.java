@@ -185,7 +185,7 @@ public class SignUp extends AppCompatActivity {
                             user.updateProfile(profileUpdates);
                             // Init dbHandler object for this class only
                             dbHandler = new DatabaseHandler();
-                            dbHandler.init(FirebaseAuth.getInstance().getCurrentUser());
+
                             dbHandler.setUserCreationInfo(fname, lname, phone);
                             dbHandler.putImageToStorage(uData);
                         } else {

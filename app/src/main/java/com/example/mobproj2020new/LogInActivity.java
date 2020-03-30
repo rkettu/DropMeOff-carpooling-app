@@ -25,7 +25,6 @@ public class LogInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseHandler db;
 
-
     private final String TAG = "HALOOOOO";
 
     EditText userEdit;
@@ -64,10 +63,11 @@ public class LogInActivity extends AppCompatActivity {
 
     private void CheckProfileCreated()
     {
-        Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
-        db.init(mAuth.getCurrentUser());
+        //Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
+        //db.init(mAuth.getCurrentUser());
         db.checkProfileCreated(getApplicationContext());
     }
+
 
     //Login button press
     public void login(View V){
@@ -90,6 +90,7 @@ public class LogInActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
+                                onBackPressed();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());

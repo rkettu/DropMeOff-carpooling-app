@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login"
+    tools:context=".GetRideActivity">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="btnBackArrow"/>
+
+    <EditText
+        android:id="@+id/startPointEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Set your start point"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        />
+
+    <EditText
+        android:id="@+id/endPointEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Set your destination"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:inputType="text"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/startPointEditText"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        />
+
+    <TextView
+        android:id="@+id/dateOfTraverTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Date of travel"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/endPointEditText"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        />
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:gravity="center"
+        android:hint="dd-mm-yyyy"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintTop_toBottomOf="@id/dateOfTraverTextView"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        android:onClick="dateOfTimeClicked"
+        />
+
+    <TextView
+        android:id="@+id/estTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Time of departure"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/endPointEditText"
+        app:layout_constraintLeft_toRightOf="@id/guideline_middle"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        />
+
+    <EditText
+        android:id="@+id/estTimeEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="hh:mm"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintTop_toBottomOf="@id/estTimeTextView"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        app:layout_constraintLeft_toRightOf="@id/guideline_middle"
+        android:onClick="estTimeClicked"
+        />
+
+    <!--
+    <CheckBox
+        android:id="@+id/luggageCheckBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Matkatavaroita?"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/endPointEditText"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_middle"
+        />
+
+    <EditText
+        android:id="@+id/luggageEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/settings_dialog_background"
+        android:gravity="top"
+        android:hint="Write your items..."
+        android:textColorHint="@color/hintlog"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/btnSearch"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/luggageCheckBox" />
+        -->
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:textColor="@color/pastelGreen"
+        android:background="@drawable/custom_button1"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/estTimeEditText"
+        android:onClick="searchButton"
+        />
+
+    <ListView
+        android:id="@+id/tripsListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/btnSearch"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
