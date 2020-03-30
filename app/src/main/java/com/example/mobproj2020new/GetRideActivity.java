@@ -8,8 +8,7 @@ import android.app.TimePickerDialog;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +25,7 @@ import java.util.List;
 public class GetRideActivity extends AppCompatActivity {
 
     String stringDate, stringEstTime;
-    ArrayList<GetARideUtility> arrayList = new ArrayList<GetARideUtility>();
+    ArrayList<GetARideUtility> arrayList = new ArrayList<>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText;
     ListView tripListView;
     GetARideAdapter getARideAdapter;
@@ -42,9 +42,8 @@ public class GetRideActivity extends AppCompatActivity {
         estTimeEditText = findViewById(R.id.estTimeEditText);
         dummyData();
         tripListView = findViewById(R.id.tripsListView);
-        getARideAdapter = new GetARideAdapter(this, arrayList);
+        getARideAdapter = new GetARideAdapter(GetARideUtility.arrayList);
         tripListView.setAdapter(getARideAdapter);
-
     }
 
     private void dummyData(){
@@ -54,28 +53,32 @@ public class GetRideActivity extends AppCompatActivity {
         String [] tst = new String[] {"9:30", "10:30", "11:15", "10:30", "9:30", "8:00", "19:00", "1:00"};
         String [] tu = new String[] {"Jiikorni", "SJMS", "JKampela", "RooPK", "SMH", "jami", "muita", "kayttajia"};
         for(int i = 0; i < sp.length; i++){
-            GetARideUtility utility = new GetARideUtility(sp[i], ep[i], tp[i], tst[i], tu[i]);
-            arrayList.add(utility);
+            //GetARideUtility utility = new GetARideUtility(sp[i], ep[i], tp[i], tst[i], tu[i]);
+            //arrayList.add(utility);
         }
     }
 
     public void searchButton (View v){
         hideKeyboard(this);
-        String startPoint = startPointEditText.getText().toString().toLowerCase();
-        String endPoint = endPointEditText.getText().toString().toLowerCase();
-        String[] filterString = {startPoint, endPoint};
-        getARideAdapter.filter(filterString);
 
-        //-----Search matching data from db-----//
+        String startPoint = startPointEditText.getText().toString();
+        String endPoint = endPointEditText.getText().toString();
 
-        //-----------Changing start point and end point to coordinates----------//
-            try {
-                geoLocate(startPoint, endPoint);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        //TODO: RETURN STATEMENT IF NOT CORRECT
+        try {
+            geoLocate(startPoint, endPoint);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getARideAdapter.notifyDataSetChanged();
+                }
+            }, 1500);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
     public void dateOfTimeClicked(View v){
         final Calendar calendar = Calendar.getInstance();
         newYear = calendar.get(Calendar.YEAR);
@@ -111,7 +114,7 @@ public class GetRideActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public void geoLocate(String startPoint, String endPoint) throws IOException {
+    public void geoLocate(String startPoint, String endPoint) throws IOException{
         Geocoder gc = new Geocoder(this);
 
         List<Address> listStart = gc.getFromLocationName(startPoint, 1);
@@ -120,13 +123,16 @@ public class GetRideActivity extends AppCompatActivity {
         List<Address> listStop = gc.getFromLocationName(endPoint, 1);
         Address add2 = listStop.get(0);
 
-        double startLat = add.getLatitude();
-        double startLon = add.getLongitude();
+        float startLat = (float)add.getLatitude();
+        float startLon = (float) add.getLongitude();
+        float stopLat = (float) add2.getLatitude();
+        float stopLon = (float) add2.getLongitude();
+        float distanceRange = 5;
 
-        double stopLat = add2.getLatitude();
-        double stopLon = add2.getLongitude();
-
-        Log.d(TAG, "geoLocate: " + startLat + " " + startLon + " " + stopLat + " " + stopLon);
+        Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
+        DatabaseHandler dbh = new DatabaseHandler();
+        DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
+        gmr.execute(distanceRange, startLat, startLon, stopLat, stopLon);
     }
 
     public void btnBackArrow(View v){

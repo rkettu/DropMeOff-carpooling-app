@@ -3,6 +3,7 @@ package com.example.mobproj2020new;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -100,6 +101,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = true;
                             /*
+
                             Intent intent = new Intent(varContext, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             varContext.startActivity(intent);*/
@@ -147,47 +149,75 @@ public class DatabaseHandler {
         // Add listeners for fail/complete/success?
     }
 
-    // TODO: do this in another thread ???
-    public void getMatchingRoutes(final float pickupDistance, final float startLat, final float startLng, final float endLat, final float endLng)
-    {
-        // Checking all rides with free passenger slots
-        Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        try {
-                            List<HashMap<String, String>> points = (List) doc.get("points");
-                            if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                Route route = doc.toObject(Route.class);
-                                Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
+    //---Async task to take care of matching routes from GetRideActivity---//
+    public class getMatchingRoutes extends AsyncTask<Float, Integer, String> {
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Float... floats) {
+            float dist = floats[0];
+            float startlat = floats[1];
+            float startlon = floats[2];
+            float stoplat = floats[3];
+            float stoplon = floats[4];
+
+            try{
+                getMatchingRoutes(dist, startlat, startlon, stoplat, stoplon);
+                Log.d("TAG", "doInBackground: doInBackgoruasoaadsa");
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                Log.d("TAG", "doInBackground: catch");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+        }
+
+        public void getMatchingRoutes(final float pickupDistance, final float startLat, final float startLng, final float endLat, final float endLng)
+        {
+            GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
+            Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
+            // Checking all rides with free passenger slots
+            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful())
+                    {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            try {
+                                List<HashMap<String, String>> points = (List) doc.get("points");
+                                if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
+                                    Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
+                                    GetARideUtility utility = doc.toObject(GetARideUtility.class);
+                                    GetARideUtility.arrayList.add(utility);
+                                }
+                                else{
+                                    Log.d("HALOOOOOOOO", "onComplete: " + points);
+                                }
+                            } catch(Exception e) {
+                                Log.d("EXCEPTIONALERT", e.toString());
                             }
-                            //float routeStartLat = Float.parseFloat(points.get(0).get("lat"));
-                            //float routeStartLng = Float.parseFloat(points.get(0).get("lng"));
-                            //float routeEndLat = Float.parseFloat(points.get(points.size()-1).get("lat"));
-                            //float routeEndLng = Float.parseFloat(points.get(points.size()-1).get("lng"));
-                            // Checking if distance between start points and end points is less than pickup distance
-                            //if(distanceBetweenCoordinates(startLat, startLng, routeStartLat, routeStartLng) <= pickupDistance
-                            //&& distanceBetweenCoordinates(endLat, endLng, routeEndLat, routeEndLng) <= pickupDistance)
-                            //{
-                            // Start and end are both within radius!
-                            // Update listview... or something
-                            //}
-                        } catch(Exception e) {
-                            Log.d("EXCEPTIONALERT", e.toString());
                         }
                     }
+                    else
+                    {
+                        Log.d("VITTUJENPERKELE", "Error getting documents: ", task.getException());
+                    }
                 }
-                else
-                {
-                    Log.d("VITTUJENPERKELE", "Error getting documents: ", task.getException());
-                }
-            }
-        });
-    }
+            });
+        }
 
+
+    }
 
     // Move to some Math class?
     // Returns distance in km

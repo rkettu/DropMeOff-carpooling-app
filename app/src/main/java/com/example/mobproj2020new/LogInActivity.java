@@ -44,9 +44,29 @@ public class LogInActivity extends AppCompatActivity {
         userEdit = findViewById(R.id.usernameEdit);
         passEdit = findViewById(R.id.passwordEdit);
 
-
+        FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(mAuth.getCurrentUser() != null)
+                {
+                    CheckProfileCreated();
+                }
+                else
+                {
+                    // User not logged in anymore...
+                    // Maybe return to MainActivity here?
+                }
+            }
+        };
+        mAuth.addAuthStateListener(als);
     }
 
+    private void CheckProfileCreated()
+    {
+        Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
+        db.init(mAuth.getCurrentUser());
+        db.checkProfileCreated(getApplicationContext());
+    }
 
 
     //Login button press
