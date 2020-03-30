@@ -31,14 +31,11 @@
 
         <activity android:name=".RouteActivity" />
 
-        <activity android:name=".MainActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".CreateUserActivity" />
-        <activity android:name=".LoggedInActivity" />
-        <activity android:name=".DbTestActivity" />
-        <activity android:name=".LogInActivity">
+        <activity android:name=".LogInActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -72,9 +69,6 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
     </application>
 
 </manifest>

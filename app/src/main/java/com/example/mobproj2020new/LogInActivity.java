@@ -63,8 +63,8 @@ public class LogInActivity extends AppCompatActivity {
 
     private void CheckProfileCreated()
     {
-        Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
-        db.init(mAuth.getCurrentUser());
+        //Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
+        //db.init(mAuth.getCurrentUser());
         db.checkProfileCreated(getApplicationContext());
     }
 
