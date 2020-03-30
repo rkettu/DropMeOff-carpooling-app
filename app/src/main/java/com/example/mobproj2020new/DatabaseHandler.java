@@ -10,7 +10,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,21 +39,22 @@ public class DatabaseHandler {
     private String LNAMEKEY = "lname";
     private String PHONEKEY = "phone";
     private String mPhone = "empty";
+    private String struri = "DEF_URI";
     public static final int REQKEY = 1212;
     private StorageReference storageRef;
-    private FirebaseStorage fbs;
 
+    private Context profileContext;
+    private String profileUid;
 
-    public void init(FirebaseUser user)
-    {
-        uid = user.getUid();
-        fbs = FirebaseStorage.getInstance();
-        storageRef = fbs.getReference();
-        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
-    }
 
     public void setUserCreationInfo(String fname, String lname, String phone)
     {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(uid.equals("")) {
+            return;
+        }
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
+
         User user = new User(fname,lname,phone);
         mUsersDocRef.set(user); // add on success, on failure event listeners for checking for errors if needed
     }
@@ -74,25 +79,15 @@ public class DatabaseHandler {
         });
     }
 
-    public void getPhone()
-    {
-        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if(doc.exists()) {
-                        // Creating User object based on document and getting phone string
-                        String phone = doc.toObject(User.class).getPhone();   // Currently only printing this value
-                        Log.d("HALOOOO", ("phone number from db: " + phone));
-                    }
-                }
-            }
-        });
-    }
+
 
     public void checkProfileCreated(Context context)
     {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(uid.equals("")) {
+            return;
+        }
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
         final Context varContext = context;
         mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -104,12 +99,16 @@ public class DatabaseHandler {
                         boolean created = doc.toObject(User.class).getProfileCreated();
                         if(created)
                         {
+                            FirebaseHelper.loggedIn = true;
+                            /*
+
                             Intent intent = new Intent(varContext, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            varContext.startActivity(intent);
+                            varContext.startActivity(intent);*/
                         }
                         else
                         {
+                            FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             varContext.startActivity(intent);
@@ -122,6 +121,11 @@ public class DatabaseHandler {
 
     public void setProfileCreated(final boolean value)
     {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(uid.equals("")) {
+            return;
+        }
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);
         mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -137,6 +141,9 @@ public class DatabaseHandler {
 
     public void putImageToStorage(Uri imageUri)
     {
+        FirebaseStorage fbs;
+        fbs = FirebaseStorage.getInstance();
+        storageRef = fbs.getReference();
         StorageReference ppRef = storageRef.child("profpics/"+uid);
         UploadTask upTask = ppRef.putFile(imageUri);
         // Add listeners for fail/complete/success?
@@ -269,26 +276,57 @@ public class DatabaseHandler {
         return false;
     }
 
-    public void GoToProfile(final Context context, String uid)
+    public void GoToProfile(final Context context, final String uid)
     {
+        profileContext = context;
+        profileUid = uid;
+
         FirebaseFirestore myFirestoreRef = FirebaseFirestore.getInstance();
-        DocumentReference myDocRef = myFirestoreRef.collection("users").document(uid);;
+        DocumentReference myDocRef = myFirestoreRef.collection("users").document(profileUid);
+        final User mUser = new User();
 
         myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
-                        if(doc.exists()) {
-                            User user = doc.toObject(User.class);
-                            Intent intent = new Intent(context, ProfileActivity.class);
-                            intent.putExtra("JOKUKEY", user);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+                    if(doc.exists()) {
+                        final User user = doc.toObject(User.class);
+
+                        getProfilepick(user);
+                       /* Intent intent = new Intent(context, ProfileActivity.class);
+                        intent.putExtra("JOKUKEY", user);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);*/
                     }
                 }
             }
         });
+    }
+
+    private void getProfilepick(final User user){
+        //GET users (profile) image From FirebaseStorage
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + profileUid);
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                struri = String.valueOf(task.getResult());
+
+                //set Users image Uri and Uid
+                user.setImgUid(struri);
+                user.setUid(profileUid);
+                gotoProfileActivity(user);
+            }
+        });
+        //return user;
+    }
+
+    private void gotoProfileActivity(final User user){
+        Intent intent = new Intent(profileContext, ProfileActivity.class);
+        intent.putExtra("JOKUKEY", user);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        profileContext.startActivity(intent);
     }
     /*
         mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(uid);

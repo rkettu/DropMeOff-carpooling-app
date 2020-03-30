@@ -1,8 +1,12 @@
 package com.example.mobproj2020new;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
+    private String uid;
+    private String imgUri;
     private String fname;
     private String lname;
     private String phone;
@@ -18,6 +22,8 @@ public class User implements Serializable {
         this.profileCreated = false;
     }
 
+    public String getUid() { return uid; }
+    public String getImgUri() { return imgUri; }
 
     public String getFname() {
         return fname;
@@ -34,5 +40,8 @@ public class User implements Serializable {
     public boolean getProfileCreated() { return profileCreated; }
 
     public void setProfCreated(boolean value) { profileCreated = value; }
+
+    public void setUid(String strUid){uid = strUid;}
+    public void setImgUid(String strUri){imgUri = strUri;}
 
 }

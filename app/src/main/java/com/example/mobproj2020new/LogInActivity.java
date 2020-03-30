@@ -68,6 +68,7 @@ public class LogInActivity extends AppCompatActivity {
         db.checkProfileCreated(getApplicationContext());
     }
 
+
     //Login button press
     public void login(View V){
         String email = userEdit.getText().toString();
@@ -89,6 +90,7 @@ public class LogInActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
+                                onBackPressed();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
