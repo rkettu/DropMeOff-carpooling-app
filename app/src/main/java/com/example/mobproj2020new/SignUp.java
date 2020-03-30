@@ -34,7 +34,7 @@ public class SignUp extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    CircleImageView profileImage;
+    //CircleImageView profileImage;
     EditText fNameEdit;
     EditText lNameEdit;
     EditText eMailEdit;
@@ -45,7 +45,7 @@ public class SignUp extends AppCompatActivity {
     Button confButton;
     CheckBox checkTerms;
 
-    private Uri uData;
+    //private Uri uData;
 
     private FirebaseAuth mAuth;
     private DatabaseHandler dbHandler;
@@ -61,7 +61,7 @@ public class SignUp extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        profileImage = findViewById(R.id.profile_image);
+        //profileImage = findViewById(R.id.profile_image);
         fNameEdit = findViewById(R.id.firstNameedit);
         lNameEdit = findViewById(R.id.lastNameedit);
         eMailEdit = findViewById(R.id.emailedit);
@@ -146,8 +146,8 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            uData = data.getData();
-            profileImage.setImageURI(uData);
+            //uData = data.getData();
+            //profileImage.setImageURI(uData);
 
         }
     }
@@ -187,7 +187,8 @@ public class SignUp extends AppCompatActivity {
                             dbHandler = new DatabaseHandler();
 
                             dbHandler.setUserCreationInfo(fname, lname, phone);
-                            dbHandler.putImageToStorage(uData);
+                            //dbHandler.putImageToStorage(uData);
+                            Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUp.this, "Authentication failed.",

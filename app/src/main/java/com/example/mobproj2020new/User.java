@@ -10,6 +10,7 @@ public class User implements Serializable {
     private String fname;
     private String lname;
     private String phone;
+    private String bio;
     private boolean profileCreated;
 
     public User()  {}
@@ -24,6 +25,8 @@ public class User implements Serializable {
 
     public String getUid() { return uid; }
     public String getImgUri() { return imgUri; }
+
+    public String getBio() { return imgUri; }
 
     public String getFname() {
         return fname;
@@ -42,6 +45,8 @@ public class User implements Serializable {
     public void setProfCreated(boolean value) { profileCreated = value; }
 
     public void setUid(String strUid){uid = strUid;}
+
     public void setImgUid(String strUri){imgUri = strUri;}
 
+    public void setBio(String strBio) {bio = strBio;}
 }
