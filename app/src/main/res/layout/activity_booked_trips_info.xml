@@ -201,20 +201,20 @@
         app:layout_constraintStart_toEndOf="@+id/duration"
         app:layout_constraintTop_toBottomOf="@+id/infoDate" />
 
+
     <Button
         android:id="@+id/removeTrip"
         android:layout_width="113dp"
         android:layout_height="60dp"
-        android:layout_marginTop="480dp"
-        android:layout_marginEnd="84dp"
+        android:layout_marginTop="496dp"
+        android:layout_marginEnd="168dp"
         android:background="@drawable/custom_button1"
+        android:onClick="removeTripBtn"
         android:text="Remove trip"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="removeTripBtn"/>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

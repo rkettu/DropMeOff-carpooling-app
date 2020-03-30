@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_pick_up_or_transportation);
+
     }
 
     //-----------Applications settings button------------//
@@ -73,6 +76,8 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
         trips.add("Helsinki - Oulu");
         trips.add("Helsinki - Jyväskylä - Oulu");
 
+
+
         ArrayAdapter<String> bookedTrips = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, trips);
         builder.setAdapter(bookedTrips, new DialogInterface.OnClickListener() {
@@ -111,7 +116,7 @@ public class ChoosePickUpOrTransportationActivity extends AppCompatActivity{
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ChoosePickUpOrTransportationActivity.this, rides.get(which) + " ride chosen ", Toast.LENGTH_LONG).show();
 
-                /////////////////Tarjottujen matkojen info näkymä\\\\\\\\\\\\\\\\\\
+                /////////////////Offered rides view\\\\\\\\\\\\\\\\\\
                 Intent i = new Intent(ChoosePickUpOrTransportationActivity.this, OfferedTripsInfoActivity.class);
                 startActivity(i);
             }
