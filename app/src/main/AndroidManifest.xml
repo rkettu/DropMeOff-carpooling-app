@@ -27,14 +27,14 @@
         <activity android:name=".BookedTripsInfoActivity"/>
         <activity android:name=".OfferedTripsInfoActivity" />
         <activity android:name=".RouteActivity" />
-        <activity android:name=".ChoosePickUpOrTransportationActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".LoggedInActivity" />
         <activity android:name=".DbTestActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

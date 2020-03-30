@@ -2,7 +2,6 @@ package com.example.mobproj2020new;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -52,7 +51,7 @@ public class OfferedTripsInfoActivity extends AppCompatActivity implements View.
 
     //--------------Button edit trip info-------------//
     public void editTripBtn(View v){                          //----Random activity, in the end where actual editing happens-----//
-        Intent i = new Intent(OfferedTripsInfoActivity.this, ChoosePickUpOrTransportationActivity.class);
+        Intent i = new Intent(OfferedTripsInfoActivity.this, MainActivity.class);
         startActivity(i);
 
     }

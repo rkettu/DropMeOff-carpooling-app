@@ -1,127 +1,138 @@
 package com.example.mobproj2020new;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-
-import android.graphics.Color;
-
-import android.provider.ContactsContract;
-import android.util.Log;
-import android.widget.EditText;
-
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    private FirebaseAuth mAuth;
-    private DatabaseHandler db;
-
-
-    private final String TAG = "HALOOOOO";
-
-    EditText userEdit;
-    EditText passEdit;
-
-    String userNameStr = "";
-    String passwordStr = "";
+public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_choose_pick_up_or_transportation);
 
-        mAuth = FirebaseAuth.getInstance();
-        db = new DatabaseHandler();
+    }
 
-        userEdit = findViewById(R.id.usernameEdit);
-        passEdit = findViewById(R.id.passwordEdit);
-
-        FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
+    //-----------Applications settings button------------//
+    public void AppSettings(View v) {
+        final String[] itemList = {"Settings", "My Profile", "About", "Sign Out"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setItems(itemList, new DialogInterface.OnClickListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(mAuth.getCurrentUser() != null)
-                {
-                    CheckProfileCreated();
-                }
-                else
-                {
-                    // User not logged in anymore...
-                    // Maybe return to MainActivity here?
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        //Log.d("SWAG", "onClick: settings");
+                        break;
+                    case 1:
+                        //Log.d("SWAG", "onClick: My Profile");
+                        break;
+                    case 2:
+                        //Log.d("SWAG", "onClick: About");
+                        break;
+                    case 3:
+                        //Log.d("SWAG", "onClick: Sign Out");
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        break;
                 }
             }
-        };
-        mAuth.addAuthStateListener(als);
+        });
+        AlertDialog settingsDialog = builder.create();
+        settingsDialog.show();
+        settingsDialog.getWindow().setDimAmount(0);
+        settingsDialog.getWindow().setLayout(420, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        settingsDialog.getWindow().setGravity(Gravity.TOP | Gravity.RIGHT);
+        settingsDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.settings_dialog_background));
     }
 
-    private void CheckProfileCreated()
-    {
-        Log.d("HALOOOOOOOOOOOOOOOOO", "Taalla ollaan");
-        db.init(mAuth.getCurrentUser());
-        db.checkProfileCreated(getApplicationContext());
+    //----------------Button BookedTrips----------------//
+    public void SelectBookedTrips(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Booked trips");
+
+        //------------List to test AlertDialog---------//
+        final List<String> trips = new ArrayList<>();
+        trips.add("Oulu - Helsinki");
+        trips.add("Oulu - Kannus");
+        trips.add("Oulu - Pyhäjärvi");
+        trips.add("Helsinki - Oulu");
+        trips.add("Helsinki - Jyväskylä - Oulu");
+
+
+
+        ArrayAdapter<String> bookedTrips = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, trips);
+        builder.setAdapter(bookedTrips, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, trips.get(which) + " trip chosen ", Toast.LENGTH_LONG).show();
+
+                ///////////////////Varattujen matkojen info näkymä\\\\\\\\\\\\\\\\\\\\
+                Intent i = new Intent(MainActivity.this, BookedTripsInfoActivity.class);
+                startActivity(i);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-    //Login button press
-    public void login(View V){
-        String email = userEdit.getText().toString();
-        String password = passEdit.getText().toString();
+    //---------------Button OfferTrips---------------//
+    public void SelectOfferedTrips(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Offered rides");
 
-        if(email.equals(""))
-        {
-            noEntry(userEdit);
-        }
-        else if(password.equals(""))
-        {
-            noEntry(passEdit);
-        }
-        else {
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(MainActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
+
+        //------------List to test AlertDialog---------//
+        final List<String> rides = new ArrayList<>();
+        rides.add("Oulu - Helsinki");
+        rides.add("Oulu - Kannus");
+        rides.add("Oulu - Pyhäjärvi");
+        rides.add("Helsinki - Oulu");
+        rides.add("Jyväskylä - Oulu");
+
+        ArrayAdapter<String> offeredRides = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, rides);
+        builder.setAdapter(offeredRides, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, rides.get(which) + " ride chosen ", Toast.LENGTH_LONG).show();
+
+                /////////////////Offered rides view\\\\\\\\\\\\\\\\\\
+                Intent i = new Intent(MainActivity.this, OfferedTripsInfoActivity.class);
+                startActivity(i);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-    //SignUp button press
-    public void signUp(View v){
-        Intent signUpIntent = new Intent(this, SignUp.class);
-        startActivity(signUpIntent);
+    //-------------Button Get A Ride----------------//
+    public void SelectGetARide(View v){
+
     }
 
-    //execute if username or password is empty
-    public void noEntry(EditText et){
-        et.setText("");
-        et.setHintTextColor(Color.parseColor("#B75252"));
-        if (et.getId() == R.id.usernameEdit) userEdit.setHint("Username*");
-        else passEdit.setHint("Password*");
-    }
-
-    //Exit app with pressing back putton on your phone
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        return;
+    //------------Button Offer A Ride--------------//
+    public void SelectOfferARide(View v){
+        Intent intent = new Intent(MainActivity.this, RouteActivity.class);
+        startActivity(intent);
     }
 
 }
