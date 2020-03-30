@@ -25,16 +25,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".BookedTripsInfoActivity"/>
+        <activity android:name=".OfferedTripsInfoActivity" />
+        <activity android:name=".RouteActivity" />
+
+
         <activity android:name=".GetRideActivity"></activity>
 
         <activity android:name=".RideDetailsActivity"></activity>
 
         <activity android:name=".RouteActivity" />
 
-        <activity android:name=".EditProfileActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".CreateUserActivity" />
+
+        <activity android:name=".LoggedInActivity" />
+        <activity android:name=".DbTestActivity" />
+
         <activity android:name=".LogInActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -44,10 +52,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".CreateUserActivity" />
-        <activity android:name=".LogInActivity">
 
         </activity>
         <!--
