@@ -56,12 +56,13 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="30/03/2020"
+                android:hint="dd/mm/yyyy"
                 android:textSize="16sp"
                 android:id="@+id/dateEditText"
                 android:inputType="date"
                 android:onClick="dateOfTimeClicked"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:backgroundTint="@color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -81,11 +82,12 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="00:00"
+                android:hint="hh:mm"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:id="@+id/estTimeEditText"
-                android:onClick="estTimeClicked"/>
+                android:onClick="estTimeClicked"
+                android:backgroundTint="@color/white"/>
         </LinearLayout>
 
         <TextView
@@ -93,8 +95,9 @@
             android:layout_height="wrap_content"
             android:text="and"
             android:textSize="20sp"
-            android:paddingHorizontal="20dp"
-            android:textColor="@color/white"/>
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/white"/>
 
 
         <LinearLayout
@@ -114,12 +117,13 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="31/03/2020"
+                android:hint="dd/mm/yyyy"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:id="@+id/dateEditText2"
                 android:inputType="date"
-                android:onClick="dateOfTimeClicked" />
+                android:onClick="dateOfTimeClicked"
+                android:backgroundTint="@color/white"/>
         </LinearLayout>
 
 
@@ -142,11 +146,12 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:hint="23:59"
+                android:hint="hh:mm"
                 android:textSize="16sp"
                 android:textColor="@color/white"
                 android:id="@+id/estTimeEditText2"
                 android:onClick="estTimeClicked"
+                android:backgroundTint="@color/white"
                 />
 
         </LinearLayout>
