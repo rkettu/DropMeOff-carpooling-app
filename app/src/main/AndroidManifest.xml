@@ -28,6 +28,7 @@
         <activity android:name=".BookedTripsInfoActivity" />
         <activity android:name=".OfferedTripsInfoActivity" />
         <activity android:name=".RouteActivity" />
+
         <activity android:name=".GetRideActivity" />
         <activity android:name=".RideDetailsActivity" />
         <activity android:name=".RouteActivity" />
@@ -37,6 +38,7 @@
         <activity android:name=".LoggedInActivity" />
         <activity android:name=".DbTestActivity" />
         <activity android:name=".LogInActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

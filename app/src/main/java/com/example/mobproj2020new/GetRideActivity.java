@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.io.IOException;
@@ -24,13 +25,17 @@ import java.util.List;
 
 public class GetRideActivity extends AppCompatActivity {
 
+    private int pickedYear1, pickedMonth1, pickedDate1, pickedHour1, pickedMinute1;
+    private int pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2;
     String stringDate, stringEstTime;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
-    EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText;
+    EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText, dateEditText2, estTimeEditText2;
     ListView tripListView;
     GetARideAdapter getARideAdapter;
     int newYear, newMonth, newDay, newHour, newMinute;
     private static final String TAG = "GetARideActivityTAG";
+    Calendar mCalendar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +44,18 @@ public class GetRideActivity extends AppCompatActivity {
         startPointEditText = findViewById(R.id.startPointEditText);
         endPointEditText = findViewById(R.id.endPointEditText);
         dateEditText = findViewById(R.id.dateEditText);
+        dateEditText2 = findViewById(R.id.dateEditText2);
         estTimeEditText = findViewById(R.id.estTimeEditText);
+        estTimeEditText2 = findViewById(R.id.estTimeEditText2);
         dummyData();
         tripListView = findViewById(R.id.tripsListView);
+
         getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
+
+        tripListView.setAdapter(getARideAdapter);
+        mCalendar = Calendar.getInstance();
+
+
     }
 
     private void dummyData(){
@@ -80,7 +93,7 @@ public class GetRideActivity extends AppCompatActivity {
 
         tripListView.setAdapter(getARideAdapter);
     }
-    public void dateOfTimeClicked(View v){
+    public void dateOfTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();
         newYear = calendar.get(Calendar.YEAR);
         newMonth = calendar.get(Calendar.MONTH);
@@ -89,12 +102,19 @@ public class GetRideActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 stringDate = (dayOfMonth + "." + (month + 1) + "." + year);
-                dateEditText.setText(stringDate);
+                if(v.getId() == R.id.dateEditText) {
+                    pickedDate1 = dayOfMonth; pickedMonth1 = month; pickedYear1 = year;
+                    dateEditText.setText(stringDate);
+                }
+                else if(v.getId() == R.id.dateEditText2) {
+                    pickedDate2 = dayOfMonth; pickedMonth2 = month; pickedYear2 = year;
+                    dateEditText2.setText(stringDate);
+                }
             }
         }, newYear, newMonth, newDay); dpd.show();
     }
 
-    public void estTimeClicked(View v){
+    public void estTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();
         newHour = calendar.get(Calendar.HOUR_OF_DAY);
         newMinute = calendar.get(Calendar.MINUTE);
@@ -103,7 +123,14 @@ public class GetRideActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 stringEstTime = (hourOfDay + ":" + minute);
-                estTimeEditText.setText(stringEstTime);
+                if(v.getId() == R.id.estTimeEditText) {
+                    pickedHour1 = hourOfDay; pickedMinute1 = minute;
+                    estTimeEditText.setText(stringEstTime);
+                }
+                else if(v.getId() == R.id.estTimeEditText2) {
+                    pickedHour2 = hourOfDay; pickedMinute2 = minute;
+                    estTimeEditText2.setText(stringEstTime);
+                }
             }
         }, newHour, newMinute, true); tpd.show();
     }
@@ -131,9 +158,16 @@ public class GetRideActivity extends AppCompatActivity {
         float distanceRange = 5;
 
         Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
+
+        // TODO: !!!! Require both time fields for search, maybe preset them to current day - week from current day
+        mCalendar.set(pickedYear1, pickedMonth1, pickedDate1, pickedHour1, pickedMinute1);
+        float t1 = mCalendar.getTimeInMillis();
+        mCalendar.set(pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2);
+        float t2 = mCalendar.getTimeInMillis();
+
         DatabaseHandler dbh = new DatabaseHandler();
         DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
-        gmr.execute(distanceRange, startLat, startLon, stopLat, stopLon);
+        gmr.execute(distanceRange, startLat, startLon, stopLat, stopLon, t1, t2);
     }
 
     public void btnBackArrow(View v){
