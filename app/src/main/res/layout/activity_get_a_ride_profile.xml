@@ -9,15 +9,16 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/getRideImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="50dp"
         android:src="@drawable/ic_person_black_100dp"
         app:civ_border_color="@color/white"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="goToProfile"/>
 
 
     <TextView
@@ -27,6 +28,7 @@
 
         android:layout_marginTop="30dp"
         android:text="User First name"
+        android:textSize="16dp"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/getRideImage"
         />
@@ -36,6 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Start point"
+        android:textSize="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/profTV1"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -46,6 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="destination"
+        android:textSize="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/profTV2"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -56,6 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="start time"
+        android:textSize="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/profTV3"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -66,6 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="duration"
+        android:textSize="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/profTV4"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -76,6 +82,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="price"
+        android:textSize="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/profTV5"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -86,6 +93,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="free seats"
+        android:textSize="16dp"
 
         app:layout_constraintTop_toBottomOf="@id/profTV6"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -96,6 +104,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="waypoints"
+        android:textSize="16dp"
+
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/profTV7"
         />
@@ -105,6 +115,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Luggage"
+        android:textSize="16dp"
+
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/profTV8"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
@@ -114,33 +126,38 @@
     <EditText
         android:id="@+id/luggageET"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@drawable/settings_dialog_background"
         android:gravity="top"
+        android:textSize="16dp"
         android:hint="Write your items..."
         android:textColorHint="@color/hintlog"
         android:inputType="textMultiLine"
         android:lines="5"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:scrollbars="vertical"
         android:scrollHorizontally="false"
 
-        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintBottom_toTopOf="@id/btnBookThisTrip"
         app:layout_constraintTop_toBottomOf="@id/luggageCB"
         />
 
 
     <Button
+        android:id="@+id/btnBookThisTrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button1"
-        android:text="Book A Trip"
+        android:text="Book This Trip"
 
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="24dp"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        android:onClick="btnBookTrip"
         />
 
 

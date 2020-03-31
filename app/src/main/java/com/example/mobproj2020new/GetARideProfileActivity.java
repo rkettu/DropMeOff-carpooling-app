@@ -11,6 +11,7 @@ import android.view.contentcapture.DataRemovalRequest;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +31,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
     CheckBox luggageCheckBox;
     EditText luggageEditText;
     CircleImageView progImageView;
-    private String bUser, bStartP, bDest, bDate, bDur, bPrice, bSeats;
+    private String bUser, bUserPic, bStartP, bDest, bDate, bDur, bPrice, bSeats;
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
 
     @Override
@@ -52,7 +53,24 @@ public class GetARideProfileActivity extends AppCompatActivity {
 
         luggageEditText.setVisibility(View.INVISIBLE);
 
+        Bundle bundle = getIntent().getExtras();
+        bUserPic = bundle.getString("userPic");
+        bUser = bundle.getString("user");
+        bStartP = bundle.getString("start");
+        bDest = bundle.getString("destination");
+        bDate = bundle.getString("date");
+        bDur = bundle.getString("duration");
+        bPrice = bundle.getString("price");
+        bSeats = bundle.getString("seats");
 
+        Picasso.with(GetARideProfileActivity.this).load(bUserPic).into(progImageView);
+        userNameTextView.setText("Ride provider: " + bUser);
+        startPointTextView.setText("Start point: " + bStartP);
+        destinationTextView.setText("Destination: " + bDest);
+        startTimeTextView.setText("Start date: " + bDate);
+        durationTextView.setText("Duration: " + bDur);
+        priceTextView.setText("Price: " + bPrice);
+        freeSeatsTextView.setText("Available seats: " + bSeats);
     }
 
     public void cbOnClick(View view){
@@ -62,5 +80,20 @@ public class GetARideProfileActivity extends AppCompatActivity {
         else {
             luggageEditText.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void btnBookTrip(View view){
+        //-------- Book your trip -------/
+        if(FirebaseHelper.loggedIn){
+            //------if you are logged in------/
+
+        } else{
+            Toast.makeText(getApplicationContext(), "Please log in or sign up to book this trip.",Toast.LENGTH_LONG).show();
+            FirebaseHelper.GoToLogin(getApplicationContext());
+        }
+    }
+
+    public void goToProfile(View view){
+        //-------- Go to ride provider profile ---------//
     }
 }

@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
     private String uid;
@@ -24,6 +25,8 @@ public class User implements Serializable {
     }
 
     public static ArrayList<User> arrayList = new ArrayList<>();
+
+    public static ArrayList<User> arrayList1 = new ArrayList<>();
 
     public String getUid() { return uid; }
 

@@ -182,6 +182,7 @@ public class DatabaseHandler {
         public void getMatchingRoutes(final float pickupDistance, final float startLat, final float startLng, final float endLat, final float endLng)
         {
             GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
+            User.arrayList.removeAll(User.arrayList);
             Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
             // Checking all rides with free passenger slots
             Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
@@ -195,7 +196,38 @@ public class DatabaseHandler {
                                 List<HashMap<String, String>> points = (List) doc.get("points");
                                 if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
                                     Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
-                                    GetARideUtility utility = doc.toObject(GetARideUtility.class);
+                                    final GetARideUtility utility = doc.toObject(GetARideUtility.class);
+
+                                    FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
+                                    DocumentReference myDocRef = myFireStoreRef.collection("users").document(utility.getUid());
+                                    myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if(task.isSuccessful()) {
+                                                DocumentSnapshot doc = task.getResult();
+                                                if(doc.exists()) {
+                                                    final User user = doc.toObject(User.class);
+                                                    User.arrayList.add(user);
+                                                        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + utility.getUid());
+                                                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Uri> task) {
+                                                                try {
+                                                                    if (task.getResult() != null) {
+                                                                        Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                                                                        struri = String.valueOf(task.getResult());
+                                                                        user.setImgUid(struri);
+                                                                    } else {
+                                                                        Log.d("TAG", "No image found");
+                                                                    }
+                                                                }catch (Exception e){e.printStackTrace();}
+                                                            }
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    });
+
                                     GetARideUtility.arrayList.add(utility);
                                 }
                                 else{
@@ -213,7 +245,6 @@ public class DatabaseHandler {
                 }
             });
         }
-
 
     }
 
@@ -327,54 +358,4 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
-
-
-
-    private Context c;
-    private String profUid;
-    private String stringUri;
-
-    public void getRideProfile(Context context, String uid){
-        profUid = uid;
-        c = context;
-        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
-        DocumentReference myDocRef = myFireStoreRef.collection("users").document(profUid);
-        final User mUser = new User();
-
-        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if(doc.exists()) {
-                        final User user = doc.toObject(User.class);
-                        getProfImage(user);
-                    }
-                }
-            }
-        });
-    }
-
-    private void getProfImage(final User user){
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + profUid);
-        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                Log.d("######ImgUri####", String.valueOf(task.getResult()));
-                stringUri = String.valueOf(task.getResult());
-
-                //set Users image Uri and Uid
-                user.setImgUid(stringUri);
-                user.setUid(profUid);
-                gotoGetARideProfileActivity(user);
-            }
-        });
-    }
-
-    public GetARideUtility gotoGetARideProfileActivity(final User user){
-        String hoho = user.getFname();
-        String haha = user.getImgUri();
-        Log.d("TAG", "gotoGetARideProfileActivity: " + haha + hoho);
-        return new GetARideUtility(hoho, haha);
-    }
 }

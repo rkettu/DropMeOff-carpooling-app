@@ -43,7 +43,6 @@ public class GetRideActivity extends AppCompatActivity {
         dummyData();
         tripListView = findViewById(R.id.tripsListView);
         getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
-        tripListView.setAdapter(getARideAdapter);
     }
 
     private void dummyData(){
@@ -78,6 +77,8 @@ public class GetRideActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        tripListView.setAdapter(getARideAdapter);
     }
     public void dateOfTimeClicked(View v){
         final Calendar calendar = Calendar.getInstance();

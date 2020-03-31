@@ -1,46 +1,25 @@
 package com.example.mobproj2020new;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GetARideAdapter extends BaseAdapter {
 
-    private List<User> userList;
+    private ArrayList<User> userList;
     private ArrayList<GetARideUtility> tripList;
-    private List<GetARideUtility> list;
     LayoutInflater inflater;
     Context mContext;
-    private String newName = "";
-    private String imageUri = "";
-    GetARideUtility utility;
 
     public GetARideAdapter(){
 
@@ -59,7 +38,7 @@ public class GetARideAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return tripList.get(position);
+        return GetARideUtility.arrayList.get(position);
     }
 
     @Override
@@ -95,10 +74,7 @@ public class GetARideAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-
-        DatabaseHandler dbh = new DatabaseHandler();
-        dbh.getRideProfile(mContext, GetARideUtility.arrayList.get(position).getUid());
-
+        //--Set view holders--//
         final ViewHolder holder;
         if(view == null){
             holder = new ViewHolder();
@@ -116,7 +92,10 @@ public class GetARideAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.tripUser.setText(newName);
+        //--Setting text to holders--//
+
+        Log.d("TAG", "getView: " + User.arrayList.get(position).getImgUri());
+        holder.tripUser.setText(User.arrayList.get(position).getFname());
         holder.startPoint.setText(GetARideUtility.arrayList.get(position).getStartAddress());
         holder.endPoint.setText(GetARideUtility.arrayList.get(position).getEndAddress());
         holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
@@ -124,13 +103,14 @@ public class GetARideAdapter extends BaseAdapter {
         holder.price.setText(String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
         holder.date.setText(String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
 
-        notifyDataSetChanged();
+        //--onclick listener and passing data to next activity--//
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("TAG", "onClick: " + GetARideUtility.arrayList.get(position).getUid());
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
-                profileIntent.putExtra("user", newName);
+                profileIntent.putExtra("user", User.arrayList.get(position).getFname());
+                profileIntent.putExtra("userPic", User.arrayList.get(position).getImgUri());
                 profileIntent.putExtra("start", GetARideUtility.arrayList.get(position).getStartAddress());
                 profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
                 profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());

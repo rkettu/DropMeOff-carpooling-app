@@ -24,27 +24,6 @@ public class GetARideUtility implements Serializable {
 
     public GetARideUtility(){}
 
-    public GetARideUtility(String newName, String newUri) {
-        this.newName = newName;
-        this.newUri = newUri;
-    }
-
-    public String getNewName() {
-        return newName;
-    }
-
-    public String getNewUri() {
-        return newUri;
-    }
-
-    public void setNewName(String newName) {
-        this.newName = newName;
-    }
-
-    public void setNewUri(String newUri) {
-        this.newUri = newUri;
-    }
-
     public GetARideUtility(String tripaUser, String startAddress, String endAddress, String tripDuration, Long leaveTime, int freeSlots, float price) {
         this.startAddress = startAddress;
         this.endAddress = endAddress;
