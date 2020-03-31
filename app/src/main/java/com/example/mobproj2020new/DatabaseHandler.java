@@ -151,7 +151,7 @@ public class DatabaseHandler {
     public class getMatchingRoutes extends AsyncTask<Float, Integer, String> {
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
         }
 
@@ -165,11 +165,10 @@ public class DatabaseHandler {
             float t1 = floats[5];
             float t2 = floats[6];
 
-            try{
+            try {
                 getMatchingRoutes(dist, t1, t2, startlat, startlon, stoplat, stoplon);
                 Log.d("TAG", "doInBackground: doInBackgoruasoaadsa");
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("TAG", "doInBackground: catch");
             }
@@ -177,12 +176,11 @@ public class DatabaseHandler {
         }
 
         @Override
-        protected void onPostExecute(String result){
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
         }
 
-        public void getMatchingRoutes(final float pickupDistance, float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng)
-        {
+        public void getMatchingRoutes(final float pickupDistance, float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
             GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
             User.arrayList.removeAll(User.arrayList);
             Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
@@ -191,72 +189,64 @@ public class DatabaseHandler {
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful())
-                    {
+                    if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
-                            if((long)doc.get("freeSlots") >= 1)
-                              try {
-                                  List<HashMap<String, String>> points = (List) doc.get("points");
-                                  if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                      Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
-                                      final GetARideUtility utility = doc.toObject(GetARideUtility.class);
-
-                                      FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
-                                      DocumentReference myDocRef = myFireStoreRef.collection("users").document(utility.getUid());
-                                      myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                          @Override
-                                          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                              if(task.isSuccessful()) {
-                                                  DocumentSnapshot doc = task.getResult();
-                                                  if(doc.exists()) {
-                                                      final User user = doc.toObject(User.class);
-                                                      User.arrayList.add(user);
-                                                          StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + utility.getUid());
-                                                          storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                                              @Override
-                                                              public void onComplete(@NonNull Task<Uri> task) {
-                                                                  try {
-                                                                      if (task.getResult() != null) {
-                                                                          Log.d("######ImgUri####", String.valueOf(task.getResult()));
-                                                                          struri = String.valueOf(task.getResult());
-                                                                          user.setImgUid(struri);
-                                                                      } else {
-                                                                          Log.d("TAG", "No image found");
-                                                                      }
-                                                                  }catch (Exception e){e.printStackTrace();}
-                                                              }
-                                                          });
-                                                  }
-                                              }
-                                          }
-                                    });
-
-                                    GetARideUtility.arrayList.add(utility);
+                            if ((long) doc.get("freeSlots") >= 1) {
                                 try {
                                     List<HashMap<String, String>> points = (List) doc.get("points");
                                     if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
                                         Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
-                                        GetARideUtility utility = doc.toObject(GetARideUtility.class);
+                                        final GetARideUtility utility = doc.toObject(GetARideUtility.class);
+
+                                        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
+                                        DocumentReference myDocRef = myFireStoreRef.collection("users").document(utility.getUid());
+                                        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot doc = task.getResult();
+                                                    if (doc.exists()) {
+                                                        final User user = doc.toObject(User.class);
+                                                        User.arrayList.add(user);
+                                                        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + utility.getUid());
+                                                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Uri> task) {
+                                                                try {
+                                                                    if (task.getResult() != null) {
+                                                                        Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                                                                        struri = String.valueOf(task.getResult());
+                                                                        user.setImgUid(struri);
+                                                                    } else {
+                                                                        Log.d("TAG", "No image found");
+                                                                    }
+                                                                } catch (Exception e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        });
+
                                         GetARideUtility.arrayList.add(utility);
                                     } else {
                                         Log.d("HALOOOOOOOO", "onComplete: " + points);
                                     }
                                 } catch (Exception e) {
                                     Log.d("EXCEPTIONALERT", e.toString());
-                              }
+                                }
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Log.d("VITTUJENPERKELE", "Error getting documents: ", task.getException());
                     }
                 }
             });
         }
-
     }
-
+    
     // Move to some Math class?
     // Returns distance in km
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
