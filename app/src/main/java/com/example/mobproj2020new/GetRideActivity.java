@@ -49,9 +49,12 @@ public class GetRideActivity extends AppCompatActivity {
         estTimeEditText2 = findViewById(R.id.estTimeEditText2);
         dummyData();
         tripListView = findViewById(R.id.tripsListView);
-        getARideAdapter = new GetARideAdapter(GetARideUtility.arrayList);
+
+        getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
+
         tripListView.setAdapter(getARideAdapter);
         mCalendar = Calendar.getInstance();
+
 
     }
 
@@ -87,6 +90,8 @@ public class GetRideActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        tripListView.setAdapter(getARideAdapter);
     }
     public void dateOfTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();

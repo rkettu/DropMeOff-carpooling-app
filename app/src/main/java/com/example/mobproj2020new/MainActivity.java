@@ -157,8 +157,10 @@ public class MainActivity extends AppCompatActivity{
 
     //-------------Button Get A Ride----------------//
     public void SelectGetARide(View v){
+
         Intent GetARideIntent = new Intent(MainActivity.this, GetRideActivity.class);
         startActivity(GetARideIntent);
+
     }
 
     //------------Button Offer A Ride--------------//
