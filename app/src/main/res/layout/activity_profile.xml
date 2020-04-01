@@ -29,19 +29,27 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="24dp" />
 
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="backArrow"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_settings_black_24dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_settings_icon_foreground"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintTop_toTopOf="parent"
             android:onClick="editProfile"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_marginTop="50dp"
             android:src="@drawable/ic_person_black_100dp"
             app:civ_border_color="@color/white"
@@ -54,21 +62,48 @@
             android:id="@+id/profileNameText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:drawableStart="@drawable/ic_perm_identity_black_24dp"
-            android:drawablePadding="16dp"
+            android:layout_marginTop="10dp"
+
             android:text="fName+lName_DEF"
             android:textColor="@color/white"
-            android:textSize="24dp"
+            android:gravity="center"
+            android:textSize="30dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        <!--android:drawableStart="@drawable/ic_perm_identity_black_24dp"
+            android:drawablePadding="16dp"-->
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="2.5"
+            android:stepSize="0.5"
+            android:progressTint="@color/starColor"
+            android:secondaryProgressTint="@color/starSecondaryColor"
+            android:progressBackgroundTint="@color/pastelGreen"
+            android:isIndicator="true"
+            tools:layout_editor_absoluteX="91dp"
+            tools:layout_editor_absoluteY="187dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toBottomOf="@+id/profileNameText"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar"/>
 
         <TextView
             android:id="@+id/profileEmailText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:drawableStart="@drawable/ic_mail_outline_black_24dp"
             android:drawablePadding="16dp"
             android:text="Email_DEF"
@@ -76,7 +111,15 @@
             android:textSize="24dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/profileNameText" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toBottomOf="@+id/profileEmailText"/>
 
         <TextView
             android:id="@+id/profilePhoNumText"
@@ -92,14 +135,25 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/profileEmailText" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+            app:layout_constraintStart_toStartOf="@+id/guideline_left"
+            app:layout_constraintTop_toBottomOf="@+id/profilePhoNumText"/>
+
         <TextView
             android:id="@+id/profileBioText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:background="@drawable/custom_edittext1"
             android:textSize="24dp"
             android:text="Bio Text JKHJLHÖKHLLKHLKHLKHLKHLKHLKHLKH LKHLKHLKHLKHLKHJLJGLJGLJGLJG LJGLJGLJGLJ GLJGLJGLJG LJGLJGL LKHLKHLK HLLKHLKH LHLKHLKHLKHLKH LJGKJGLJGLJGLJGLJGLJ GLJGLJGLJGLJG LJGLJGLJGLJGLJ GLJGLJGLJGL JGLJGLJGLJGLJGLJKHL"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
+            android:gravity="top"
+            android:padding="15dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
             app:layout_constraintTop_toBottomOf="@+id/profilePhoNumText"/>
