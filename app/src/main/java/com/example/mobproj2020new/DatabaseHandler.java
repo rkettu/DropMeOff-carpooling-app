@@ -229,8 +229,10 @@ public class DatabaseHandler {
                                 try {
                                     List<HashMap<String, String>> points = (List) doc.get("points");
                                     if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                        Log.d("HALOOOOOOOO", "Found route matching criteria: " + doc.getId());
+                                        final String rideId = doc.getId();
+                                        Log.d("HALOOOOOOOO", "Found route matching criteria: " + rideId);
                                         final GetARideUtility utility = doc.toObject(GetARideUtility.class);
+                                        utility.setRideId(rideId);
 
                                         FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
                                         DocumentReference myDocRef = myFireStoreRef.collection("users").document(utility.getUid());
@@ -391,4 +393,53 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
+    public void BookTrip(final String rideId, final String userId)
+    {
+        if(rideId.equals("") || userId.equals("")) // Big failure
+            return;
+
+        final DocumentReference routeDoc = FirebaseFirestore.getInstance().collection("rides").document(rideId);
+        routeDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot doc = task.getResult();
+                    if((long) doc.get("freeSlots") >= 1) {
+                        // Removing free slot and adding user as participant
+                        Route route = doc.toObject(Route.class);
+                        route.removeFreeSlot();
+                        try {
+                            route.addToParticipants(userId);
+                        } catch (Exception e) {
+                            route.initParticipants();
+                            route.addToParticipants(userId);
+                        }
+                        routeDoc.set(route);
+                        // Adding ride to user's booked trips...
+                        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+                        mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful())
+                                {
+                                    DocumentSnapshot uDoc = task.getResult();
+                                    User user = uDoc.toObject(User.class);
+                                    try {
+                                        user.addToBookedRides(rideId);
+                                    } catch(Exception e) {
+                                        user.initBookedRides();
+                                        user.addToBookedRides(rideId);
+                                    }
+                                    mUsersDocRef.set(user);
+
+                                    // TODO: Go to main here, displaying that ride booked successfully :)
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
 }

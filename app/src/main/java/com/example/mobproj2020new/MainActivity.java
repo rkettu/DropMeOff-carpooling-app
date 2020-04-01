@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity{
             }
         };
         FirebaseAuth.getInstance().addAuthStateListener(als);
+
     }
 
     private void CheckProfileCreated()
