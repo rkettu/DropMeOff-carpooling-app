@@ -13,15 +13,16 @@ public class GetARideUtility implements Serializable {
     private String endAddress;
     private float price;
     private String duration;
-    Long leaveTime;
+    private Long leaveTime;
     private int freeSlots;
     private String uid;
     private List<String> waypointAddresses;
     private List <HashMap<String, String>> points;
 
-    public GetARideUtility() {
+    private String newName;
+    private String newUri;
 
-    }
+    public GetARideUtility(){}
 
     public GetARideUtility(String tripaUser, String startAddress, String endAddress, String tripDuration, Long leaveTime, int freeSlots, float price) {
         this.startAddress = startAddress;

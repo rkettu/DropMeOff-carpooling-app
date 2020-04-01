@@ -3,6 +3,8 @@ package com.example.mobproj2020new;
 import android.net.Uri;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
     private String uid;
@@ -35,6 +37,10 @@ public class User implements Serializable {
         this.imgUri = imgUri;
         this.uid = uid;
     }
+
+    public static ArrayList<User> arrayList = new ArrayList<>();
+
+    public static ArrayList<User> arrayList1 = new ArrayList<>();
 
     public String getFname() {
         return fname;

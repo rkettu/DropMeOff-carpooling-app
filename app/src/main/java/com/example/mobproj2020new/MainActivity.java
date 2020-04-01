@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity{
                         //Log.d("SWAG", "onClick: Sign Out");
                         if(FirebaseHelper.loggedIn) {
                             AppUser.del();
+
                             FirebaseAuth.getInstance().signOut();
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -8,6 +8,7 @@
     <!-- endpoint -->
     <TextView
         android:id="@+id/tv1"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:text="endpoint"
         android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
     <!-- start point -->
     <TextView
         android:id="@+id/tv2"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="start point"
@@ -36,6 +38,7 @@
     <!-- trip time -->
     <TextView
         android:id="@+id/tv3"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="start time"
@@ -50,6 +53,7 @@
     <!-- trip length -->
     <TextView
         android:id="@+id/tv4"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="duration"
@@ -63,6 +67,7 @@
     <!-- free slots -->
     <TextView
         android:id="@+id/tv5"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="free slots"
@@ -76,6 +81,7 @@
 
     <TextView
         android:id="@+id/tv8"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="date"
@@ -89,6 +95,7 @@
 
     <TextView
         android:id="@+id/tv7"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="price"
@@ -103,6 +110,7 @@
     <!-- user -->
     <TextView
         android:id="@+id/tv6"
+        android:textColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="user"
