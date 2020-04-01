@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -115,6 +116,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 hinta = ((float) progress / 1000);
                 hintaTxt.setText(String.format("%.3f", hinta) + " per kilometer");
+                hintaTxt.setTextColor(Color.WHITE);
                 exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: " + String.format("%.2f", doubleMatka * hinta) + " eur") ;
                 if(strTime != null & strDate!= null & hinta > 0 ){
                     confirmBtn.setEnabled(true);

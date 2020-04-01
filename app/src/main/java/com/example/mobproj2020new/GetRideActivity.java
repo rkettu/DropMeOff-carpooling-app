@@ -151,10 +151,11 @@ public class GetRideActivity extends AppCompatActivity {
         List<Address> listStop = gc.getFromLocationName(endPoint, 1);
         Address add2 = listStop.get(0);
 
-        float startLat = (float)add.getLatitude();
+        float startLat = (float) add.getLatitude();
         float startLon = (float) add.getLongitude();
         float stopLat = (float) add2.getLatitude();
         float stopLon = (float) add2.getLongitude();
+
         float distanceRange = 5;
 
         Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
