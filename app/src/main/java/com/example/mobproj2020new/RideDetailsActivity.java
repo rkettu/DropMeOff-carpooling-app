@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_details);
 
-        mC = Calendar.getInstance();
+        mC = new GregorianCalendar();
 
         if(savedInstanceState == null){
             Bundle extras = getIntent().getExtras();
@@ -209,8 +210,9 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 float price = hinta;
                 List<HashMap<String,String>> points = Constant.pointsList;
                 List<String> waypointAddresses = Constant.waypointAddressesList;
+                List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                        freeSlots, price, points, waypointAddresses);
+                        freeSlots, price, points, waypointAddresses, participants);
                 db.createRide(route, RideDetailsActivity.this);
             } else {
                 FirebaseHelper.GoToLogin(getApplicationContext());

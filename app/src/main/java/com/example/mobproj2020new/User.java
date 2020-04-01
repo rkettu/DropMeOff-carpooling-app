@@ -3,6 +3,7 @@ package com.example.mobproj2020new;
 import android.net.Uri;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class User implements Serializable {
     private String phone;
     private String bio;
     private boolean profileCreated;
+    private List<String> bookedRides;
 
     public User()  {}
 
@@ -27,7 +29,7 @@ public class User implements Serializable {
     }
 
     //Used on AppUser to create user from Static data
-    public User(String fname, String lname, String phone, String email, String bio, String imgUri, String uid)
+    public User(String fname, String lname, String phone, String email, String bio, String imgUri, String uid, List<String> bookedRides)
     {
         this.fname = fname;
         this.lname = lname;
@@ -36,6 +38,7 @@ public class User implements Serializable {
         this.bio = bio;
         this.imgUri = imgUri;
         this.uid = uid;
+        this.bookedRides = bookedRides;
     }
 
     public static ArrayList<User> arrayList = new ArrayList<>();
@@ -55,6 +58,7 @@ public class User implements Serializable {
     public String getBio() { return bio; }
     public String getImgUri() { return imgUri; }
     public String getUid() { return uid; }
+    public List<String> getBookedRides() { return bookedRides; }
 
     public boolean getProfileCreated() { return profileCreated; }
 
@@ -63,4 +67,14 @@ public class User implements Serializable {
     public void setUid(String strUid){uid = strUid;}
 
     public void setImgUid(String strUri){imgUri = strUri;}
+
+    public void addToBookedRides(String routeId)
+    {
+        bookedRides.add(routeId);
+    }
+    
+    public void initBookedRides()
+    {
+        bookedRides = new ArrayList<>();
+    }
 }

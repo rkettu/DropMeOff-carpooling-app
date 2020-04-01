@@ -16,6 +16,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppUser {
@@ -26,6 +29,7 @@ public class AppUser {
     private static String email;
     private static String phone;
     private static String bio;
+    private static List<String> bookedRides;
 
     public static boolean imgSelected;
 
@@ -64,6 +68,11 @@ public class AppUser {
                         phone = doc.getString("phone");
                         email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                         bio = doc.getString("bio");
+                        try {
+                            bookedRides = (List) doc.get("bookedRides");
+                        } catch (Exception e) {
+                            bookedRides = new ArrayList<>();
+                        }
                     }
                 }
             }
@@ -108,7 +117,7 @@ public class AppUser {
 
     //Createing user from static Data
     public static User createStaticUser(){
-        User user = new User(fname, lname, phone, email, bio, imgUri, uid);
+        User user = new User(fname, lname, phone, email, bio, imgUri, uid, bookedRides);
         Log.d("######Appuser check####", "fname " + fname + "\nlname " + lname  + "\nphone " + phone
                 + "\nimgUri " + imgUri  + "\nemail " + email + "\nbio " + bio + "\nuid " + uid);
         return user;

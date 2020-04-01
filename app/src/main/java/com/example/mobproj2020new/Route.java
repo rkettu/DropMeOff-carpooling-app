@@ -1,5 +1,7 @@
 package com.example.mobproj2020new;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,12 +18,15 @@ public class Route {
     private float price;
     private List<HashMap<String,String>> points;
     private List<String> waypointAddresses;
+    private List<String> participants;
+
 
     public Route() {}
 
     public Route(String uid, String duration, long leaveTime,
                  String startAddress, String endAddress, int freeSlots, float price,
-                 List<HashMap<String,String>> points, List<String> waypointAddresses)
+                 List<HashMap<String,String>> points, List<String> waypointAddresses,
+                 List<String> participants)
     {
         this.uid = uid;
         this.duration = duration;
@@ -34,6 +39,7 @@ public class Route {
         this.price = price;
         this.points = points;
         this.waypointAddresses = waypointAddresses;
+        this.participants = participants;
     }
 
     public String getUid() {
@@ -64,6 +70,18 @@ public class Route {
     public List<String> getWaypointAddresses() {
         return waypointAddresses;
     }
+    public List<String> getParticipants() { return participants; }
 
+    public void removeFreeSlot() { this.freeSlots--; }
+
+    public void addToParticipants(String userId)
+    {
+        participants.add(userId);
+    }
+
+    public void initParticipants()
+    {
+        participants = new ArrayList<>();
+    }
 }
 

@@ -10,8 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.sql.Time;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 
 public class GetARideAdapter extends BaseAdapter {
@@ -101,7 +109,12 @@ public class GetARideAdapter extends BaseAdapter {
         holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
         holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
         holder.price.setText(String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
-        holder.date.setText(String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
+
+        long millis = GetARideUtility.arrayList.get(position).getLeaveTime();
+        Calendar c = new GregorianCalendar();
+        c.setTimeInMillis(millis);
+        String timeString = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR)+"\n"+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+        holder.date.setText(timeString);
 
         //--onclick listener and passing data to next activity--//
         view.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +130,7 @@ public class GetARideAdapter extends BaseAdapter {
                 profileIntent.putExtra("seats", String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
                 profileIntent.putExtra("price", String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
                 profileIntent.putExtra("date", String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
+                profileIntent.putExtra("rideId", GetARideUtility.arrayList.get(position).getRideId());
                 mContext.startActivity(profileIntent);
             }
         });
