@@ -37,8 +37,6 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".CreateUserActivity" />
-
-
         <activity android:name=".LogInActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>

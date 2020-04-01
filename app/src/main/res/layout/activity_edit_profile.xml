@@ -200,7 +200,8 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/bioedit"/>
+        app:layout_constraintTop_toBottomOf="@+id/bioedit"
+        android:onClick="saveChanges"/>
 
     <TextView
         android:id="@+id/textViewPassword"

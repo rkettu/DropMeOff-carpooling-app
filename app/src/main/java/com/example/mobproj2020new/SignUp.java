@@ -188,7 +188,8 @@ public class SignUp extends AppCompatActivity {
 
                             dbHandler.setUserCreationInfo(fname, lname, phone);
                             //dbHandler.putImageToStorage(uData);
-                            Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                            /*Intent intent = new Intent(getApplicationContext(), EditProfileActivity.class);
+                            startActivity(intent);*/
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUp.this, "Authentication failed.",
