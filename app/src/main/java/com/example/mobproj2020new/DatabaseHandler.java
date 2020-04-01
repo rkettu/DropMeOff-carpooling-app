@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.PreferenceChangeEvent;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 // Maybe make everything static?
 public class DatabaseHandler {
@@ -83,7 +85,7 @@ public class DatabaseHandler {
 
 
 
-    public void checkProfileCreated(Context context)
+    public void checkProfileCreated(final Context context)
     {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if(uid.equals("")) {
@@ -102,6 +104,7 @@ public class DatabaseHandler {
                         if(created)
                         {
                             FirebaseHelper.loggedIn = true;
+                            MainActivity.setImageSettings(context);
                             /*
                             Intent intent = new Intent(varContext, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -188,7 +191,7 @@ public class DatabaseHandler {
             User.arrayList.removeAll(User.arrayList);
             Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
             // Checking all rides with free passenger slots
-            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
+            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2); // TODO also add checking for ride distance...
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -307,25 +310,6 @@ public class DatabaseHandler {
         return false;
     }
 
-    private String picUri = "DEF_URI";
-
-    public void getSettingsPicture(final Context c, final String uid){
-
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
-        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                try{
-                    picUri = String.valueOf(task.getResult());
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(c);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("picUri", picUri);
-                    editor.apply();
-
-                }catch (Exception e){e.printStackTrace();}
-            }
-        });
-    }
 
     public void GoToProfile(final Context context, final String uid)
     {

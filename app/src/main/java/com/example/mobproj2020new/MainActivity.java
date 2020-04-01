@@ -9,9 +9,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,7 +22,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,13 +36,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity{
 
-    CircleImageView btnSettings;
+    private static CircleImageView btnSettings;
+    private static String image;
+    private static String uid = FirebaseAuth.getInstance().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_pick_up_or_transportation);
 
+        Log.d("TAG", "onCreate: ");
         btnSettings = findViewById(R.id.btnSettings);
 
         FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
@@ -44,13 +53,15 @@ public class MainActivity extends AppCompatActivity{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(FirebaseAuth.getInstance().getCurrentUser() != null)
                 {
+                    Log.d("TAG", "onAuthStateChanged: true");
                     CheckProfileCreated();
-                    setImageSettings();
+                    setImageSettings(MainActivity.this);
                 }
                 else
                 {
+                    Log.d("TAG", "onAuthStateChanged: false");
                     FirebaseHelper.loggedIn = false;
-                    setImageSettings();
+                    setImageSettings(MainActivity.this);
                 }
             }
         };
@@ -63,28 +74,26 @@ public class MainActivity extends AppCompatActivity{
         db.checkProfileCreated(getApplicationContext());
     }
 
-    private void setImageSettings(){
-        if(FirebaseHelper.loggedIn == true){
-            setSettingsImage();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            String picUri = preferences.getString("picUri", "no id");
-            Picasso.with(MainActivity.this).load(picUri).into(btnSettings);
-        }else if (FirebaseHelper.loggedIn == false){
-            Log.d("TAG", "setImageSettings: settingnappia laitetaan");
-            btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
-        }
-    }
+    public static void setImageSettings(final Context context) {
+        Log.d("TAG", "mennään = setImageSettings: ");
+        if (FirebaseHelper.loggedIn) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
+                storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.getResult() != null) {
+                            image = String.valueOf(task.getResult());
+                            Log.d("TAG", "onComplete: " + image);
+                            Picasso.with(context).load(image).into(btnSettings);
+                        }
 
-    private void setSettingsImage() {
-        try{
-            String getPic = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            Log.d("TAG", "setSettingsImage: " + getPic);
-            if(!getPic.isEmpty()){
-                DatabaseHandler dbh = new DatabaseHandler();
-                dbh.getSettingsPicture(this, getPic);
+                }
+                });
+            } else{
+                Log.d("TAG", "setImageSettings: settingnappia laitetaan");
+                btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
             }
-        }catch (Exception e){e.printStackTrace();}
-    }
+        }
 
     //-----------Applications settings button------------//
     final String[] itemListLoggedOut = {"Log In"};
