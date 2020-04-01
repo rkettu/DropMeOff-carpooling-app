@@ -2,8 +2,11 @@ package com.example.mobproj2020new;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import com.google.firebase.firestore.CollectionReference;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
 
 
 // Maybe make everything static?
@@ -97,7 +101,6 @@ public class DatabaseHandler {
                         boolean created = doc.toObject(User.class).getProfileCreated();
                         if(created)
                         {
-
                             FirebaseHelper.loggedIn = true;
                             /*
                             Intent intent = new Intent(varContext, MainActivity.class);
@@ -185,7 +188,7 @@ public class DatabaseHandler {
             User.arrayList.removeAll(User.arrayList);
             Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
             // Checking all rides with free passenger slots
-            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2); // TODO also add checking for ride distance...
+            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("freeSlots", 1); // TODO also add checking for ride distance...
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -302,6 +305,26 @@ public class DatabaseHandler {
             }
         }
         return false;
+    }
+
+    private String picUri = "DEF_URI";
+
+    public void getSettingsPicture(final Context c, final String uid){
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
+        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                try{
+                    picUri = String.valueOf(task.getResult());
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(c);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("picUri", picUri);
+                    editor.apply();
+
+                }catch (Exception e){e.printStackTrace();}
+            }
+        });
     }
 
     public void GoToProfile(final Context context, final String uid)

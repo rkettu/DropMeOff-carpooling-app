@@ -8,24 +8,36 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity{
+
+    CircleImageView btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_pick_up_or_transportation);
+
+        btnSettings = findViewById(R.id.btnSettings);
 
         FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -33,10 +45,12 @@ public class MainActivity extends AppCompatActivity{
                 if(FirebaseAuth.getInstance().getCurrentUser() != null)
                 {
                     CheckProfileCreated();
+                    setImageSettings();
                 }
                 else
                 {
                     FirebaseHelper.loggedIn = false;
+                    setImageSettings();
                 }
             }
         };
@@ -49,47 +63,93 @@ public class MainActivity extends AppCompatActivity{
         db.checkProfileCreated(getApplicationContext());
     }
 
-    //-----------Applications settings button------------//
-    public void AppSettings(View v) {
-        final String[] itemList = {"Settings", "My Profile", "About", "Sign Out"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(itemList, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case 0:
-                        //Log.d("SWAG", "onClick: settings");
-                        break;
-                    case 1:
-                        //Log.d("SWAG", "onClick: My Profile");
-                        if(FirebaseHelper.loggedIn) {
-                            DatabaseHandler db = new DatabaseHandler();
-                            db.GoToProfile(MainActivity.this, FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        } else {
-                            FirebaseHelper.GoToLogin(getApplicationContext());
-                        }
-                        break;
-                    case 2:
-                        //Log.d("SWAG", "onClick: About");
-                        break;
-                    case 3:
-                        //Log.d("SWAG", "onClick: Sign Out");
-                        if(FirebaseHelper.loggedIn) {
-                            FirebaseAuth.getInstance().signOut();
-                            Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            break;
-                        }
-                }
+    private void setImageSettings(){
+        if(FirebaseHelper.loggedIn == true){
+            setSettingsImage();
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String picUri = preferences.getString("picUri", "no id");
+            Picasso.with(MainActivity.this).load(picUri).into(btnSettings);
+        }else if (FirebaseHelper.loggedIn == false){
+            Log.d("TAG", "setImageSettings: settingnappia laitetaan");
+            btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
+        }
+    }
+
+    private void setSettingsImage() {
+        try{
+            String getPic = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            Log.d("TAG", "setSettingsImage: " + getPic);
+            if(!getPic.isEmpty()){
+                DatabaseHandler dbh = new DatabaseHandler();
+                dbh.getSettingsPicture(this, getPic);
             }
-        });
-        AlertDialog settingsDialog = builder.create();
-        settingsDialog.show();
-        settingsDialog.getWindow().setDimAmount(0);
-        settingsDialog.getWindow().setLayout(420, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        settingsDialog.getWindow().setGravity(Gravity.TOP | Gravity.RIGHT);
-        settingsDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.settings_dialog_background));
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    //-----------Applications settings button------------//
+    final String[] itemListLoggedOut = {"Log In"};
+    final String[] itemListLoggedIn = {"Settings", "My Profile", "About", "Sign Out"};
+    public void AppSettings(View v) {
+        if(FirebaseHelper.loggedIn){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setItems(itemListLoggedIn, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case 0:
+                            Log.d("SWAG", "onClick: settings");
+                            break;
+                        case 1:
+                            //Log.d("SWAG", "onClick: My Profile");
+                            if(FirebaseHelper.loggedIn) {
+                                DatabaseHandler db = new DatabaseHandler();
+                                db.GoToProfile(MainActivity.this, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            } else {
+                                FirebaseHelper.GoToLogin(getApplicationContext());
+                            }
+                            break;
+                        case 2:
+                            //Log.d("SWAG", "onClick: About");
+                            break;
+                        case 3:
+                            //Log.d("SWAG", "onClick: Sign Out");
+                            if(FirebaseHelper.loggedIn) {
+                                FirebaseAuth.getInstance().signOut();
+                                Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                break;
+                            }
+                    }
+                }
+            });
+            AlertDialog settingsDialog = builder.create();
+            settingsDialog.show();
+            settingsDialog.getWindow().setDimAmount(0);
+            settingsDialog.getWindow().setLayout(420, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            settingsDialog.getWindow().setGravity(Gravity.TOP | Gravity.RIGHT);
+            settingsDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.settings_dialog_background));
+        }
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setItems(itemListLoggedOut, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case 0:
+                            Log.d("SWAG", "onClick: ");
+                            FirebaseHelper.GoToLogin(getApplicationContext());
+                            break;
+                    }
+                }
+            });
+            AlertDialog settingsDialog = builder.create();
+            settingsDialog.show();
+            settingsDialog.getWindow().setDimAmount(0);
+            settingsDialog.getWindow().setLayout(420, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            settingsDialog.getWindow().setGravity(Gravity.TOP | Gravity.RIGHT);
+            settingsDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.settings_dialog_background));
+        }
     }
 
     //----------------Button BookedTrips----------------//
@@ -157,7 +217,6 @@ public class MainActivity extends AppCompatActivity{
 
     //-------------Button Get A Ride----------------//
     public void SelectGetARide(View v){
-
         Intent GetARideIntent = new Intent(MainActivity.this, GetRideActivity.class);
         startActivity(GetARideIntent);
 

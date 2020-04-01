@@ -7,11 +7,10 @@
     android:background="@drawable/background_login"
     tools:context=".MainActivity">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/btnSettings"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_settings_icon_foreground"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintTop_toTopOf="parent"
         android:onClick="AppSettings"

@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     public static ArrayList<User> arrayList = new ArrayList<>();
 
-    public static ArrayList<User> arrayList1 = new ArrayList<>();
+    public static String picUri = "DEF_URI";
 
     public String getUid() { return uid; }
 
