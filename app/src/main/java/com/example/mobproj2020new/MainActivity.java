@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity{
 
     private static CircleImageView btnSettings;
     private static String image;
-    private static String uid = FirebaseAuth.getInstance().getUid();
+    private static String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity{
                     Log.d("TAG", "onAuthStateChanged: true");
                     AppUser.init();
                     CheckProfileCreated();
-                    setImageSettings(MainActivity.this);
                 }
                 else
                 {
@@ -78,23 +77,24 @@ public class MainActivity extends AppCompatActivity{
     public static void setImageSettings(final Context context) {
         Log.d("TAG", "mennään = setImageSettings: ");
         if (FirebaseHelper.loggedIn) {
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
-                storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.getResult() != null) {
-                            image = String.valueOf(task.getResult());
-                            Log.d("TAG", "onComplete: " + image);
-                            Picasso.with(context).load(image).into(btnSettings);
-                        }
+            uid = FirebaseAuth.getInstance().getUid();
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
+            storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.getResult() != null) {
+                        image = String.valueOf(task.getResult());
+                        Log.d("TAG", "onComplete: " + image);
+                        Picasso.with(context).load(image).into(btnSettings);
+                    }
 
                 }
-                });
-            } else{
-                Log.d("TAG", "setImageSettings: settingnappia laitetaan");
-                btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
-            }
+            });
         }
+        else{
+                Log.d("TAG", "setImageSettings: settingnappia laitetaan");btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
+        }
+    }
 
     //-----------Applications settings button------------//
     final String[] itemListLoggedOut = {"Log In"};
