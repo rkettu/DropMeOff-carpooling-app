@@ -169,4 +169,11 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(MainActivity.this, RouteActivity.class);
         startActivity(intent);
     }
+
+    //Exit app with pressing back putton on your phone
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        return;
+    }
 }

@@ -63,14 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void editProfile(View v) {gotoEdit();}
     private void gotoEdit(){
         Intent intent = new Intent(this, EditProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    //Exit app with pressing back putton on your phone
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        return;
     }
 }
