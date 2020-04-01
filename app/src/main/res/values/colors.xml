@@ -23,5 +23,8 @@
 
     <color name="hintlog">#D5D5D5</color>
 
+    <color name="starColor">#FFDA23</color>
+    <color name="starSecondaryColor">#5C5327</color>
+
     <color name="colorAccent">#D81B60</color>
 </resources>
