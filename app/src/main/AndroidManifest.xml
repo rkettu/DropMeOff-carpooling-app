@@ -29,12 +29,14 @@
         <activity android:name=".OfferedTripsInfoActivity" />
         <activity android:name=".RouteActivity" />
 
-        <activity android:name=".GetRideActivity" />
-        <activity android:name=".RideDetailsActivity" />
+        <activity android:name=".GetRideActivity"></activity>
+
+        <activity android:name=".RideDetailsActivity"></activity>
+
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".CreateUserActivity" />
-        <activity android:name=".LogInActivity" />
+        <activity android:name=".LogInActivity"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -22,7 +22,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="24dp" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+   <!-- <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -34,12 +34,42 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_person_black_100dp"
-        android:src="@drawable/fb_profile_pic_0"/>-->
+        android:src="@drawable/fb_profile_pic_0"/>
+        -->
+
+    <EditText
+        android:id="@+id/firstNameedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="Firstname*"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingTop="15dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <EditText
+        android:id="@+id/lastNameedit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:hint="Lastname*"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingTop="15dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/hintlog"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/firstNameedit" />
 
     <ImageView
         android:id="@+id/backButton"
@@ -50,37 +80,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:onClick="backArrow"/>
 
-    <EditText
-        android:id="@+id/firstNameedit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:backgroundTint="@color/white"
-        android:hint="Firstname*"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingTop="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/hintlog"
-        app:layout_constraintEnd_toStartOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
-    <EditText
-        android:id="@+id/lastNameedit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:backgroundTint="@color/white"
-        android:hint="Lastname*"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingTop="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/hintlog"
-        app:layout_constraintEnd_toStartOf="@+id/profile_image"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameedit" />
 
     <EditText
         android:id="@+id/emailedit"

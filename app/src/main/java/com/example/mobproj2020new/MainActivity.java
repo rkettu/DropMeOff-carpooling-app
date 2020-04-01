@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(FirebaseAuth.getInstance().getCurrentUser() != null)
                 {
+                    AppUser.init();
                     CheckProfileCreated();
                 }
                 else
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity{
                     case 3:
                         //Log.d("SWAG", "onClick: Sign Out");
                         if(FirebaseHelper.loggedIn) {
+                            AppUser.del();
+
                             FirebaseAuth.getInstance().signOut();
                             Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -157,10 +160,8 @@ public class MainActivity extends AppCompatActivity{
 
     //-------------Button Get A Ride----------------//
     public void SelectGetARide(View v){
-
         Intent GetARideIntent = new Intent(MainActivity.this, GetRideActivity.class);
         startActivity(GetARideIntent);
-
     }
 
     //------------Button Offer A Ride--------------//

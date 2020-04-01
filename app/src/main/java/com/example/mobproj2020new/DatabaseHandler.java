@@ -48,6 +48,7 @@ public class DatabaseHandler {
     public void setUserCreationInfo(String fname, String lname, String phone)
     {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        AppUser.init();
         if(uid.equals("")) {
             return;
         }
@@ -55,6 +56,24 @@ public class DatabaseHandler {
 
         User user = new User(fname,lname,phone);
         mUsersDocRef.set(user); // add on success, on failure event listeners for checking for errors if needed
+    }
+
+    //Update profile data on EditProfileActivity
+    public void updateUserInfo(final Context context){
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(AppUser.getUid());
+
+        User user = AppUser.createStaticUser();
+        Log.d("######DatabaseHandler check####", "fname " + user.getFname() + "\nlname "
+                + user.getLname()  + "\nphone " + user.getPhone() + "\nemail " + user.getEmail()
+                + "\nbio " + user.getBio() + "\nimgUri " + user.getImgUri() + "\nuid " + user.getUid());
+        mUsersDocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        }); // add on success, on failure event listeners for checking for errors if needed
     }
 
     // Saves route to database, informing of success, failure
@@ -76,8 +95,6 @@ public class DatabaseHandler {
             }
         });
     }
-
-
 
     public void checkProfileCreated(Context context)
     {
@@ -108,7 +125,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             varContext.startActivity(intent);
                         }
                     }
@@ -142,8 +159,18 @@ public class DatabaseHandler {
         FirebaseStorage fbs;
         fbs = FirebaseStorage.getInstance();
         storageRef = fbs.getReference();
-        StorageReference ppRef = storageRef.child("profpics/"+uid);
-        UploadTask upTask = ppRef.putFile(imageUri);
+        StorageReference ppRef = storageRef.child("profpics/"+AppUser.getUid());
+
+        ppRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        AppUser.setImgUri();
+                    }
+                });
+        //UploadTask upTask = ppRef.putFile(imageUri);
+
+
         // Add listeners for fail/complete/success?
     }
 
@@ -332,13 +359,13 @@ public class DatabaseHandler {
         });
     }
 
+    //GET users (profile) image From FirebaseStorage
     private void getProfilepick(final User user){
-        //GET users (profile) image From FirebaseStorage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + profileUid);
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                Log.d("######DatabaseHandler ImgUri####", String.valueOf(task.getResult()));
                 struri = String.valueOf(task.getResult());
 
                 //set Users image Uri and Uid
@@ -347,7 +374,6 @@ public class DatabaseHandler {
                 gotoProfileActivity(user);
             }
         });
-        //return user;
     }
 
     private void gotoProfileActivity(final User user){
