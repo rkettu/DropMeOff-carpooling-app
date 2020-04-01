@@ -246,7 +246,7 @@ public class DatabaseHandler {
             });
         }
     }
-    
+
     // Move to some Math class?
     // Returns distance in km
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
