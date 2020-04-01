@@ -54,9 +54,16 @@ public class ProfileActivity extends AppCompatActivity {
 
         Picasso.with(ProfileActivity.this).load(user.getImgUri()).into(profileImageView);
         profileNameTextView.setText(user.getFname() + " " + user.getLname());
-        profileEmailTextView.setText("EMAIL_DEF");
+        profileEmailTextView.setText(user.getEmail());
         profilePhoNumTextView.setText(user.getPhone());
+        profileBioTextView.setText(user.getBio());
 
+    }
 
+    public void editProfile(View v) {gotoEdit();}
+    private void gotoEdit(){
+        Intent intent = new Intent(this, EditProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -54,6 +55,7 @@ public class DatabaseHandler {
     public void setUserCreationInfo(String fname, String lname, String phone)
     {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        AppUser.init();
         if(uid.equals("")) {
             return;
         }
@@ -61,6 +63,24 @@ public class DatabaseHandler {
 
         User user = new User(fname,lname,phone);
         mUsersDocRef.set(user); // add on success, on failure event listeners for checking for errors if needed
+    }
+
+    //Update profile data on EditProfileActivity
+    public void updateUserInfo(final Context context){
+        mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(AppUser.getUid());
+
+        User user = AppUser.createStaticUser();
+        Log.d("######DatabaseHandler check####", "fname " + user.getFname() + "\nlname "
+                + user.getLname()  + "\nphone " + user.getPhone() + "\nemail " + user.getEmail()
+                + "\nbio " + user.getBio() + "\nimgUri " + user.getImgUri() + "\nuid " + user.getUid());
+        mUsersDocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
+            }
+        }); // add on success, on failure event listeners for checking for errors if needed
     }
 
     // Saves route to database, informing of success, failure
@@ -82,8 +102,6 @@ public class DatabaseHandler {
             }
         });
     }
-
-
 
     public void checkProfileCreated(final Context context)
     {
@@ -114,7 +132,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             varContext.startActivity(intent);
                         }
                     }
@@ -148,8 +166,18 @@ public class DatabaseHandler {
         FirebaseStorage fbs;
         fbs = FirebaseStorage.getInstance();
         storageRef = fbs.getReference();
-        StorageReference ppRef = storageRef.child("profpics/"+uid);
-        UploadTask upTask = ppRef.putFile(imageUri);
+        StorageReference ppRef = storageRef.child("profpics/"+AppUser.getUid());
+
+        ppRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        AppUser.setImgUri();
+                    }
+                });
+        //UploadTask upTask = ppRef.putFile(imageUri);
+
+
         // Add listeners for fail/complete/success?
     }
 
@@ -252,7 +280,7 @@ public class DatabaseHandler {
             });
         }
     }
-    
+
     // Move to some Math class?
     // Returns distance in km
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
@@ -339,13 +367,13 @@ public class DatabaseHandler {
         });
     }
 
+    //GET users (profile) image From FirebaseStorage
     private void getProfilepick(final User user){
-        //GET users (profile) image From FirebaseStorage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + profileUid);
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                Log.d("######ImgUri####", String.valueOf(task.getResult()));
+                Log.d("######DatabaseHandler ImgUri####", String.valueOf(task.getResult()));
                 struri = String.valueOf(task.getResult());
 
                 //set Users image Uri and Uid
@@ -354,7 +382,6 @@ public class DatabaseHandler {
                 gotoProfileActivity(user);
             }
         });
-        //return user;
     }
 
     private void gotoProfileActivity(final User user){

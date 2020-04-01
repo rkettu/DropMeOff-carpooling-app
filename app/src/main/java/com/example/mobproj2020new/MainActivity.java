@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity{
                 if(FirebaseAuth.getInstance().getCurrentUser() != null)
                 {
                     Log.d("TAG", "onAuthStateChanged: true");
+                    AppUser.init();
                     CheckProfileCreated();
                     setImageSettings(MainActivity.this);
                 }
@@ -228,12 +229,18 @@ public class MainActivity extends AppCompatActivity{
     public void SelectGetARide(View v){
         Intent GetARideIntent = new Intent(MainActivity.this, GetRideActivity.class);
         startActivity(GetARideIntent);
-
     }
 
     //------------Button Offer A Ride--------------//
     public void SelectOfferARide(View v){
         Intent intent = new Intent(MainActivity.this, RouteActivity.class);
         startActivity(intent);
+    }
+
+    //Exit app with pressing back putton on your phone
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        return;
     }
 }

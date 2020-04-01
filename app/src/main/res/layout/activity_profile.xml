@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_settings_black_24dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="editProfile"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
