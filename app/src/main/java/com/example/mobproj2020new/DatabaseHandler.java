@@ -2,8 +2,11 @@ package com.example.mobproj2020new;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,6 +30,9 @@ import com.google.firebase.firestore.CollectionReference;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 // Maybe make everything static?
@@ -71,7 +77,7 @@ public class DatabaseHandler {
             @Override
             public void onSuccess(Void aVoid) {
                 Intent intent = new Intent(context, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
             }
         }); // add on success, on failure event listeners for checking for errors if needed
@@ -97,7 +103,7 @@ public class DatabaseHandler {
         });
     }
 
-    public void checkProfileCreated(Context context)
+    public void checkProfileCreated(final Context context)
     {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         if(uid.equals("")) {
@@ -115,8 +121,8 @@ public class DatabaseHandler {
                         boolean created = doc.toObject(User.class).getProfileCreated();
                         if(created)
                         {
-
                             FirebaseHelper.loggedIn = true;
+                            MainActivity.setImageSettings(context);
                             /*
                             Intent intent = new Intent(varContext, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -333,6 +339,7 @@ public class DatabaseHandler {
         }
         return false;
     }
+
 
     public void GoToProfile(final Context context, final String uid)
     {

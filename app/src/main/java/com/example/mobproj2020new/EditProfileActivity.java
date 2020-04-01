@@ -182,11 +182,4 @@ public class EditProfileActivity extends AppCompatActivity {
             AppUser.imgSelected = true;
         }
     }
-
-    //pressing back putton on your phone
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        return;
-    }
 }

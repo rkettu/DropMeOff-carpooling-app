@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileEmailTextView;
     TextView profilePhoNumTextView;
     TextView profileBioTextView;
+    RatingBar rating;
     User user;
 
     String struri = "DEF_URI";
@@ -43,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmailTextView = findViewById(R.id.profileEmailText);
         profilePhoNumTextView= findViewById(R.id.profilePhoNumText);
         profileBioTextView = findViewById(R.id.profileBioText);
+        rating = findViewById(R.id.ratingBar);
 
         Intent i = getIntent();
         user = (User) i.getSerializableExtra("JOKUKEY");
@@ -60,14 +63,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public void editProfile(View v) {gotoEdit();}
+    public void editProfile(View v) {
+        gotoEdit();
+    }
     private void gotoEdit(){
         Intent intent = new Intent(this, EditProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
-    //Exit app with pressing back putton on your phone
+    ///Back and exit/quit activity///////////
+    public void backArrow(View v){
+        onBackPressed();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -102,7 +102,6 @@ public class GetARideAdapter extends BaseAdapter {
 
         //--Setting text to holders--//
 
-        Log.d("TAG", "getView: " + User.arrayList.get(position).getImgUri());
         holder.tripUser.setText(User.arrayList.get(position).getFname());
         holder.startPoint.setText(GetARideUtility.arrayList.get(position).getStartAddress());
         holder.endPoint.setText(GetARideUtility.arrayList.get(position).getEndAddress());
