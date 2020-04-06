@@ -45,6 +45,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     SeekBar seekBar;
     SeekBar seekBar2;
     TextView hintaTxt, exampleTxt, minRange;
+    EditText pickUpDistanceEditText;
     private Button confirmBtn;
     String newMatka;
     String newAika;
@@ -201,6 +202,9 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
                 mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
                 long leaveTime = mC.getTimeInMillis();
+                pickUpDistanceEditText = findViewById(R.id.pickUpDistanceEditText);
+                String pickUpDistance = pickUpDistanceEditText.getText().toString();
+                int pickUpDist = Integer.parseInt(pickUpDistance);
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String duration = newAika;
@@ -214,7 +218,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 List<String> waypointAddresses = Constant.waypointAddressesList;
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                        freeSlots, price, points, waypointAddresses, participants);
+                        freeSlots, price, points, waypointAddresses, participants, pickUpDist);
                 db.createRide(route, RideDetailsActivity.this);
             } else {
                 FirebaseHelper.GoToLogin(getApplicationContext());

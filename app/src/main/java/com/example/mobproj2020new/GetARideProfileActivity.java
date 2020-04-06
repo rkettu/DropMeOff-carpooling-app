@@ -41,7 +41,17 @@ public class GetARideProfileActivity extends AppCompatActivity {
     CheckBox luggageCheckBox;
     EditText luggageEditText;
     CircleImageView progImageView;
-    private String bUser, bUserPic, bStartP, bDest, bDate, bDur, bPrice, bSeats, bRideId, bUid;
+    private String bUser;
+    private String bUserPic;
+    private String bStartP;
+    private String bDest;
+    private String bDate;
+    private String bDur;
+    private String bPrice;
+    private String bSeats;
+    private String bRideId;
+    private String bUid;
+    private ArrayList<String> bWayPoint;
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
 
     @Override
@@ -58,7 +68,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         durationTextView = findViewById(R.id.profTV5);
         priceTextView = findViewById(R.id.profTV6);
         freeSeatsTextView = findViewById(R.id.profTV7);
-        waypointsTextView = findViewById(R.id.tv8);
+        waypointsTextView = findViewById(R.id.profTV8);
         luggageEditText = findViewById(R.id.luggageET);
         luggageCheckBox = findViewById(R.id.luggageCB);
 
@@ -75,6 +85,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         bSeats = bundle.getString("seats");
         bRideId = bundle.getString("rideId");
         bUid = bundle.getString("uid");
+        bWayPoint = bundle.getStringArrayList("waypoints");
 
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(Long.parseLong(bDate));
@@ -88,6 +99,16 @@ public class GetARideProfileActivity extends AppCompatActivity {
         durationTextView.setText("Duration: " + bDur);
         priceTextView.setText("Price: " + bPrice + "per Kilometer");
         freeSeatsTextView.setText("Available seats: " + bSeats);
+        Log.d("TAG", "onCreate: " + bWayPoint.get(0));
+
+        if(bWayPoint.size() > 0){
+            for(int i = 0; i < bWayPoint.size()-1; i++) {
+                int j = i + 1;
+                waypointsTextView.append( "\n" + j + ": " + bWayPoint.get(i));
+            }
+        }else{
+            waypointsTextView.setText("No way points");
+        }
     }
 
     public void cbOnClick(View view){

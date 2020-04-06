@@ -11,15 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.sql.Time;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
 
 
 public class GetARideAdapter extends BaseAdapter {
@@ -131,6 +126,7 @@ public class GetARideAdapter extends BaseAdapter {
                 profileIntent.putExtra("price", String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
                 profileIntent.putExtra("date", String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
                 profileIntent.putExtra("rideId", GetARideUtility.arrayList.get(position).getRideId());
+                profileIntent.putStringArrayListExtra("waypoints", (ArrayList<String>) GetARideUtility.arrayList.get(position).getWaypointAddresses());
                 mContext.startActivity(profileIntent);
             }
         });

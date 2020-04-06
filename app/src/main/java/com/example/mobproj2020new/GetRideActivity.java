@@ -154,8 +154,6 @@ public class GetRideActivity extends AppCompatActivity {
         float stopLat = (float) add2.getLatitude();
         float stopLon = (float) add2.getLongitude();
 
-        float distanceRange = 5;
-
         Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
 
         // TODO: !!!! Require both time fields for search, maybe preset them to current day - week from current day
@@ -166,7 +164,7 @@ public class GetRideActivity extends AppCompatActivity {
 
         DatabaseHandler dbh = new DatabaseHandler();
         DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
-        gmr.execute(distanceRange, startLat, startLon, stopLat, stopLon, t1, t2);
+        gmr.execute(startLat, startLon, stopLat, stopLon, t1, t2);
     }
 
     public void btnBackArrow(View v){

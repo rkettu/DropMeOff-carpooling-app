@@ -135,7 +135,8 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            //TODO: Changed FLAG_ACTIVITY_CLEAR_TOP to FLAG_ACTIVITY_NEW_TASK, not crashing anymore
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             varContext.startActivity(intent);
                         }
                     }
@@ -194,16 +195,15 @@ public class DatabaseHandler {
 
         @Override
         protected String doInBackground(Float... floats) {
-            float dist = floats[0];
-            float startlat = floats[1];
-            float startlon = floats[2];
-            float stoplat = floats[3];
-            float stoplon = floats[4];
-            float t1 = floats[5];
-            float t2 = floats[6];
+            float startlat = floats[0];
+            float startlon = floats[1];
+            float stoplat = floats[2];
+            float stoplon = floats[3];
+            float t1 = floats[4];
+            float t2 = floats[5];
 
             try {
-                getMatchingRoutes(dist, t1, t2, startlat, startlon, stoplat, stoplon);
+                getMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
                 Log.d("TAG", "doInBackground: doInBackgoruasoaadsa");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -217,7 +217,7 @@ public class DatabaseHandler {
             super.onPostExecute(result);
         }
 
-        public void getMatchingRoutes(final float pickupDistance, float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
+        public void getMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
             GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
             User.arrayList.removeAll(User.arrayList);
             Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
@@ -230,6 +230,8 @@ public class DatabaseHandler {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             if ((long) doc.get("freeSlots") >= 1) {
                                 try {
+                                    float pickupDistance = (long) doc.get("pickUpDistance");
+                                    Log.d("HALOO", "onComplete: " + pickupDistance);
                                     List<HashMap<String, String>> points = (List) doc.get("points");
                                     if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
                                         final String rideId = doc.getId();
