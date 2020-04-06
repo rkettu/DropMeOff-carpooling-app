@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity{
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which){
                         case 0:
-                            Log.d("SWAG", "onClick: settings");
+                            //Log.d("SWAG", "onClick: settings");
                             break;
                         case 1:
                             //Log.d("SWAG", "onClick: My Profile");

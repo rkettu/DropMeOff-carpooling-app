@@ -47,15 +47,13 @@ public class GetRideActivity extends AppCompatActivity {
         dateEditText2 = findViewById(R.id.dateEditText2);
         estTimeEditText = findViewById(R.id.estTimeEditText);
         estTimeEditText2 = findViewById(R.id.estTimeEditText2);
-        dummyData();
         tripListView = findViewById(R.id.tripsListView);
 
+        dummyData();
+        GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
         getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
-
         tripListView.setAdapter(getARideAdapter);
         mCalendar = Calendar.getInstance();
-
-
     }
 
     private void dummyData(){

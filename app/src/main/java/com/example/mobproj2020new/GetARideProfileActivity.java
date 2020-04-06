@@ -41,7 +41,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
     CheckBox luggageCheckBox;
     EditText luggageEditText;
     CircleImageView progImageView;
-    private String bUser, bUserPic, bStartP, bDest, bDate, bDur, bPrice, bSeats, bRideId;
+    private String bUser, bUserPic, bStartP, bDest, bDate, bDur, bPrice, bSeats, bRideId, bUid;
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
 
     @Override
@@ -74,6 +74,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         bPrice = bundle.getString("price");
         bSeats = bundle.getString("seats");
         bRideId = bundle.getString("rideId");
+        bUid = bundle.getString("uid");
 
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(Long.parseLong(bDate));
@@ -110,7 +111,11 @@ public class GetARideProfileActivity extends AppCompatActivity {
     }
 
     public void goToProfile(View view){
-        //-------- Go to ride provider profile ---------//
+        //-------- Go to ride provider profile ---------// TODO: ride provider's profile view for other users.
+        if(bUid != null){
+            DatabaseHandler handler = new DatabaseHandler();
+            handler.GoToProfile(GetARideProfileActivity.this, bUid);
+        }
     }
 
     private void BookTripDialog()
@@ -123,7 +128,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHandler db = new DatabaseHandler();
-                db.BookTrip(bRideId,FirebaseAuth.getInstance().getCurrentUser().getUid());
+                db.BookTrip(bRideId, FirebaseAuth.getInstance().getCurrentUser().getUid(), getApplicationContext());
             }
         });
 

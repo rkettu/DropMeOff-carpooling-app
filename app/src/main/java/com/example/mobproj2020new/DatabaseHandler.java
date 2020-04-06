@@ -94,6 +94,9 @@ public class DatabaseHandler {
                     // Return to main activity...
                     // Show Toast text / pop up text or whatever in main instead...
                     Toast.makeText(context, "Ride Created", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(context, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
                 }
                 else {
                     Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();
@@ -393,8 +396,8 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
-    public void BookTrip(final String rideId, final String userId)
-    {
+    public void BookTrip(final String rideId, final String userId, Context context) {
+        final Context c = context;
         if(rideId.equals("") || userId.equals("")) // Big failure
             return;
 
@@ -433,7 +436,10 @@ public class DatabaseHandler {
                                     }
                                     mUsersDocRef.set(user);
 
-                                    // TODO: Go to main here, displaying that ride booked successfully :)
+                                    Toast.makeText(c, "Travel reservation successful", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(c, MainActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    c.startActivity(i);
                                 }
                             }
                         });

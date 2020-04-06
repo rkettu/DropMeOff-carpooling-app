@@ -123,6 +123,7 @@ public class GetARideAdapter extends BaseAdapter {
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
                 profileIntent.putExtra("user", User.arrayList.get(position).getFname());
                 profileIntent.putExtra("userPic", User.arrayList.get(position).getImgUri());
+                profileIntent.putExtra("uid", GetARideUtility.arrayList.get(position).getUid());
                 profileIntent.putExtra("start", GetARideUtility.arrayList.get(position).getStartAddress());
                 profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
                 profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());
