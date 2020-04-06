@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity{
 
     //-----------Applications settings button------------//
     final String[] itemListLoggedOut = {"Log In"};
-    final String[] itemListLoggedIn = {"Settings", "My Profile", "About", "Sign Out"};
+    final String[] itemListLoggedIn = {"Settings", "My Profile", "My rating", "About", "Sign Out"};
     public void AppSettings(View v) {
         if(FirebaseHelper.loggedIn){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -120,9 +120,20 @@ public class MainActivity extends AppCompatActivity{
                             }
                             break;
                         case 2:
-                            //Log.d("SWAG", "onClick: About");
+                            //Log.d("SWAG", "onClick: My rating");
+                            if(FirebaseHelper.loggedIn)
+                            {
+                                Intent ratingIntent = new Intent(getApplicationContext(), RatingActivity.class);
+                                startActivity(ratingIntent);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "You are not signed in", Toast.LENGTH_LONG).show();
+                            }
                             break;
                         case 3:
+                            //Log.d("SWAG", "onClick: About");
+                            break;
+                        case 4:
                             //Log.d("SWAG", "onClick: Sign Out");
                             if(FirebaseHelper.loggedIn) {
                                 FirebaseAuth.getInstance().signOut();
