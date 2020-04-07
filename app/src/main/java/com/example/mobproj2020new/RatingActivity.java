@@ -23,12 +23,16 @@ public class RatingActivity extends AppCompatActivity {
 
     private List<String> bookedRides;
     private List<String> startAddress;
-    private String[] endAddresses;
+    private List<String> endAddresses;
+    public static int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
+
+        startAddress = new ArrayList<>();
+        endAddresses = new ArrayList<>();
 
         getUserUid();
     }
@@ -63,29 +67,54 @@ public class RatingActivity extends AppCompatActivity {
     }
 
     private void findRidesDetails() {
-        //Log.d("TESTIII","findRides:" + bookedRides);
+        Log.d("TESTIII","RidesSize:" + bookedRides.size());
+        index = 0;
 
-
-        String lista = bookedRides.toString();
-        String[] ridesId = lista.split(",");
-
-        for (int i = 0; i < ridesId.length; i++)
+        for(int i = 0; i < bookedRides.size(); i++)
         {
-            Log.d("TESTIII", ridesId[i]);
+            Log.d("TESTIII","findRides:" + bookedRides.get(i));
+
             FirebaseFirestore myFirestoreRef = FirebaseFirestore.getInstance();
-            DocumentReference myDocRef = myFirestoreRef.collection("rides").document(ridesId[i]);
+            DocumentReference myDocRef = myFirestoreRef.collection("rides").document(bookedRides.get(i));
 
             myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if(task.isSuccessful()){
                         DocumentSnapshot doc = task.getResult();
-                        if(doc.exists()){
-                            startAddress.add(doc.getString("startAddress"));
+
+                        if(doc.exists())
+                        {
+                            try {
+                                startAddress.add(doc.getString("startAddress"));
+                                endAddresses.add(doc.getString("endAddress"));
+                                Log.d("TESTIII", doc.getString("startAddress"));
+                                index++;
+                                if(index == bookedRides.size()){
+                                    setDataToList();
+                                }
+                            }catch (Exception e){
+                                startAddress = new ArrayList<>();
+                                Log.d("TESTIII","vittu");
+                            }
                         }
                     }
                 }
             });
+        }
+
+    }
+
+    private void setDataToList() {
+        Log.d("TESTIII44", "setDatassa!");
+        if(startAddress != null){
+            for(int i = 0; i < startAddress.size(); i++)
+            {
+                Log.d("TESTIII44", startAddress.get(i));
+            }
+        }
+        else {
+            Log.d("TESTIII44", "empty ");
         }
 
     }
