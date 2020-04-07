@@ -93,6 +93,7 @@ public class GetRideActivity extends AppCompatActivity {
 
         tripListView.setAdapter(getARideAdapter);
     }
+
     public void dateOfTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();
         newYear = calendar.get(Calendar.YEAR);

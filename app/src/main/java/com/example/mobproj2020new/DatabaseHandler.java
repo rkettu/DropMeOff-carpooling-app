@@ -442,4 +442,23 @@ public class DatabaseHandler {
             }
         });
     }
+
+    //-----------------Remove button for booked trips-----------//
+    /*public void RemoveTrip(final String rideId, final String userId)
+    {
+        final DocumentReference routeDoc = FirebaseFirestore.getInstance().collection("rides").document(rideId);
+        routeDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task <DocumentSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    DocumentSnapshot doc = task.getResult();
+                    if((long)) doc.get("freeSlots") >= 1) {
+                    Route route = doc.toObject(Route.class);
+                    route.
+                }
+                }
+            }
+        }
+    }*/
 }

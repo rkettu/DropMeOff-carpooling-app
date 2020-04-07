@@ -7,18 +7,40 @@
     android:background="@drawable/background_login"
     tools:context=".BookedTripsInfoActivity">
 
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="btnBackArrow"/>
+
+
     <TextView
-        android:id="@+id/tripHeadline"
+        android:id="@+id/tripStartPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:hint="Start - Destination headline"
+        android:layout_marginTop="50dp"
+        android:hint="Start -"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/tripDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="50dp"
+        android:hint="Destination"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tripStartPoint"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Name"
@@ -30,7 +52,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
+        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint" />
 
     <TextView
         android:id="@+id/nameText"
@@ -45,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/Name"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
+        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint" />
 
     <TextView
         android:id="@+id/Phone"

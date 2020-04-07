@@ -36,6 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity{
 
+    GetARideAdapter getARideAdapter;
     private static CircleImageView btnSettings;
     private static String image;
     private static String uid;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_pick_up_or_transportation);
+
+        getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
 
         Log.d("TAG", "onCreate: ");
         btnSettings = findViewById(R.id.btnSettings);
@@ -169,14 +172,12 @@ public class MainActivity extends AppCompatActivity{
         builder.setTitle("Booked trips");
 
         //------------List to test AlertDialog---------//
-        final List<String> trips = new ArrayList<>();
+
+        final List<String> trips= new ArrayList<>();
         trips.add("Oulu - Helsinki");
         trips.add("Oulu - Kannus");
-        trips.add("Oulu - Pyhäjärvi");
+        trips.add("Pyhäjärvi - Helsinki");
         trips.add("Helsinki - Oulu");
-        trips.add("Helsinki - Jyväskylä - Oulu");
-
-
 
         ArrayAdapter<String> bookedTrips = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, trips);
