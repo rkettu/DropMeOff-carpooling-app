@@ -98,6 +98,38 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         TextView date;
     }
 
+    private String locate(String address){
+        try {
+            Geocoder geocoder = new Geocoder(mContext);
+            List<Address> addressPoint = geocoder.getFromLocationName(address, 1);
+            Address newAddress = addressPoint.get(0);
+
+            float lat = (float) newAddress.getLatitude();
+            float lon = (float) newAddress.getLongitude();
+
+            String result = myGeoLocate(lat, lon);
+            return result;
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return "FAILED";
+    }
+
+    private String myGeoLocate(float first, float second){
+        Geocoder geocoder = new Geocoder(mContext);
+        String city = null;
+        try{
+            List<Address> addresses = geocoder.getFromLocation(first, second, 1);
+            city = addresses.get(0).getLocality();
+            return city;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return "FAILED";
+    }
+
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         //--Set view holders--//
@@ -107,9 +139,8 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             view = inflater.from(parent.getContext()).inflate(R.layout.adapter_get_a_ride, parent, false);
             holder.endPoint = view.findViewById(R.id.tv1);
             holder.startPoint = view.findViewById(R.id.tv2);
-            holder.duration = view.findViewById(R.id.tv3);
-            holder.tripTime = view.findViewById(R.id.tv4);
-            holder.freeSlots = view.findViewById(R.id.tv5);
+            //holder.duration = view.findViewById(R.id.tv3);
+            //holder.freeSlots = view.findViewById(R.id.tv5);
             holder.tripUser = view.findViewById(R.id.tv6);
             holder.price = view.findViewById(R.id.tv7);
             holder.date = view.findViewById(R.id.tv8);
@@ -132,10 +163,10 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         getRoute.execute(getUserStartPoint(), getUserEndPoint());
 
         holder.tripUser.setText(User.arrayList.get(position).getFname());
-        holder.startPoint.setText(GetARideUtility.arrayList.get(position).getStartAddress());
-        holder.endPoint.setText(GetARideUtility.arrayList.get(position).getEndAddress());
-        holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
-        holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
+        holder.startPoint.setText(locate(GetARideUtility.arrayList.get(position).getStartAddress()));
+        holder.endPoint.setText(locate(GetARideUtility.arrayList.get(position).getEndAddress()));
+        //holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
+        //holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
 
         //------------ Time -----------------//
         long millis = GetARideUtility.arrayList.get(position).getLeaveTime();
@@ -157,7 +188,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
                 profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
                 profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());
                 profileIntent.putExtra("seats", String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
-                profileIntent.putExtra("price", String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
+                profileIntent.putExtra("price", holder.price.getText().toString());
                 profileIntent.putExtra("date", String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
                 profileIntent.putExtra("rideId", GetARideUtility.arrayList.get(position).getRideId());
                 profileIntent.putStringArrayListExtra("waypoints", (ArrayList<String>) GetARideUtility.arrayList.get(position).getWaypointAddresses());

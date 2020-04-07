@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/custom_button3"
     android:onClick="adapterOnClick">
 
     <!-- endpoint -->
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:textSize="24dp"
         android:gravity="center"
+        android:layout_marginBottom="10dp"
         app:layout_constraintRight_toRightOf="@id/guideline_3"
         app:layout_constraintLeft_toRightOf="@id/guideline_1"
         app:layout_constraintTop_toBottomOf="@+id/tv2"
@@ -28,6 +30,7 @@
         android:layout_height="wrap_content"
         android:text="start point"
         android:textSize="24dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:maxLines="1"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,36 +38,22 @@
         app:layout_constraintLeft_toLeftOf="@id/guideline_1"
         />
 
-    <!-- trip time -->
+    <!-- trip time
     <TextView
         android:id="@+id/tv3"
         android:textColor="@color/white"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="start time"
+        android:layout_height="0dp"
+        android:text="Duration"
         android:textSize="16dp"
         android:gravity="right"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/guideline_4"
-        app:layout_constraintBottom_toTopOf="@+id/tv4"
-        />
-
-    <!-- trip length -->
-    <TextView
-        android:id="@+id/tv4"
-        android:textColor="@color/white"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="duration"
-        android:textSize="16dp"
-        android:gravity="right"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv3"
+        app:layout_constraintBottom_toTopOf="@+id/tv5"
         app:layout_constraintLeft_toRightOf="@id/guideline_4"
         />
-
-    <!-- free slots -->
+-->
+    <!-- free slots
     <TextView
         android:id="@+id/tv5"
         android:textColor="@color/white"
@@ -73,23 +62,24 @@
         android:text="free slots"
         android:textSize="16dp"
         android:gravity="right"
+        app:layout_constraintTop_toBottomOf="@+id/tv3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv4"
         app:layout_constraintLeft_toRightOf="@id/guideline_4"
         />
-
+-->
     <TextView
         android:id="@+id/tv8"
         android:textColor="@color/white"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="date"
         android:textSize="16dp"
+        android:maxLines="2"
         android:gravity="right"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/guideline_4"
-        app:layout_constraintTop_toBottomOf="@id/tv4"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tv7"
         app:layout_constraintLeft_toRightOf="@id/guideline_3"
         />
 
@@ -99,11 +89,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="price"
-        android:textSize="16dp"
+        android:textSize="24dp"
         android:gravity="right"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/guideline_4"
-        app:layout_constraintTop_toBottomOf="@id/tv8"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@id/guideline_3"
         />
 
@@ -141,7 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.60"/>
+        app:layout_constraintGuide_percent="0.70"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_4"

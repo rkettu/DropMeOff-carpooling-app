@@ -97,11 +97,11 @@ public class GetARideProfileActivity extends AppCompatActivity {
         destinationTextView.setText("Destination: " + bDest);
         startTimeTextView.setText("Leaves at: " + timeString);
         durationTextView.setText("Duration: " + bDur);
-        priceTextView.setText("Price: " + bPrice + "per Kilometer");
+        priceTextView.setText("Price for trip: " + bPrice);
         freeSeatsTextView.setText("Available seats: " + bSeats);
         Log.d("TAG", "onCreate: " + bWayPoint.get(0));
 
-        if(bWayPoint.size() > 0){
+        if(bWayPoint.size() > 1){
             for(int i = 0; i < bWayPoint.size()-1; i++) {
                 int j = i + 1;
                 waypointsTextView.append( "\n" + j + ": " + bWayPoint.get(i));
