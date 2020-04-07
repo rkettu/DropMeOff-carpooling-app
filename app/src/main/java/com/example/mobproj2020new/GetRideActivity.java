@@ -74,6 +74,9 @@ public class GetRideActivity extends AppCompatActivity {
         String startPoint = startPointEditText.getText().toString();
         String endPoint = endPointEditText.getText().toString();
 
+        getARideAdapter.setUserStartPoint(startPoint);
+        getARideAdapter.setUserEndPoint(endPoint);
+
         //TODO: RETURN STATEMENT IF NOT CORRECT
         try {
             geoLocate(startPoint, endPoint);

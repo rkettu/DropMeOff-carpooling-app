@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,24 +12,56 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class GetARideAdapter extends BaseAdapter {
+public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
     private ArrayList<User> userList;
     private ArrayList<GetARideUtility> tripList;
+    private String userStartPoint;
+    private String userEndPoint;
+
     LayoutInflater inflater;
     Context mContext;
 
-    public GetARideAdapter(){
+    public GetARideAdapter() {
 
     }
 
-    public GetARideAdapter(Context context, ArrayList<GetARideUtility> arrayList){
+    public GetARideAdapter(String userStartPoint, String userEndPoint){
+        this.userStartPoint = userStartPoint;
+        this.userEndPoint = userEndPoint;
+    }
+
+    public String getUserStartPoint() {
+        return userStartPoint;
+    }
+
+    public void setUserStartPoint(String userStartPoint) {
+        this.userStartPoint = userStartPoint;
+    }
+
+    public String getUserEndPoint() {
+        return userEndPoint;
+    }
+
+    public void setUserEndPoint(String userEndPoint) {
+        this.userEndPoint = userEndPoint;
+    }
+
+    public GetARideAdapter(Context context, ArrayList<GetARideUtility> arrayList) {
         //inflater = LayoutInflater.from(mContext);
         this.tripList = new ArrayList<>();
         mContext = context;
@@ -49,7 +82,12 @@ public class GetARideAdapter extends BaseAdapter {
         return position;
     }
 
-    public static class ViewHolder{
+    @Override
+    public void onTaskDone(Object... values) {
+
+    }
+
+    public static class ViewHolder {
         TextView startPoint;
         TextView endPoint;
         TextView tripUser;
@@ -60,26 +98,11 @@ public class GetARideAdapter extends BaseAdapter {
         TextView date;
     }
 
-    public String geoLocate(float lat, float lon){
-        Geocoder geocoder = new Geocoder(mContext);
-        String address = "";
-        String kaupunki = "";
-        try{
-            List<Address> addresses = geocoder.getFromLocation(lat, lon, 1);
-             address = addresses.get(0).getAddressLine(0);
-             kaupunki = addresses.get(0).getLocality();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return kaupunki;
-    }
-
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         //--Set view holders--//
         final ViewHolder holder;
-        if(view == null){
+        if (view == null) {
             holder = new ViewHolder();
             view = inflater.from(parent.getContext()).inflate(R.layout.adapter_get_a_ride, parent, false);
             holder.endPoint = view.findViewById(R.id.tv1);
@@ -91,23 +114,34 @@ public class GetARideAdapter extends BaseAdapter {
             holder.price = view.findViewById(R.id.tv7);
             holder.date = view.findViewById(R.id.tv8);
             view.setTag(holder);
-        }   else{
+        } else {
             holder = (ViewHolder) view.getTag();
         }
 
         //--Setting text to holders--//
+
+        GetRoute getRoute = new GetRoute(new ReporterInterface() {
+            @Override
+            public void dataParsed(String output) {
+                Log.d("TAG", "dataParsed: " + GetARideUtility.arrayList.get(position).getPrice());
+                Log.d("TAG", "dataParsed: " + Float.parseFloat(output));
+                float finalPrice = GetARideUtility.arrayList.get(position).getPrice() * Float.parseFloat(output);
+                holder.price.setText(String.format("%.2f", finalPrice ) + "€");
+            }
+        });
+        getRoute.execute(getUserStartPoint(), getUserEndPoint());
 
         holder.tripUser.setText(User.arrayList.get(position).getFname());
         holder.startPoint.setText(GetARideUtility.arrayList.get(position).getStartAddress());
         holder.endPoint.setText(GetARideUtility.arrayList.get(position).getEndAddress());
         holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
         holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
-        holder.price.setText(String.valueOf(GetARideUtility.arrayList.get(position).getPrice()));
 
+        //------------ Time -----------------//
         long millis = GetARideUtility.arrayList.get(position).getLeaveTime();
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(millis);
-        String timeString = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR)+"\n"+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+        String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "\n" + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE);
         holder.date.setText(timeString);
 
         //--onclick listener and passing data to next activity--//
@@ -133,6 +167,124 @@ public class GetARideAdapter extends BaseAdapter {
         return view;
     }
 
+    public interface ReporterInterface {
+        void dataParsed(String output);
+    }
+
+    private class GetRoute extends AsyncTask<String, Integer, String> {
+
+        ReporterInterface reporterInterface;
+
+        public GetRoute(ReporterInterface callbackInterface) {
+            this.reporterInterface = callbackInterface;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (reporterInterface != null) {
+                reporterInterface.dataParsed(result);
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String startAddress = strings[0];
+            String endAddress = strings[1];
+
+            if (geoLocate(startAddress, endAddress) != null) {
+                String routeUrl = geoLocate(startAddress, endAddress);
+                if(loadFromWeb(routeUrl) != null){
+                    String jsonData = loadFromWeb(routeUrl);
+                    if(dataParser(jsonData) != null){
+                        return dataParser(jsonData);
+                    }
+                    else{
+                        Log.d("TAG", "dataParser failed");
+                    }
+                }
+                else{
+                    Log.d("TAG", "loadFromWeb failed");
+                }
+            }
+            Log.d("TAG", "geoLocate failed");
+            return "FAILED";
+        }
+
+        private String geoLocate(String startPoint, String destination) {
+            Geocoder geocoder = new Geocoder(mContext);
+            String result;
+            try {
+                List<Address> listStartPoint = geocoder.getFromLocationName(startPoint, 1);
+                Address addStart = listStartPoint.get(0);
+                List<Address> listEndPoint = geocoder.getFromLocationName(destination, 1);
+                Address addDestination = listEndPoint.get(0);
+
+                double startLat, startLon, endLat, endLon;
+                startLat = addStart.getLatitude();
+                startLon = addStart.getLongitude();
+                endLat = addDestination.getLatitude();
+                endLon = addDestination.getLongitude();
+
+                result = getRoute(startLat, startLon, endLat, endLon);
+                return result;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "FAILED";
+        }
+
+        private String loadFromWeb(String urlstr) {
+            try {
+                URL url = new URL(urlstr);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+                String htmlText = PriceFetchUtility.fromStream(inputStream);
+                return htmlText;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        private String getRoute(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
+            String origin = "origin=" + startLatitude + "," + startLongitude;
+            String dest = "destination=" + endLatitude + "," + endLongitude;
+            String mode = "mode=driving";
+            String params = origin + "&" + dest + "&" + mode;
+
+            String url = "https://maps.googleapis.com/maps/api/directions/json?" + params + "&key=" + mContext.getString(R.string.api_maps_key);
+            return url;
+        }
+
+        private String dataParser(String data) {
+            JSONObject jDistance;
+            JSONArray jRoutes;
+            JSONArray jLegs;
+            double totalDistance = 0;
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                jRoutes = jsonObject.getJSONArray("routes");
+                for (int i = 0; i < jRoutes.length(); i++) {
+                    jLegs = ((JSONObject) jRoutes.get(i)).getJSONArray("legs");
+                    for (int j = 0; j < jLegs.length(); j++) {
+                        jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
+                        totalDistance = totalDistance + Double.parseDouble(jDistance.getString("value"));
+                        Log.d("TAG", "dataParser: " + jDistance);
+                        double finalDistance = totalDistance / 1000.0;
+                        return Constant.DISTANCE = String.valueOf(finalDistance);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "failed to parse";
+        }
+    }
+}
+
+
 /*    public void filter(String[] charText){
         String charText1 = charText[0].toLowerCase(Locale.getDefault());
         String charText2 = charText[1].toLowerCase(Locale.getDefault());
@@ -148,5 +300,4 @@ public class GetARideAdapter extends BaseAdapter {
         }
         notifyDataSetChanged();
     }*/
-}
 
