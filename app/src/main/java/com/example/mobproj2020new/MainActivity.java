@@ -171,8 +171,7 @@ public class MainActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
-        SleepReceiver.setAlarm(getApplicationContext(), Calendar.getInstance().getTimeInMillis() + 10000, "HEI KYYTIS LÄHTEE", "Että sellaista asiaa oli...");
-        /*
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Booked trips");
 
@@ -200,7 +199,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         AlertDialog dialog = builder.create();
-        dialog.show();*/
+        dialog.show();
     }
 
     //---------------Button OfferTrips---------------//
