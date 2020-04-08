@@ -29,8 +29,7 @@ import java.util.List;
 
 public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
-    private ArrayList<User> userList;
-    private ArrayList<GetARideUtility> tripList;
+    private ArrayList<GetARideUtility> tripList = new ArrayList<>();
     private String userStartPoint;
     private String userEndPoint;
 
@@ -63,19 +62,18 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
     }
 
     public GetARideAdapter(Context context, ArrayList<GetARideUtility> arrayList) {
-        //inflater = LayoutInflater.from(mContext);
-        this.tripList = new ArrayList<>();
+        this.tripList = arrayList;
         mContext = context;
     }
 
     @Override
     public int getCount() {
-        return GetARideUtility.arrayList.size();
+        return tripList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return GetARideUtility.arrayList.get(position);
+        return tripList.get(position).getStartAddress();
     }
 
     @Override
@@ -152,24 +150,25 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
         //--Setting text to holders--//
 
+        Log.d("getView", "getView: " + tripList.get(position).getUserName());
         try{
             GetRoute getRoute = new GetRoute(new ReporterInterface() {
                 @Override
                 public void dataParsed(String output) {
-                    float finalPrice = GetARideUtility.arrayList.get(position).getPrice() * Float.parseFloat(output);
+                    float finalPrice = tripList.get(position).getPrice() * Float.parseFloat(output);
                     holder.price.setText(String.format("%.2f", finalPrice ) + "€");
                 }
             });
             getRoute.execute(getUserStartPoint(), getUserEndPoint());
 
-            holder.tripUser.setText(User.arrayList.get(position).getFname());
-            holder.startPoint.setText(locate(GetARideUtility.arrayList.get(position).getStartAddress()));
-            holder.endPoint.setText(locate(GetARideUtility.arrayList.get(position).getEndAddress()));
+            holder.tripUser.setText(tripList.get(position).getUserName());
+            holder.startPoint.setText(locate(tripList.get(position).getStartAddress()));
+            holder.endPoint.setText(locate(tripList.get(position).getEndAddress()));
             //holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
             //holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
 
             //------------ Time -----------------//
-            long millis = GetARideUtility.arrayList.get(position).getLeaveTime();
+            long millis = tripList.get(position).getLeaveTime();
             Calendar c = new GregorianCalendar();
             c.setTimeInMillis(millis);
             String format = "%1$02d";
@@ -185,19 +184,18 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TAG", "onClick: " + GetARideUtility.arrayList.get(position).getUid());
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
-                profileIntent.putExtra("user", User.arrayList.get(position).getFname());
-                profileIntent.putExtra("userPic", User.arrayList.get(position).getImgUri());
-                profileIntent.putExtra("uid", User.arrayList.get(position).getUid());
-                profileIntent.putExtra("start", GetARideUtility.arrayList.get(position).getStartAddress());
-                profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
-                profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());
-                profileIntent.putExtra("seats", String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
+                profileIntent.putExtra("user", tripList.get(position).getUserName());
+                profileIntent.putExtra("userPic", tripList.get(position).getPicUri());
+                profileIntent.putExtra("uid", tripList.get(position).getUid());
+                profileIntent.putExtra("start", tripList.get(position).getStartAddress());
+                profileIntent.putExtra("destination", tripList.get(position).getEndAddress());
+                profileIntent.putExtra("duration", tripList.get(position).getDuration());
+                profileIntent.putExtra("seats", String.valueOf(tripList.get(position).getFreeSlots()));
                 profileIntent.putExtra("price", holder.price.getText().toString());
-                profileIntent.putExtra("date", String.valueOf(GetARideUtility.arrayList.get(position).getLeaveTime()));
-                profileIntent.putExtra("rideId", GetARideUtility.arrayList.get(position).getRideId());
-                profileIntent.putStringArrayListExtra("waypoints", (ArrayList<String>) GetARideUtility.arrayList.get(position).getWaypointAddresses());
+                profileIntent.putExtra("date", String.valueOf(tripList.get(position).getLeaveTime()));
+                profileIntent.putExtra("rideId", tripList.get(position).getRideId());
+                profileIntent.putStringArrayListExtra("waypoints", (ArrayList<String>) tripList.get(position).getWaypointAddresses());
                 mContext.startActivity(profileIntent);
             }
         });

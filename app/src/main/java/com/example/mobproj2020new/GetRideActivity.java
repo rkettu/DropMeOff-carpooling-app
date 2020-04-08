@@ -5,10 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,9 +20,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,6 +30,7 @@ public class GetRideActivity extends AppCompatActivity {
     private int pickedHour1, pickedMinute1;
     private int pickedYear2, pickedMonth2, pickedDate2;
     private int pickedHour2, pickedMinute2;
+    private Context context = this;
     String stringDate, stringEstTime;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText, dateEditText2, estTimeEditText2;
@@ -43,7 +41,6 @@ public class GetRideActivity extends AppCompatActivity {
     private static final String TAG = "GetARideActivityTAG";
     Calendar mCalendar;
     TextView textView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +68,9 @@ public class GetRideActivity extends AppCompatActivity {
         dateEditText.setText(currentDate);
         estTimeEditText.setText(estHour + ":" + estMin);
 
-        dummyData();
-        GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
-        getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
+        getARideAdapter = new GetARideAdapter(this, arrayList);
+        Log.d(TAG, "onCreate: " + arrayList);
         tripListView.setAdapter(getARideAdapter);
-        mCalendar = Calendar.getInstance();
     }
 
     private void dummyData(){
@@ -96,10 +91,6 @@ public class GetRideActivity extends AppCompatActivity {
 
         String startPoint = startPointEditText.getText().toString();
         String endPoint = endPointEditText.getText().toString();
-
-        getARideAdapter.setUserStartPoint(startPoint);
-        getARideAdapter.setUserEndPoint(endPoint);
-
 
         //TODO: RETURN STATEMENT IF NOT CORRECT
         try {
@@ -167,7 +158,7 @@ public class GetRideActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public void geoLocate(String startPoint, String endPoint) throws IOException{
+    public void geoLocate(final String startPoint, final String endPoint) throws IOException{
         Geocoder gc = new Geocoder(this);
 
         try{
@@ -191,17 +182,62 @@ public class GetRideActivity extends AppCompatActivity {
             mCalendar.set(pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2);
             float t2 = mCalendar.getTimeInMillis();
 
-            DatabaseHandler dbh = new DatabaseHandler();
-            DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
-            gmr.execute(startLat, startLon, stopLat, stopLon, t1, t2);
+            FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
+                private String userName1;
+                private String picUri1;
+
                 @Override
-                public void run() {
-                    getARideAdapter.notifyDataSetChanged();
+                public String getUserName1() {
+                    Log.d(TAG, "getUserName1: " + userName1);
+                    return userName1;
                 }
-            }, 1500);
+
+                @Override
+                public String getImageUri1() {
+                    return picUri1;
+                }
+
+                @Override
+                public void setUserName(String s) {
+                    Log.d(TAG, "setUserName: " + s);
+                    this.userName1 = s;
+                }
+
+                @Override
+                public void setImageUri(String s) {
+                    this.picUri1 = s;
+                }
+
+                @Override
+                public void getTripData(final String uid, final String startAddress, final String endAddress, final String duration, final String rideId, String price, String leaveTime,
+                                        final long freeSlots, final List<String> wayPoints, final List<String> participants, final String userName, final String picUri) {
+
+                    final float mPrice = Float.parseFloat(price);
+                    final long mLeaveTime = Long.parseLong(leaveTime);
+
+                    //GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime, mFreeSlots,
+                    //       wayPoints, participants);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime, freeSlots,
+                                    wayPoints, participants, userName, picUri);
+
+                            arrayList.add(utility);
+                            GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
+                            adapter.setUserStartPoint(startPoint);
+                            adapter.setUserEndPoint(endPoint);
+                            tripListView.setAdapter(adapter);
+                            Log.d(TAG, "run: " + adapter.getItem(0));
+                            getARideAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }, GetRideActivity.this);
+            findTripASyncTask.execute(startLat, startLon, stopLat, stopLon, t1, t2);
+
         }
         catch (Exception e){
             e.printStackTrace();
