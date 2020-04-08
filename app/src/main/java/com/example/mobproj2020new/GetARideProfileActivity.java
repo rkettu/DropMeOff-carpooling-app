@@ -123,7 +123,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHandler db = new DatabaseHandler();
-                db.BookTrip(bRideId,FirebaseAuth.getInstance().getCurrentUser().getUid());
+                db.BookTrip(getApplicationContext(), bRideId,FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         });
 

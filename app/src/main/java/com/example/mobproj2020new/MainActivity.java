@@ -3,8 +3,12 @@ package com.example.mobproj2020new;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -165,6 +171,8 @@ public class MainActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
+        SleepReceiver.setAlarm(getApplicationContext(), Calendar.getInstance().getTimeInMillis() + 10000, "HEI KYYTIS LÄHTEE", "Että sellaista asiaa oli...");
+        /*
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Booked trips");
 
@@ -192,7 +200,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         AlertDialog dialog = builder.create();
-        dialog.show();
+        dialog.show();*/
     }
 
     //---------------Button OfferTrips---------------//
