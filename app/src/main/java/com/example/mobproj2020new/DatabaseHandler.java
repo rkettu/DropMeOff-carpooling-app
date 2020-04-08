@@ -93,8 +93,12 @@ public class DatabaseHandler {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     // Set notification alarm for ride, day before ride or hour after posting if ride is less than a day away
-                    long time = Math.max((route.getLeaveTime() - Constant.DayInMillis), (Calendar.getInstance().getTimeInMillis() + Constant.HourInMillis));
-                    String timeString = CalendarHelper.getTimeString(route.getLeaveTime());
+                    long leaveTime = route.getLeaveTime();
+                    long time = leaveTime - Calendar.getInstance().getTimeInMillis() > Constant.DayInMillis
+                            ? leaveTime - Constant.DayInMillis
+                            : leaveTime - (Constant.HourInMillis * 3)
+                            ;
+                    String timeString = CalendarHelper.getTimeString(leaveTime);
                     SleepReceiver.setAlarm(context, time, "Created ride Reminder", (route.getStartAddress() + " - " + route.getEndAddress() + " leaving at " + timeString));
                     // Return to main activity...
                     // Show Toast text / pop up text or whatever in main instead...
@@ -443,7 +447,10 @@ public class DatabaseHandler {
                                     mUsersDocRef.set(user);
 
                                     // Creating timed notification for ride
-                                    long time = Math.max((leaveTime - Constant.DayInMillis), (Calendar.getInstance().getTimeInMillis() + Constant.HourInMillis));
+                                    long time = leaveTime - Calendar.getInstance().getTimeInMillis() > Constant.DayInMillis
+                                            ? leaveTime - Constant.DayInMillis
+                                            : leaveTime - (Constant.HourInMillis * 3)
+                                    ;
                                     String timeString = CalendarHelper.getTimeString(leaveTime);
                                     SleepReceiver.setAlarm(context, time, "Booked ride Reminder", (startAdd) + " - " + endAdd + " leaving at " + timeString);
 
