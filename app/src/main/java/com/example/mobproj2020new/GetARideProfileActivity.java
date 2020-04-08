@@ -85,11 +85,15 @@ public class GetARideProfileActivity extends AppCompatActivity {
         bSeats = bundle.getString("seats");
         bRideId = bundle.getString("rideId");
         bUid = bundle.getString("uid");
+        Log.d("TAG", "onCreate: " + bUid);
         bWayPoint = bundle.getStringArrayList("waypoints");
 
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(Long.parseLong(bDate));
-        String timeString = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR)+" - "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+        String format = "%1$02d";
+        String hours = String.format(format, c.get(Calendar.HOUR_OF_DAY));
+        String minutes = String.format(format, +c.get(Calendar.MINUTE));
+        String timeString = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR)+" - "+ hours +":" + minutes;
 
         Picasso.with(GetARideProfileActivity.this).load(bUserPic).into(progImageView);
         userNameTextView.setText("Ride provider: " + bUser);
@@ -101,7 +105,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         freeSeatsTextView.setText("Available seats: " + bSeats);
         Log.d("TAG", "onCreate: " + bWayPoint.get(0));
 
-        if(bWayPoint.size() > 1){
+        if(bWayPoint.size() > 0 && bWayPoint.get(0).length() > 0){
             for(int i = 0; i < bWayPoint.size()-1; i++) {
                 int j = i + 1;
                 waypointsTextView.append( "\n" + j + ": " + bWayPoint.get(i));

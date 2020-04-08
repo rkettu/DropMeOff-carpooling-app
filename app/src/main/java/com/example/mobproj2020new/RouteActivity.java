@@ -16,6 +16,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -97,7 +98,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         lahtoEditori = (SearchView) findViewById(R.id.lahtoEdit);
         etappiEditori = (SearchView) findViewById(R.id.etappiEdit);
         etappiEditori2 = (SearchView) findViewById(R.id.etappiEdit2);
-
     }
 
     @Override
@@ -301,7 +301,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         String output = "json";
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
-        Log.d("TAG", "getUrl: toimiva " + url);
         return url;
     }
 

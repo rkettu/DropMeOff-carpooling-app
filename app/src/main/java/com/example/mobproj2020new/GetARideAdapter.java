@@ -1,5 +1,6 @@
 package com.example.mobproj2020new;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -151,29 +152,34 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
         //--Setting text to holders--//
 
-        GetRoute getRoute = new GetRoute(new ReporterInterface() {
-            @Override
-            public void dataParsed(String output) {
-                Log.d("TAG", "dataParsed: " + GetARideUtility.arrayList.get(position).getPrice());
-                Log.d("TAG", "dataParsed: " + Float.parseFloat(output));
-                float finalPrice = GetARideUtility.arrayList.get(position).getPrice() * Float.parseFloat(output);
-                holder.price.setText(String.format("%.2f", finalPrice ) + "€");
-            }
-        });
-        getRoute.execute(getUserStartPoint(), getUserEndPoint());
+        try{
+            GetRoute getRoute = new GetRoute(new ReporterInterface() {
+                @Override
+                public void dataParsed(String output) {
+                    float finalPrice = GetARideUtility.arrayList.get(position).getPrice() * Float.parseFloat(output);
+                    holder.price.setText(String.format("%.2f", finalPrice ) + "€");
+                }
+            });
+            getRoute.execute(getUserStartPoint(), getUserEndPoint());
 
-        holder.tripUser.setText(User.arrayList.get(position).getFname());
-        holder.startPoint.setText(locate(GetARideUtility.arrayList.get(position).getStartAddress()));
-        holder.endPoint.setText(locate(GetARideUtility.arrayList.get(position).getEndAddress()));
-        //holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
-        //holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
+            holder.tripUser.setText(User.arrayList.get(position).getFname());
+            holder.startPoint.setText(locate(GetARideUtility.arrayList.get(position).getStartAddress()));
+            holder.endPoint.setText(locate(GetARideUtility.arrayList.get(position).getEndAddress()));
+            //holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
+            //holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
 
-        //------------ Time -----------------//
-        long millis = GetARideUtility.arrayList.get(position).getLeaveTime();
-        Calendar c = new GregorianCalendar();
-        c.setTimeInMillis(millis);
-        String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "\n" + c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE);
-        holder.date.setText(timeString);
+            //------------ Time -----------------//
+            long millis = GetARideUtility.arrayList.get(position).getLeaveTime();
+            Calendar c = new GregorianCalendar();
+            c.setTimeInMillis(millis);
+            String format = "%1$02d";
+            String hour = String.format(format, c.get(Calendar.HOUR_OF_DAY));
+            String min = String.format(format, c.get(Calendar.MINUTE));
+            String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "\n" + hour + ":" + min;
+            holder.date.setText(timeString);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         //--onclick listener and passing data to next activity--//
         view.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +189,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
                 profileIntent.putExtra("user", User.arrayList.get(position).getFname());
                 profileIntent.putExtra("userPic", User.arrayList.get(position).getImgUri());
-                profileIntent.putExtra("uid", GetARideUtility.arrayList.get(position).getUid());
+                profileIntent.putExtra("uid", User.arrayList.get(position).getUid());
                 profileIntent.putExtra("start", GetARideUtility.arrayList.get(position).getStartAddress());
                 profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
                 profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());
@@ -302,7 +308,6 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
                     for (int j = 0; j < jLegs.length(); j++) {
                         jDistance = ((JSONObject) jLegs.get(j)).getJSONObject("distance");
                         totalDistance = totalDistance + Double.parseDouble(jDistance.getString("value"));
-                        Log.d("TAG", "dataParser: " + jDistance);
                         double finalDistance = totalDistance / 1000.0;
                         return Constant.DISTANCE = String.valueOf(finalDistance);
                     }

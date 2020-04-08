@@ -186,7 +186,10 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                     new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            strTime = (hourOfDay + ":" + minute);
+                            String format = "%1$02d";
+                            String estHour = String.format(format, hourOfDay);
+                            String estMin = String.format(format, minute);
+                            strTime = (estHour + ":" + estMin);
                             txtTime.setText(strTime);
                             pickedHour = hourOfDay;
                             pickedMinute = minute;

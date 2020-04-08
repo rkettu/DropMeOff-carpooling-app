@@ -1,13 +1,17 @@
 package com.example.mobproj2020new;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -188,6 +192,8 @@ public class DatabaseHandler {
     //---Async task to take care of matching routes from GetRideActivity---//
     public class getMatchingRoutes extends AsyncTask<Float, Integer, String> {
 
+        getMatchingRoutes(){ }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -203,8 +209,7 @@ public class DatabaseHandler {
             float t2 = floats[5];
 
             try {
-                getMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
-                Log.d("TAG", "doInBackground: doInBackgoruasoaadsa");
+                getNewMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("TAG", "doInBackground: catch");
@@ -217,10 +222,11 @@ public class DatabaseHandler {
             super.onPostExecute(result);
         }
 
-        public void getMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
+        private void getNewMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
             GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
             User.arrayList.removeAll(User.arrayList);
             Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
+            Log.d("my time is", "getNewMatchingRoutes: " + time1 + time2);
             // Checking all rides with free passenger slots
             Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2); // TODO also add checking for ride distance...
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -17,24 +17,32 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class GetRideActivity extends AppCompatActivity {
 
-    private int pickedYear1, pickedMonth1, pickedDate1, pickedHour1, pickedMinute1;
-    private int pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2;
+    private int pickedYear1, pickedMonth1, pickedDate1;
+    private int pickedHour1, pickedMinute1;
+    private int pickedYear2, pickedMonth2, pickedDate2;
+    private int pickedHour2, pickedMinute2;
     String stringDate, stringEstTime;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText, dateEditText2, estTimeEditText2;
     ListView tripListView;
     GetARideAdapter getARideAdapter;
-    int newYear, newMonth, newDay, newHour, newMinute;
+    int newYear, newMonth, newDay;
+    int newHour, newMinute;
     private static final String TAG = "GetARideActivityTAG";
     Calendar mCalendar;
+    TextView textView;
 
 
     @Override
@@ -48,6 +56,20 @@ public class GetRideActivity extends AppCompatActivity {
         estTimeEditText = findViewById(R.id.estTimeEditText);
         estTimeEditText2 = findViewById(R.id.estTimeEditText2);
         tripListView = findViewById(R.id.tripsListView);
+        textView = findViewById(R.id.tripsTextView);
+
+        textView.setText("Find your ride here!");
+        textView.setVisibility(View.VISIBLE);
+
+        mCalendar = Calendar.getInstance();
+        String currentDate = mCalendar.get(Calendar.DATE) + "." + mCalendar.get(Calendar.MONTH) + "." + mCalendar.get(Calendar.YEAR);
+        int currentHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = mCalendar.get(Calendar.MINUTE);
+        String format = "%1$02d";
+        String estHour = String.format(format, currentHour);
+        String estMin = String.format(format, currentMinute);
+        dateEditText.setText(currentDate);
+        estTimeEditText.setText(estHour + ":" + estMin);
 
         dummyData();
         GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
@@ -70,6 +92,7 @@ public class GetRideActivity extends AppCompatActivity {
 
     public void searchButton (View v){
         hideKeyboard(this);
+        textView.setVisibility(View.GONE);
 
         String startPoint = startPointEditText.getText().toString();
         String endPoint = endPointEditText.getText().toString();
@@ -77,22 +100,13 @@ public class GetRideActivity extends AppCompatActivity {
         getARideAdapter.setUserStartPoint(startPoint);
         getARideAdapter.setUserEndPoint(endPoint);
 
+
         //TODO: RETURN STATEMENT IF NOT CORRECT
         try {
             geoLocate(startPoint, endPoint);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getARideAdapter.notifyDataSetChanged();
-                }
-            }, 1500);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        tripListView.setAdapter(getARideAdapter);
     }
     public void dateOfTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();
@@ -103,6 +117,7 @@ public class GetRideActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 stringDate = (dayOfMonth + "." + (month + 1) + "." + year);
+                pickedDate1 = newDay; pickedMonth1 = newMonth; pickedYear1 = newYear;
                 if(v.getId() == R.id.dateEditText) {
                     pickedDate1 = dayOfMonth; pickedMonth1 = month; pickedYear1 = year;
                     dateEditText.setText(stringDate);
@@ -123,17 +138,26 @@ public class GetRideActivity extends AppCompatActivity {
         TimePickerDialog tpd = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                stringEstTime = (hourOfDay + ":" + minute);
+                pickedHour1 = newHour; pickedMinute1 = newMinute;
                 if(v.getId() == R.id.estTimeEditText) {
                     pickedHour1 = hourOfDay; pickedMinute1 = minute;
+                    String format = "%1$02d";
+                    String estHour = String.format(format, hourOfDay);
+                    String estMin = String.format(format, minute);
+                    stringEstTime = estHour + ":" + estMin;
                     estTimeEditText.setText(stringEstTime);
                 }
                 else if(v.getId() == R.id.estTimeEditText2) {
                     pickedHour2 = hourOfDay; pickedMinute2 = minute;
+                    String format = "%1$02d";
+                    String estHour = String.format(format, hourOfDay);
+                    String estMin = String.format(format, minute);
+                    stringEstTime = estHour + ":" + estMin;
                     estTimeEditText2.setText(stringEstTime);
                 }
             }
-        }, newHour, newMinute, true); tpd.show();
+        }, newHour, newMinute, true);
+        tpd.show();
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -146,28 +170,44 @@ public class GetRideActivity extends AppCompatActivity {
     public void geoLocate(String startPoint, String endPoint) throws IOException{
         Geocoder gc = new Geocoder(this);
 
-        List<Address> listStart = gc.getFromLocationName(startPoint, 1);
-        Address add = listStart.get(0);
+        try{
+            List<Address> listStart = gc.getFromLocationName(startPoint, 1);
+            Address add = listStart.get(0);
 
-        List<Address> listStop = gc.getFromLocationName(endPoint, 1);
-        Address add2 = listStop.get(0);
+            List<Address> listStop = gc.getFromLocationName(endPoint, 1);
+            Address add2 = listStop.get(0);
 
-        float startLat = (float) add.getLatitude();
-        float startLon = (float) add.getLongitude();
-        float stopLat = (float) add2.getLatitude();
-        float stopLon = (float) add2.getLongitude();
+            float startLat = (float) add.getLatitude();
+            float startLon = (float) add.getLongitude();
+            float stopLat = (float) add2.getLatitude();
+            float stopLon = (float) add2.getLongitude();
 
-        Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
+            Log.d(TAG, "geoLocate: "+startLat+startLon+stopLat+stopLon);
+            Log.d(TAG, "geoLocate: "+pickedHour1+pickedMinute1);
+            Log.d(TAG, "geoLocate: "+pickedYear1+pickedMonth1+pickedDate1);
+            // TODO: !!!! Require both time fields for search, maybe preset them to current day - week from current day
+            mCalendar.set(pickedYear1, pickedMonth1, pickedDate1, pickedHour1, pickedMinute1);
+            float t1 = mCalendar.getTimeInMillis();
+            mCalendar.set(pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2);
+            float t2 = mCalendar.getTimeInMillis();
 
-        // TODO: !!!! Require both time fields for search, maybe preset them to current day - week from current day
-        mCalendar.set(pickedYear1, pickedMonth1, pickedDate1, pickedHour1, pickedMinute1);
-        float t1 = mCalendar.getTimeInMillis();
-        mCalendar.set(pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2);
-        float t2 = mCalendar.getTimeInMillis();
+            DatabaseHandler dbh = new DatabaseHandler();
+            DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
+            gmr.execute(startLat, startLon, stopLat, stopLon, t1, t2);
 
-        DatabaseHandler dbh = new DatabaseHandler();
-        DatabaseHandler.getMatchingRoutes gmr = dbh.new getMatchingRoutes();
-        gmr.execute(startLat, startLon, stopLat, stopLon, t1, t2);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getARideAdapter.notifyDataSetChanged();
+                }
+            }, 1500);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            textView.setVisibility(View.VISIBLE);
+            Toast.makeText(GetRideActivity.this, "Failed to find trips", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void btnBackArrow(View v){
