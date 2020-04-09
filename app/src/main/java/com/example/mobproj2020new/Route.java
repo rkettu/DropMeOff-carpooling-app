@@ -11,6 +11,7 @@ public class Route {
     private String duration;
     //private String startDate;
     //private String startTime;
+    private int pickUpDistance;
     private long leaveTime;
     private String startAddress;
     private String endAddress;
@@ -26,10 +27,11 @@ public class Route {
     public Route(String uid, String duration, long leaveTime,
                  String startAddress, String endAddress, int freeSlots, float price,
                  List<HashMap<String,String>> points, List<String> waypointAddresses,
-                 List<String> participants)
+                 List<String> participants, int pickUpDistance)
     {
         this.uid = uid;
         this.duration = duration;
+        this.pickUpDistance = pickUpDistance;
         //this.startDate = startDate;
         //this.startTime = startTime;
         this.leaveTime = leaveTime;
@@ -51,7 +53,7 @@ public class Route {
     //public String getStartDate(){return startDate;}
     //public String getStartTime() {return startTime;}
     public long getLeaveTime() { return leaveTime; }
-
+    public int getPickUpDistance(){return pickUpDistance; }
     public String getStartAddress() {
         return startAddress;
     }

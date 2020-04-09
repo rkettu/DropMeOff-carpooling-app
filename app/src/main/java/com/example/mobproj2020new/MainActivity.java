@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity{
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which){
                         case 0:
-                            Log.d("SWAG", "onClick: settings");
+                            //Log.d("SWAG", "onClick: settings");
                             break;
                         case 1:
                             //Log.d("SWAG", "onClick: My Profile");
@@ -132,8 +132,9 @@ public class MainActivity extends AppCompatActivity{
                             //Log.d("SWAG", "onClick: Sign Out");
                             if(FirebaseHelper.loggedIn) {
                                 FirebaseAuth.getInstance().signOut();
-                                Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_LONG).show();
                                 startActivity(intent);
                                 break;
                             }

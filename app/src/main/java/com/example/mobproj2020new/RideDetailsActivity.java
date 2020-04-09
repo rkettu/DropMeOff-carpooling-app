@@ -45,6 +45,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     SeekBar seekBar;
     SeekBar seekBar2;
     TextView hintaTxt, exampleTxt, minRange;
+    EditText pickUpDistanceEditText;
     private Button confirmBtn;
     String newMatka;
     String newAika;
@@ -185,7 +186,10 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                     new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            strTime = (hourOfDay + ":" + minute);
+                            String format = "%1$02d";
+                            String estHour = String.format(format, hourOfDay);
+                            String estMin = String.format(format, minute);
+                            strTime = (estHour + ":" + estMin);
                             txtTime.setText(strTime);
                             pickedHour = hourOfDay;
                             pickedMinute = minute;
@@ -201,6 +205,9 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
                 mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
                 long leaveTime = mC.getTimeInMillis();
+                pickUpDistanceEditText = findViewById(R.id.pickUpDistanceEditText);
+                String pickUpDistance = pickUpDistanceEditText.getText().toString();
+                int pickUpDist = Integer.parseInt(pickUpDistance);
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String duration = newAika;
@@ -214,7 +221,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 List<String> waypointAddresses = Constant.waypointAddressesList;
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                        freeSlots, price, points, waypointAddresses, participants);
+                        freeSlots, price, points, waypointAddresses, participants, pickUpDist);
                 db.createRide(route, RideDetailsActivity.this);
             } else {
                 FirebaseHelper.GoToLogin(getApplicationContext());
