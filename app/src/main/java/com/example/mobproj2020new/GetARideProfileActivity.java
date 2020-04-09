@@ -118,13 +118,19 @@ public class GetARideProfileActivity extends AppCompatActivity {
         String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + " - " + hour + ":" + min;
         startTimeTextView.setText("Leaves at: " + timeString);
 
-        if(bWayPoint.size() > 0 && bWayPoint.get(0).length() > 0){
-            for(int i = 0; i < bWayPoint.size()-1; i++) {
-                int j = i + 1;
-                waypointsTextView.append( "\n" + j + ": " + bWayPoint.get(i));
+        try {
+            if (bWayPoint.size() > 0 && bWayPoint.get(0).length() > 0) {
+                for (int i = 0; i < bWayPoint.size() - 1; i++) {
+                    int j = i + 1;
+                    waypointsTextView.append("\n" + j + ": " + bWayPoint.get(i));
+                }
+            } else {
+                waypointsTextView.setText("No way points");
             }
-        }else{
-            waypointsTextView.setText("No way points");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Log.d("GetARideProfile", "onCreate: waypointsize null");
         }
     }
 
@@ -164,7 +170,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHandler db = new DatabaseHandler();
 
-                //db.BookTrip(bRideId, FirebaseAuth.getInstance().getCurrentUser().getUid(), getApplicationContext());
+                db.BookTrip(bRideId, FirebaseAuth.getInstance().getCurrentUser().getUid(),getApplicationContext());
 
             }
         });

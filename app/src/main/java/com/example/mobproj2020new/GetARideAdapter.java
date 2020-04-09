@@ -173,24 +173,26 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
                     float finalPrice = tripList.get(position).getPrice() * Float.parseFloat(output);
                     holder.price.setText(String.format("%.2f", finalPrice ) + "€");
 
-                    GetUserName getUserName = new GetUserName(new newReporterInterface() {
-                        @Override
-                        public void getName(String result) {
-                            holder.tripUser.setText(result);
-
-                            GetUserPicture getUserPicture = new GetUserPicture(new newestReporterInterface() {
-                                @Override
-                                public void getUserPic(String result) {
-                                    holder.hidden.setText(result);
-                                }
-                            });
-                            getUserPicture.execute(tripList.get(position).getUid());
-                        }
-                    });
-                    getUserName.execute(tripList.get(position).getUid());
                 }
             });
             getRoute.execute(getUserStartPoint(), getUserEndPoint());
+
+            GetUserPicture getUserPicture = new GetUserPicture(new newestReporterInterface() {
+                @Override
+                public void getUserPic(String result) {
+                    holder.hidden.setText(result);
+                }
+            });
+            getUserPicture.execute(tripList.get(position).getUid());
+
+            GetUserName getUserName = new GetUserName(new newReporterInterface() {
+                @Override
+                public void getName(String result) {
+                    holder.tripUser.setText(result);
+
+                }
+            });
+            getUserName.execute(tripList.get(position).getUid());
 
 
             holder.startPoint.setText(locate(tripList.get(position).getStartAddress()));

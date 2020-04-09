@@ -300,8 +300,10 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
-    public void BookTrip(final Context context, final String rideId, final String userId)
+    public void BookTrip(final String rideId, final String userId, final Context context)
     {
+        final Context mContext = context;
+
         if(rideId.equals("") || userId.equals("")) // Big failure
             return;
 
@@ -350,8 +352,11 @@ public class DatabaseHandler {
                                     ;
                                     String timeString = CalendarHelper.getTimeString(leaveTime);
                                     SleepReceiver.setAlarm(context, time, "Booked ride Reminder", (startAdd) + " - " + endAdd + " leaving at " + timeString);
+                                  
+                                  Intent i = new Intent(mContext, MainActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    mContext.startActivity(i);
 
-                                    // TODO: Go to main here, displaying that ride booked successfully :)
                                 }
                             }
                         });
