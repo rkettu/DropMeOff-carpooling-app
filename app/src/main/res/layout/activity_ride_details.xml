@@ -31,6 +31,7 @@
         android:id="@+id/dateEdit"
         android:gravity="center"
         android:hint="Enter Date"
+        android:focusableInTouchMode="false"
         />
 
 
@@ -57,6 +58,7 @@
         android:id="@+id/timeEdit"
         android:gravity="center"
         android:hint="Enter Time"
+        android:focusableInTouchMode="false"
         />
     <TextView
         android:layout_width="wrap_content"

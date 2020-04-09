@@ -62,7 +62,8 @@
                 android:inputType="date"
                 android:onClick="dateOfTimeClicked"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
         <LinearLayout
@@ -87,7 +88,8 @@
                 android:textColor="@color/white"
                 android:id="@+id/estTimeEditText"
                 android:onClick="estTimeClicked"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
         <TextView
@@ -123,7 +125,8 @@
                 android:id="@+id/dateEditText2"
                 android:inputType="date"
                 android:onClick="dateOfTimeClicked"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
 
@@ -152,6 +155,7 @@
                 android:id="@+id/estTimeEditText2"
                 android:onClick="estTimeClicked"
                 android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"
                 />
 
         </LinearLayout>
