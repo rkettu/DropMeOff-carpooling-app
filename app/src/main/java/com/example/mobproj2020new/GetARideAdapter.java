@@ -39,11 +39,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
+public class GetARideAdapter extends BaseAdapter {
 
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
-    //private ArrayList<GetARideUtility.getARideUserName> tripUser = new ArrayList<>();
-    //private ArrayList<GetARideUtility.getARidePicUri> tripUserPic = new ArrayList<>();
     private String userStartPoint;
     private String userEndPoint;
 
@@ -77,8 +75,6 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
     public GetARideAdapter(Context context, ArrayList<GetARideUtility> arrayList) {
         this.tripList = arrayList;
-        //this.tripUser = tripUser;
-        //this.tripUserPic = tripUserPic;
         mContext = context;
     }
 
@@ -97,22 +93,16 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         return position;
     }
 
-    @Override
-    public void onTaskDone(Object... values) {
-
-    }
-
     public static class ViewHolder {
         TextView startPoint;
         TextView endPoint;
         TextView tripUser;
-        TextView freeSlots;
         TextView hidden;
-        TextView tripTime;
         TextView price;
         TextView date;
     }
 
+    //--------places string to getcoder to find lat and lon, returns city------//
     private String locate(String address){
         try {
             Geocoder geocoder = new Geocoder(mContext);
@@ -131,6 +121,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         return "FAILED";
     }
 
+    //-------returns city for locate function-------//
     private String myGeoLocate(float first, float second){
         Geocoder geocoder = new Geocoder(mContext);
         String city = null;
@@ -147,7 +138,8 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        //--Set view holders--//
+        //-------------Set view holders-----------//
+
         final ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
@@ -155,7 +147,6 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             holder.endPoint = view.findViewById(R.id.tv1);
             holder.startPoint = view.findViewById(R.id.tv2);
             holder.hidden = view.findViewById(R.id.tv3);
-            //holder.freeSlots = view.findViewById(R.id.tv5);
             holder.tripUser = view.findViewById(R.id.tv6);
             holder.price = view.findViewById(R.id.tv7);
             holder.date = view.findViewById(R.id.tv8);
@@ -164,9 +155,10 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             holder = (ViewHolder) view.getTag();
         }
 
-        //--Setting text to holders--//
+        //--------------------Setting text to holders-------------------//
 
         try{
+            //--------set price for given trip-------//
             GetRoute getRoute = new GetRoute(new ReporterInterface() {
                 @Override
                 public void dataParsed(String output) {
@@ -177,14 +169,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             });
             getRoute.execute(getUserStartPoint(), getUserEndPoint());
 
-            GetUserPicture getUserPicture = new GetUserPicture(new newestReporterInterface() {
-                @Override
-                public void getUserPic(String result) {
-                    holder.hidden.setText(result);
-                }
-            });
-            getUserPicture.execute(tripList.get(position).getUid());
-
+            //----------Set ride providers first name----------//
             GetUserName getUserName = new GetUserName(new newReporterInterface() {
                 @Override
                 public void getName(String result) {
@@ -194,7 +179,17 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             });
             getUserName.execute(tripList.get(position).getUid());
 
+            //-------hidden param for ride providers picUri--------//
+            GetUserPicture getUserPicture = new GetUserPicture(new newestReporterInterface() {
+                @Override
+                public void getUserPic(String result) {
+                    holder.hidden.setText(result);
+                }
+            });
+            getUserPicture.execute(tripList.get(position).getUid());
 
+
+            //-------------Set startAddress and destination----------//
             holder.startPoint.setText(locate(tripList.get(position).getStartAddress()));
             holder.endPoint.setText(locate(tripList.get(position).getEndAddress()));
 
@@ -217,7 +212,6 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
                 profileIntent.putExtra("user", holder.tripUser.getText().toString());
                 profileIntent.putExtra("userPic", holder.hidden.getText().toString());
@@ -230,7 +224,6 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
                 profileIntent.putExtra("date", String.valueOf(tripList.get(position).getLeaveTime()));
                 profileIntent.putExtra("rideId", tripList.get(position).getRideId());
                 profileIntent.putStringArrayListExtra("waypoints", (ArrayList<String>) tripList.get(position).getWaypointAddresses());
-
                 mContext.startActivity(profileIntent);
             }
         });
@@ -238,6 +231,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
     }
 
 
+    //------------interfaces and ASyncTask for route, username and picture--------------//
 
     public interface ReporterInterface {
         void dataParsed(String output);
@@ -257,6 +251,12 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
         public GetUserPicture(newestReporterInterface newestReporterInterface){
             this.newestReporterInterface = newestReporterInterface;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
         }
 
         @Override

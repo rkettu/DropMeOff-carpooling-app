@@ -23,35 +23,8 @@ public class GetARideUtility implements Serializable {
 
     public GetARideUtility(){}
 
-    public class getARideUserName{
-        private String userName;
-        private String picUri;
-        getARideUserName(String userName, String picUri){
-            this.userName = userName;
-            this.picUri = picUri;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public String getPicUri() {
-            return picUri;
-        }
-    }
-    public class getARidePicUri{
-        private String picUri;
-        public getARidePicUri(String picUri){
-            this.picUri = picUri;
-        }
-
-        public String getPicUri() {
-            return picUri;
-        }
-    }
-
-    public GetARideUtility(String uid, String startAddress, String endAddress, String duration, String rideId, float price, long leaveTime, long freeSlots
-            , List<String> participants ,List<String> waypointAddresses) {
+    public GetARideUtility(String uid, String startAddress, String endAddress, String duration, String rideId, float price, long leaveTime,
+                           long freeSlots, List<String> participants ,List<String> waypointAddresses) {
         this.uid = uid;
         this.startAddress = startAddress;
         this.endAddress = endAddress;
