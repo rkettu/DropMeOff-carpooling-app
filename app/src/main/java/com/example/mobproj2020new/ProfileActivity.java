@@ -60,7 +60,12 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmailTextView.setText(user.getEmail());
         profilePhoNumTextView.setText(user.getPhone());
         profileBioTextView.setText(user.getBio());
-        
+
+        if(!user.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+        {
+            // Currently viewing someone elses profile - hiding edit profile button
+            findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+        }
     }
 
     public void editProfile(View v) {

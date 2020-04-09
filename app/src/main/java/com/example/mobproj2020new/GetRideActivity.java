@@ -61,7 +61,7 @@ public class GetRideActivity extends AppCompatActivity {
         textView.setVisibility(View.VISIBLE);
 
         mCalendar = Calendar.getInstance();
-        String currentDate = mCalendar.get(Calendar.DATE) + "." + mCalendar.get(Calendar.MONTH) + "." + mCalendar.get(Calendar.YEAR);
+        String currentDate = mCalendar.get(Calendar.DATE) + "." + (mCalendar.get(Calendar.MONTH)+1) + "." + mCalendar.get(Calendar.YEAR);
         int currentHour = mCalendar.get(Calendar.HOUR_OF_DAY);
         int currentMinute = mCalendar.get(Calendar.MINUTE);
         String format = "%1$02d";
