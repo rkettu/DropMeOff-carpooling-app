@@ -73,7 +73,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                     for(QueryDocumentSnapshot doc : task.getResult()){
                         if((long) doc.get("freeSlots") >= 1){
                             try{
-                                float pickupDistance = 10;
+                                float pickupDistance = (long) doc.get("pickUpDistance");
                                 points = (List) doc.get("points");
                                 if(isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
 
