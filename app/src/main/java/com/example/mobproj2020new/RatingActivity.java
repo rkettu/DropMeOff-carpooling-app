@@ -97,7 +97,7 @@ public class RatingActivity extends AppCompatActivity {
                                 Log.d("TESTIII", "UID:T " + userName);
 
                                 if(task.getResult().size() <= index){
-                                    //setDataToList();
+                                    setDataToList();
                                 }
 
                             }catch (Exception e){
@@ -110,31 +110,10 @@ public class RatingActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-        FirebaseFirestore myFirestoreRef = FirebaseFirestore.getInstance();
-        DocumentReference myDocRef = myFirestoreRef.collection("users").document(uid);
-
-        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if(doc.exists()){
-                        try {
-                            bookedRides = (List) doc.get("bookedRides");
-                            findRidesDetails();
-                        }catch (Exception e){
-                            findViewById(R.id.driverEmptyTxt).setVisibility(View.VISIBLE);
-                            bookedRides = new ArrayList<>();
-                        }
-                    }
-                }
-            }
-        });*/
     }
 
     private void findRidesDetails() {
+    }
 
 
     private void findParticipants(String uid) {
