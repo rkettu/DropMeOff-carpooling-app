@@ -60,7 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmailTextView.setText(user.getEmail());
         profilePhoNumTextView.setText(user.getPhone());
         profileBioTextView.setText(user.getBio());
-
+        
     }
 
     public void editProfile(View v) {

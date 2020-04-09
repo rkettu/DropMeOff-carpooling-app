@@ -28,6 +28,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firebase.firestore.CollectionReference;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.PreferenceChangeEvent;
@@ -50,7 +52,6 @@ public class DatabaseHandler {
 
     private Context profileContext;
     private String profileUid;
-
 
     public void setUserCreationInfo(String fname, String lname, String phone)
     {
@@ -84,16 +85,25 @@ public class DatabaseHandler {
     }
 
     // Saves route to database, informing of success, failure
-    public void createRide(Route route, final Context context)
+    public void createRide(final Route route, final Context context)
     {
         DocumentReference mRoutesDocRef = mRoutesColRef.document();
         mRoutesDocRef.set(route).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    // Set notification alarm for ride, day before ride or hour after posting if ride is less than a day away
+                    long leaveTime = route.getLeaveTime();
+                    long time = leaveTime - Calendar.getInstance().getTimeInMillis() > Constant.DayInMillis
+                            ? leaveTime - Constant.DayInMillis
+                            : leaveTime - (Constant.HourInMillis * 3)
+                            ;
+                    String timeString = CalendarHelper.getTimeString(leaveTime);
+                    SleepReceiver.setAlarm(context, time, "Created ride Reminder", (route.getStartAddress() + " - " + route.getEndAddress() + " leaving at " + timeString));
                     // Return to main activity...
                     // Show Toast text / pop up text or whatever in main instead...
                     Toast.makeText(context, "Ride Created", Toast.LENGTH_SHORT).show();
+
                 }
                 else {
                     Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();
@@ -132,6 +142,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             varContext.startActivity(intent);
                         }
@@ -314,6 +325,9 @@ public class DatabaseHandler {
                             route.addToParticipants(userId);
                         }
                         routeDoc.set(route);
+                        final long leaveTime = route.getLeaveTime();
+                        final String startAdd = route.getStartAddress();
+                        final String endAdd = route.getEndAddress();
                         // Adding ride to user's booked trips...
                         mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(userId);
                         mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -331,9 +345,18 @@ public class DatabaseHandler {
                                     }
                                     mUsersDocRef.set(user);
 
-                                    Intent i = new Intent(mContext, MainActivity.class);
+                                    // Creating timed notification for ride
+                                    long time = leaveTime - Calendar.getInstance().getTimeInMillis() > Constant.DayInMillis
+                                            ? leaveTime - Constant.DayInMillis
+                                            : leaveTime - (Constant.HourInMillis * 3)
+                                    ;
+                                    String timeString = CalendarHelper.getTimeString(leaveTime);
+                                    SleepReceiver.setAlarm(context, time, "Booked ride Reminder", (startAdd) + " - " + endAdd + " leaving at " + timeString);
+                                  
+                                  Intent i = new Intent(mContext, MainActivity.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     mContext.startActivity(i);
+
                                 }
                             }
                         });

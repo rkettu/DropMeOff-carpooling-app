@@ -217,6 +217,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
                 profileIntent.putExtra("user", holder.tripUser.getText().toString());
                 profileIntent.putExtra("userPic", holder.hidden.getText().toString());
@@ -229,6 +230,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
                 profileIntent.putExtra("date", String.valueOf(tripList.get(position).getLeaveTime()));
                 profileIntent.putExtra("rideId", tripList.get(position).getRideId());
                 profileIntent.putStringArrayListExtra("waypoints", (ArrayList<String>) tripList.get(position).getWaypointAddresses());
+
                 mContext.startActivity(profileIntent);
             }
         });
