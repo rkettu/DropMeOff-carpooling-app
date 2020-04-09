@@ -203,6 +203,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 long leaveTime = mC.getTimeInMillis();
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
                 String duration = newAika;
                 //String startDate = strDate;
                 //String startTime = strTime;
@@ -214,7 +215,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 List<String> waypointAddresses = Constant.waypointAddressesList;
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                        freeSlots, price, points, waypointAddresses, participants);
+                        freeSlots, price, points, waypointAddresses, participants, username);
                 db.createRide(route, RideDetailsActivity.this);
             } else {
                 FirebaseHelper.GoToLogin(getApplicationContext());

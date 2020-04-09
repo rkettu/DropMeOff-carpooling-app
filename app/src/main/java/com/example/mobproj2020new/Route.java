@@ -19,6 +19,7 @@ public class Route {
     private List<HashMap<String,String>> points;
     private List<String> waypointAddresses;
     private List<String> participants;
+    private String username;
 
 
     public Route() {}
@@ -26,7 +27,7 @@ public class Route {
     public Route(String uid, String duration, long leaveTime,
                  String startAddress, String endAddress, int freeSlots, float price,
                  List<HashMap<String,String>> points, List<String> waypointAddresses,
-                 List<String> participants)
+                 List<String> participants, String username)
     {
         this.uid = uid;
         this.duration = duration;
@@ -40,6 +41,7 @@ public class Route {
         this.points = points;
         this.waypointAddresses = waypointAddresses;
         this.participants = participants;
+        this.username = username;
     }
 
     public String getUid() {
@@ -71,6 +73,7 @@ public class Route {
         return waypointAddresses;
     }
     public List<String> getParticipants() { return participants; }
+    public String getUsername() { return username; }
 
     public void removeFreeSlot() { this.freeSlots--; }
 

@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class RatingCustomList extends ArrayAdapter<String> {
+public class RatingCustomList2 extends ArrayAdapter<String> {
 
     private final Activity context;
     private final List<String> startAddress;
     private final List<String> endAddress;
     private final List<String> userNames;
 
-    public RatingCustomList(Activity context, List<String> startAddress, List<String> userNames, List<String> endAddress){
+    public RatingCustomList2(Activity context, List<String> startAddress, List<String> userNames, List<String> endAddress){
         super(context, R.layout.rating_list_item, startAddress);
         this.context = context;
         this.startAddress = startAddress;
