@@ -1,17 +1,13 @@
 package com.example.mobproj2020new;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -98,9 +94,6 @@ public class DatabaseHandler {
                     // Return to main activity...
                     // Show Toast text / pop up text or whatever in main instead...
                     Toast.makeText(context, "Ride Created", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(context, MainActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
                 }
                 else {
                     Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();
@@ -139,8 +132,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
-                            //TODO: Changed FLAG_ACTIVITY_CLEAR_TOP to FLAG_ACTIVITY_NEW_TASK, not crashing anymore
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             varContext.startActivity(intent);
                         }
                     }
@@ -189,113 +181,6 @@ public class DatabaseHandler {
         // Add listeners for fail/complete/success?
     }
 
-    //---Async task to take care of matching routes from GetRideActivity---//
-    public class getMatchingRoutes extends AsyncTask<Float, Integer, String> {
-
-        getMatchingRoutes(){ }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Float... floats) {
-            float startlat = floats[0];
-            float startlon = floats[1];
-            float stoplat = floats[2];
-            float stoplon = floats[3];
-            float t1 = floats[4];
-            float t2 = floats[5];
-
-            try {
-                getNewMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("TAG", "doInBackground: catch");
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-
-        private void getNewMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
-            GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
-            User.arrayList.removeAll(User.arrayList);
-            Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
-            Log.d("my time is", "getNewMatchingRoutes: " + time1 + time2);
-            // Checking all rides with free passenger slots
-            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2); // TODO also add checking for ride distance...
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            if ((long) doc.get("freeSlots") >= 1) {
-                                try {
-                                    float pickupDistance = (long) doc.get("pickUpDistance");
-                                    Log.d("HALOO", "onComplete: " + pickupDistance);
-                                    List<HashMap<String, String>> points = (List) doc.get("points");
-                                    if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                        final String rideId = doc.getId();
-                                        Log.d("HALOOOOOOOO", "Found route matching criteria: " + rideId);
-                                        final GetARideUtility utility = doc.toObject(GetARideUtility.class);
-                                        utility.setRideId(rideId);
-
-                                        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
-                                        DocumentReference myDocRef = myFireStoreRef.collection("users").document(utility.getUid());
-                                        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    DocumentSnapshot doc = task.getResult();
-                                                    if (doc.exists()) {
-                                                        final User user = doc.toObject(User.class);
-                                                        User.arrayList.add(user);
-                                                        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + utility.getUid());
-                                                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Uri> task) {
-                                                                try {
-                                                                    if (task.getResult() != null) {
-                                                                        Log.d("######ImgUri####", String.valueOf(task.getResult()));
-                                                                        struri = String.valueOf(task.getResult());
-                                                                        user.setImgUid(struri);
-                                                                    } else {
-                                                                        Log.d("TAG", "No image found");
-                                                                    }
-                                                                } catch (Exception e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                        GetARideUtility.arrayList.add(utility);
-                                    } else {
-                                        Log.d("HALOOOOOOOO", "onComplete: " + points);
-                                    }
-                                } catch (Exception e) {
-                                    Log.d("EXCEPTIONALERT", e.toString());
-                                }
-                            }
-                        }
-                    } else {
-                        Log.d("VITTUJENPERKELE", "Error getting documents: ", task.getException());
-                    }
-                }
-            });
-        }
-    }
-
-    // Move to some Math class?
-    // Returns distance in km
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
     {
         // Haversine Algorithm
@@ -404,8 +289,8 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
-    public void BookTrip(final String rideId, final String userId, Context context) {
-        final Context c = context;
+    public void BookTrip(final String rideId, final String userId)
+    {
         if(rideId.equals("") || userId.equals("")) // Big failure
             return;
 
@@ -444,10 +329,7 @@ public class DatabaseHandler {
                                     }
                                     mUsersDocRef.set(user);
 
-                                    Toast.makeText(c, "Travel reservation successful", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(c, MainActivity.class);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    c.startActivity(i);
+                                    // TODO: Go to main here, displaying that ride booked successfully :)
                                 }
                             }
                         });
