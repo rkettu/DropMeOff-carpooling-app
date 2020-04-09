@@ -182,7 +182,7 @@ public class GetRideActivity extends AppCompatActivity {
             mCalendar.set(pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2);
             float t2 = mCalendar.getTimeInMillis();
 
-            FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
+            final FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
 
                 private String userName1;
                 private String picUri1;
@@ -206,6 +206,7 @@ public class GetRideActivity extends AppCompatActivity {
 
                 @Override
                 public void setImageUri(String s) {
+                    Log.d(TAG, "setImageUri: " + s);
                     this.picUri1 = s;
                 }
 
@@ -216,21 +217,18 @@ public class GetRideActivity extends AppCompatActivity {
                     final float mPrice = Float.parseFloat(price);
                     final long mLeaveTime = Long.parseLong(leaveTime);
 
-                    //GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime, mFreeSlots,
-                    //       wayPoints, participants);
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime, freeSlots,
-                                    wayPoints, participants, userName, picUri);
+                                    wayPoints, participants, getUserName1(), getImageUri1());
 
                             arrayList.add(utility);
                             GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
                             adapter.setUserStartPoint(startPoint);
                             adapter.setUserEndPoint(endPoint);
                             tripListView.setAdapter(adapter);
-                            Log.d(TAG, "run: " + adapter.getItem(0));
+
                             getARideAdapter.notifyDataSetChanged();
                         }
                     });

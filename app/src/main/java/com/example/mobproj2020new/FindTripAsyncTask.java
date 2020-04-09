@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -71,11 +72,11 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
         float t2 = floats[5];
 
         try {
-            return GetMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
+            GetMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "null";
+        return null;
     }
 
     @Override
@@ -84,7 +85,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
         pd.dismiss();
     }
 
-    private String GetMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
+    private void GetMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
         Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -93,7 +94,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                     for(QueryDocumentSnapshot doc : task.getResult()){
                         if((long) doc.get("freeSlots") >= 1){
                             try{
-                                int pickupDistance = 5;
+                                long pickupDistance = (long) doc.get("pickUpDistance");
                                 points = (List) doc.get("points");
                                 if(isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
                                     Log.d(TAG, "onComplete: " + doc.getId());
@@ -109,11 +110,8 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                                     wayPoints = (List) doc.get("waypointAddresses");
 
                                     if (uid != null) {
-                                        setUserName(uid);
                                         setProfilePicture(uid);
-
-                                        reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price, leaveTime,
-                                                freeSlots, wayPoints, participants, reporterInterface.getUserName1(), reporterInterface.getImageUri1());
+                                        setUserName(uid);
                                     }
                                 }
                                 else{
@@ -129,7 +127,6 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                 }
             }
         });
-        return "hahaha";
     }
 
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
@@ -187,7 +184,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
         return false;
     }
 
-    private void setUserName(String uid) {
+    private void setUserName(final String uid) {
         FirebaseFirestore myFirebaseStoreRef = FirebaseFirestore.getInstance();
         DocumentReference myDocRef = myFirebaseStoreRef.collection("users").document(uid);
         myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -197,6 +194,9 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                 if(doc.exists()){
                     userName = (String) doc.get("fname");
                     reporterInterface.setUserName(userName);
+
+                    reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price, leaveTime,
+                            freeSlots, wayPoints, participants, reporterInterface.getUserName1(), reporterInterface.getImageUri1());
                 }
             }
         });
