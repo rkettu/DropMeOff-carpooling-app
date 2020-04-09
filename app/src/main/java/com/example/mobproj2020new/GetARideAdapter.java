@@ -120,9 +120,11 @@ public class GetARideAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Log.d("TAG", "onClick: " + GetARideUtility.arrayList.get(position).getUid());
+                Log.d("SAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATANA", "Msg: " + User.arrayList.get(position).getUid());
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
                 profileIntent.putExtra("user", User.arrayList.get(position).getFname());
                 profileIntent.putExtra("userPic", User.arrayList.get(position).getImgUri());
+                profileIntent.putExtra("userId", User.arrayList.get(position).getUid());
                 profileIntent.putExtra("start", GetARideUtility.arrayList.get(position).getStartAddress());
                 profileIntent.putExtra("destination", GetARideUtility.arrayList.get(position).getEndAddress());
                 profileIntent.putExtra("duration", GetARideUtility.arrayList.get(position).getDuration());

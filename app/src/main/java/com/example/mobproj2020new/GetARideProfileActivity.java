@@ -41,7 +41,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
     CheckBox luggageCheckBox;
     EditText luggageEditText;
     CircleImageView progImageView;
-    private String bUser, bUserPic, bStartP, bDest, bDate, bDur, bPrice, bSeats, bRideId;
+    private String bUser, bUserPic, bStartP, bDest, bDate, bDur, bPrice, bSeats, bRideId, bUid;
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
 
     @Override
@@ -74,6 +74,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         bPrice = bundle.getString("price");
         bSeats = bundle.getString("seats");
         bRideId = bundle.getString("rideId");
+        bUid = bundle.getString("userId");
 
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(Long.parseLong(bDate));
@@ -87,6 +88,15 @@ public class GetARideProfileActivity extends AppCompatActivity {
         durationTextView.setText("Duration: " + bDur);
         priceTextView.setText("Price: " + bPrice + "per Kilometer");
         freeSeatsTextView.setText("Available seats: " + bSeats);
+
+        Log.d("NYT VITTU SAAAAAAAAAAAAAAAAAATANA", "Uid: " + bUid);
+
+        progImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatabaseHandler().GoToProfile(getApplicationContext(),bUid);
+            }
+        });
     }
 
     public void cbOnClick(View view){

@@ -142,6 +142,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             varContext.startActivity(intent);
                         }
@@ -252,7 +253,10 @@ public class DatabaseHandler {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot doc = task.getResult();
                                                     if (doc.exists()) {
-                                                        final User user = doc.toObject(User.class);
+                                                        User temp = doc.toObject(User.class);
+                                                        temp.setUid(doc.getId());
+                                                        final User user = temp;
+
                                                         User.arrayList.add(user);
                                                         StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + utility.getUid());
                                                         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
