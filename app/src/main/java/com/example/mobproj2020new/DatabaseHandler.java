@@ -104,6 +104,9 @@ public class DatabaseHandler {
                     // Show Toast text / pop up text or whatever in main instead...
                     Toast.makeText(context, "Ride Created", Toast.LENGTH_SHORT).show();
 
+                    Intent i = new Intent(context, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
                 }
                 else {
                     Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();

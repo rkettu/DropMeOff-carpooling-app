@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.database.DataSetObserver;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -33,8 +37,6 @@ public class GetRideActivity extends AppCompatActivity {
     private Context context = this;
     String stringDate, stringEstTime;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
-    ArrayList<GetARideUtility.getARideUserName> userArrayList = new ArrayList<>();
-    ArrayList<GetARideUtility.getARidePicUri> userPicArrayList = new ArrayList<>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText, dateEditText2, estTimeEditText2;
     ListView tripListView;
     GetARideAdapter getARideAdapter;
@@ -56,7 +58,6 @@ public class GetRideActivity extends AppCompatActivity {
         estTimeEditText2 = findViewById(R.id.estTimeEditText2);
         tripListView = findViewById(R.id.tripsListView);
         textView = findViewById(R.id.tripsTextView);
-
         textView.setText("Find your ride here!");
         textView.setVisibility(View.VISIBLE);
 
@@ -69,10 +70,6 @@ public class GetRideActivity extends AppCompatActivity {
         String estMin = String.format(format, currentMinute);
         dateEditText.setText(currentDate);
         estTimeEditText.setText(estHour + ":" + estMin);
-
-        getARideAdapter = new GetARideAdapter(this, arrayList);
-        Log.d(TAG, "onCreate: " + arrayList);
-        tripListView.setAdapter(getARideAdapter);
     }
 
     private void dummyData(){
@@ -87,23 +84,40 @@ public class GetRideActivity extends AppCompatActivity {
         }
     }
 
+    public static ProgressDialog pd;
+
+    public static void shutPd(){
+        pd.dismiss();
+    }
+
     public void searchButton (View v){
         hideKeyboard(this);
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading matching rides");
+        pd.setCancelable(false);
+        pd.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pd.dismiss();
+            }
+        },2000);
+
         textView.setVisibility(View.GONE);
         arrayList.removeAll(arrayList);
-        userArrayList.removeAll(userArrayList);
-        userPicArrayList.removeAll(userPicArrayList);
 
         String startPoint = startPointEditText.getText().toString();
         String endPoint = endPointEditText.getText().toString();
 
-        //TODO: RETURN STATEMENT IF NOT CORRECT
         try {
             geoLocate(startPoint, endPoint);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    //----------date time calendar----------//
     public void dateOfTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();
         newYear = calendar.get(Calendar.YEAR);
@@ -126,6 +140,7 @@ public class GetRideActivity extends AppCompatActivity {
         }, newYear, newMonth, newDay); dpd.show();
     }
 
+    //----------time calendar --------//
     public void estTimeClicked(final View v){
         final Calendar calendar = Calendar.getInstance();
         newHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -164,8 +179,8 @@ public class GetRideActivity extends AppCompatActivity {
     }
 
     public void geoLocate(final String startPoint, final String endPoint) throws IOException{
-        Geocoder gc = new Geocoder(this);
 
+        Geocoder gc = new Geocoder(this);
         try{
             List<Address> listStart = gc.getFromLocationName(startPoint, 1);
             Address add = listStart.get(0);
@@ -187,8 +202,9 @@ public class GetRideActivity extends AppCompatActivity {
             mCalendar.set(pickedYear2, pickedMonth2, pickedDate2, pickedHour2, pickedMinute2);
             float t2 = mCalendar.getTimeInMillis();
 
-            final FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
+            final GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
 
+            final FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
                 @Override
                 public void getTripData(final String uid, final String startAddress, final String endAddress, final String duration, final String rideId, String price, String leaveTime,
                                         final long freeSlots, final List<String> wayPoints, final List<String> participants) {
@@ -199,29 +215,26 @@ public class GetRideActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d(TAG, "run: " + uid + " " + startAddress);
                             GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime,
                                     freeSlots, wayPoints, participants);
 
-                            final GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
                             adapter.setUserStartPoint(startPoint);
                             adapter.setUserEndPoint(endPoint);
+                            arrayList.add(utility);
                             tripListView.setAdapter(adapter);
 
-                            arrayList.add(utility);
-                            getARideAdapter.notifyDataSetChanged();
                         }
                     });
                 }
             }, GetRideActivity.this);
             findTripASyncTask.execute(startLat, startLon, stopLat, stopLon, t1, t2);
-
         }
         catch (Exception e){
             e.printStackTrace();
             textView.setVisibility(View.VISIBLE);
             Toast.makeText(GetRideActivity.this, "Failed to find trips", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public void btnBackArrow(View v){

@@ -28,6 +28,7 @@ interface ReporterInterface{
                      String price, String leaveTime, long freeSlots, List<String> wayPoints, List<String> participants);
 }
 
+//--------This AsyncTask is for finding matching rides for user-defined trips--------//
 public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
 
     private CollectionReference mRoutesColRef = FirebaseFirestore.getInstance().collection("rides");
@@ -39,10 +40,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
     private List<String> wayPoints;
     private List<HashMap<String, String>> points;
     private List<String> participants;
-    private String userName;
-    private String picUri = "DEF_URI";
     private Context context;
-    private ProgressDialog pd;
 
     public FindTripAsyncTask(ReporterInterface callbackInterface, Context context){
         this.context = context;
@@ -75,9 +73,11 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                     for(QueryDocumentSnapshot doc : task.getResult()){
                         if((long) doc.get("freeSlots") >= 1){
                             try{
-                                long pickupDistance = 10;
+                                float pickupDistance = 10;
                                 points = (List) doc.get("points");
                                 if(isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
+
+                                    //----------Add String from db to variables if route is in range------//
 
                                     Log.d(TAG, "onComplete: doc.getId()" + doc.getId());
                                     uid = (String) doc.get("uid");
@@ -91,6 +91,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                                     wayPoints = (List) doc.get("waypointAddresses");
                                     participants = (List) doc.get("participants");
 
+                                    //---------------callbackInterface--------------//
                                     reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price,
                                             leaveTime, freeSlots, participants, wayPoints);
                                 }
@@ -107,7 +108,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                 }
             }
         });
-        return "hihiihi";
+        return null;
     }
 
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
@@ -165,6 +166,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
         return false;
     }
 
+    //--------function for getting ride providers first name from database
     private void setUserName(final String uid) {
         Log.d(TAG, "setUserName: täsänäi" + uid);
         FirebaseFirestore myFirebaseStoreRef = FirebaseFirestore.getInstance();
@@ -174,12 +176,13 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot doc = task.getResult();
                 if (doc.exists()) {
-                    userName = (String) doc.get("fname");
+                    String userName = (String) doc.get("fname");
                 }
             }
         });
     }
 
+    //--------function for getting ride providers picture uri from database
     private void setProfilePicture(final String uid){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -188,7 +191,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                 try{
                     if(task.getResult() != null){
                         Log.d(TAG, "onComplete: setProfPic: " + uid);
-                        picUri = String.valueOf(task.getResult());
+                        String picUri = String.valueOf(task.getResult());
                     }
                 }
                 catch (Exception e){

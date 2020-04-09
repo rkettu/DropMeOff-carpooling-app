@@ -120,9 +120,11 @@ public class GetARideProfileActivity extends AppCompatActivity {
 
         try {
             if (bWayPoint.size() > 0 && bWayPoint.get(0).length() > 0) {
-                for (int i = 0; i < bWayPoint.size() - 1; i++) {
-                    int j = i + 1;
-                    waypointsTextView.append("\n" + j + ": " + bWayPoint.get(i));
+                for (int i = 0; i <= bWayPoint.size() - 1; i++) {
+                    if(bWayPoint.get(i).length() > 0){
+                        int j = i + 1;
+                        waypointsTextView.append("\n" + j + ": " + bWayPoint.get(i));
+                    }
                 }
             } else {
                 waypointsTextView.setText("No way points");
