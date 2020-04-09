@@ -41,6 +41,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
     CheckBox luggageCheckBox;
     EditText luggageEditText;
     CircleImageView progImageView;
+
     private String bUser;
     private String bUserPic;
     private String bStartP;
@@ -52,6 +53,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
     private String bRideId;
     private String bUid;
     private ArrayList<String> bWayPoint;
+
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
 
     @Override
@@ -85,9 +87,11 @@ public class GetARideProfileActivity extends AppCompatActivity {
         bPrice = bundle.getString("price");
         bSeats = bundle.getString("seats");
         bRideId = bundle.getString("rideId");
+
         bUid = bundle.getString("uid");
         Log.d("TAG", "onCreate: " + bUid);
         bWayPoint = bundle.getStringArrayList("waypoints");
+
 
         Picasso.with(GetARideProfileActivity.this).load(bUserPic).into(progImageView);
         userNameTextView.setText("Ride provider: " + bUser);
@@ -96,6 +100,15 @@ public class GetARideProfileActivity extends AppCompatActivity {
         durationTextView.setText("Duration: " + bDur);
         priceTextView.setText("Price for trip: " + bPrice);
         freeSeatsTextView.setText("Available seats: " + bSeats);
+
+
+
+        progImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatabaseHandler().GoToProfile(getApplicationContext(),bUid);
+            }
+        });
 
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(Long.parseLong(bDate));
@@ -150,7 +163,9 @@ public class GetARideProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DatabaseHandler db = new DatabaseHandler();
+
                 //db.BookTrip(bRideId, FirebaseAuth.getInstance().getCurrentUser().getUid(), getApplicationContext());
+
             }
         });
 
