@@ -33,6 +33,8 @@ public class GetRideActivity extends AppCompatActivity {
     private Context context = this;
     String stringDate, stringEstTime;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
+    ArrayList<GetARideUtility.getARideUserName> userArrayList = new ArrayList<>();
+    ArrayList<GetARideUtility.getARidePicUri> userPicArrayList = new ArrayList<>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText, dateEditText2, estTimeEditText2;
     ListView tripListView;
     GetARideAdapter getARideAdapter;
@@ -88,6 +90,9 @@ public class GetRideActivity extends AppCompatActivity {
     public void searchButton (View v){
         hideKeyboard(this);
         textView.setVisibility(View.GONE);
+        arrayList.removeAll(arrayList);
+        userArrayList.removeAll(userArrayList);
+        userPicArrayList.removeAll(userPicArrayList);
 
         String startPoint = startPointEditText.getText().toString();
         String endPoint = endPointEditText.getText().toString();
@@ -184,35 +189,9 @@ public class GetRideActivity extends AppCompatActivity {
 
             final FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
 
-                private String userName1;
-                private String picUri1;
-
-                @Override
-                public String getUserName1() {
-                    Log.d(TAG, "getUserName1: " + userName1);
-                    return userName1;
-                }
-
-                @Override
-                public String getImageUri1() {
-                    return picUri1;
-                }
-
-                @Override
-                public void setUserName(String s) {
-                    Log.d(TAG, "setUserName: " + s);
-                    this.userName1 = s;
-                }
-
-                @Override
-                public void setImageUri(String s) {
-                    Log.d(TAG, "setImageUri: " + s);
-                    this.picUri1 = s;
-                }
-
                 @Override
                 public void getTripData(final String uid, final String startAddress, final String endAddress, final String duration, final String rideId, String price, String leaveTime,
-                                        final long freeSlots, final List<String> wayPoints, final List<String> participants, final String userName, final String picUri) {
+                                        final long freeSlots, final List<String> wayPoints, final List<String> participants) {
 
                     final float mPrice = Float.parseFloat(price);
                     final long mLeaveTime = Long.parseLong(leaveTime);
@@ -220,15 +199,16 @@ public class GetRideActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime, freeSlots,
-                                    wayPoints, participants, getUserName1(), getImageUri1());
+                            Log.d(TAG, "run: " + uid + " " + startAddress);
+                            GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime,
+                                    freeSlots, wayPoints, participants);
 
-                            arrayList.add(utility);
-                            GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
+                            final GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
                             adapter.setUserStartPoint(startPoint);
                             adapter.setUserEndPoint(endPoint);
                             tripListView.setAdapter(adapter);
 
+                            arrayList.add(utility);
                             getARideAdapter.notifyDataSetChanged();
                         }
                     });

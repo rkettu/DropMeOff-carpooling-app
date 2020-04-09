@@ -37,22 +37,15 @@
         app:layout_constraintRight_toRightOf="@id/guideline_3"
         app:layout_constraintLeft_toLeftOf="@id/guideline_1"
         />
-
-    <!-- trip time
     <TextView
         android:id="@+id/tv3"
-        android:textColor="@color/white"
-        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="Duration"
-        android:textSize="16dp"
-        android:gravity="right"
+        android:layout_width="0dp"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv5"
-        app:layout_constraintLeft_toRightOf="@id/guideline_4"
+        app:layout_constraintLeft_toLeftOf="parent"
         />
--->
+
     <!-- free slots
     <TextView
         android:id="@+id/tv5"

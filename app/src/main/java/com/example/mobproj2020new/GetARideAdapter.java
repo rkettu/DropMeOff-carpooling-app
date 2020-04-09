@@ -5,13 +5,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +42,8 @@ import java.util.List;
 public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
+    //private ArrayList<GetARideUtility.getARideUserName> tripUser = new ArrayList<>();
+    //private ArrayList<GetARideUtility.getARidePicUri> tripUserPic = new ArrayList<>();
     private String userStartPoint;
     private String userEndPoint;
 
@@ -63,6 +77,8 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
     public GetARideAdapter(Context context, ArrayList<GetARideUtility> arrayList) {
         this.tripList = arrayList;
+        //this.tripUser = tripUser;
+        //this.tripUserPic = tripUserPic;
         mContext = context;
     }
 
@@ -91,7 +107,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         TextView endPoint;
         TextView tripUser;
         TextView freeSlots;
-        TextView duration;
+        TextView hidden;
         TextView tripTime;
         TextView price;
         TextView date;
@@ -138,7 +154,7 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             view = inflater.from(parent.getContext()).inflate(R.layout.adapter_get_a_ride, parent, false);
             holder.endPoint = view.findViewById(R.id.tv1);
             holder.startPoint = view.findViewById(R.id.tv2);
-            //holder.duration = view.findViewById(R.id.tv3);
+            holder.hidden = view.findViewById(R.id.tv3);
             //holder.freeSlots = view.findViewById(R.id.tv5);
             holder.tripUser = view.findViewById(R.id.tv6);
             holder.price = view.findViewById(R.id.tv7);
@@ -150,24 +166,37 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
         //--Setting text to holders--//
 
-        Log.d("getView", "getView: " + tripList.get(position).getUserName());
         try{
             GetRoute getRoute = new GetRoute(new ReporterInterface() {
                 @Override
                 public void dataParsed(String output) {
                     float finalPrice = tripList.get(position).getPrice() * Float.parseFloat(output);
                     holder.price.setText(String.format("%.2f", finalPrice ) + "€");
+
+                    GetUserName getUserName = new GetUserName(new newReporterInterface() {
+                        @Override
+                        public void getName(String result) {
+                            holder.tripUser.setText(result);
+
+                            GetUserPicture getUserPicture = new GetUserPicture(new newestReporterInterface() {
+                                @Override
+                                public void getUserPic(String result) {
+                                    holder.hidden.setText(result);
+                                }
+                            });
+                            getUserPicture.execute(tripList.get(position).getUid());
+                        }
+                    });
+                    getUserName.execute(tripList.get(position).getUid());
                 }
             });
             getRoute.execute(getUserStartPoint(), getUserEndPoint());
 
-            holder.tripUser.setText(tripList.get(position).getUserName());
+
             holder.startPoint.setText(locate(tripList.get(position).getStartAddress()));
             holder.endPoint.setText(locate(tripList.get(position).getEndAddress()));
-            //holder.duration.setText(GetARideUtility.arrayList.get(position).getDuration());
-            //holder.freeSlots.setText(String.valueOf(GetARideUtility.arrayList.get(position).getFreeSlots()));
 
-            //------------ Time -----------------//
+            //----------------Set time----------//
             long millis = tripList.get(position).getLeaveTime();
             Calendar c = new GregorianCalendar();
             c.setTimeInMillis(millis);
@@ -176,8 +205,10 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             String min = String.format(format, c.get(Calendar.MINUTE));
             String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "\n" + hour + ":" + min;
             holder.date.setText(timeString);
+
         }catch (Exception e){
             e.printStackTrace();
+            Log.d("getView", "getView: " + e.toString());
         }
 
         //--onclick listener and passing data to next activity--//
@@ -185,8 +216,8 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
             @Override
             public void onClick(View v) {
                 Intent profileIntent = new Intent(mContext, GetARideProfileActivity.class);
-                profileIntent.putExtra("user", tripList.get(position).getUserName());
-                profileIntent.putExtra("userPic", tripList.get(position).getPicUri());
+                profileIntent.putExtra("user", holder.tripUser.getText().toString());
+                profileIntent.putExtra("userPic", holder.hidden.getText().toString());
                 profileIntent.putExtra("uid", tripList.get(position).getUid());
                 profileIntent.putExtra("start", tripList.get(position).getStartAddress());
                 profileIntent.putExtra("destination", tripList.get(position).getEndAddress());
@@ -202,8 +233,82 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
         return view;
     }
 
+
+
     public interface ReporterInterface {
         void dataParsed(String output);
+    }
+
+    public interface newReporterInterface {
+        void getName(String result);
+    }
+
+    public interface newestReporterInterface {
+        void getUserPic(String result);
+    }
+
+    private class GetUserPicture extends AsyncTask<String, Integer, String>{
+
+        newestReporterInterface newestReporterInterface;
+
+        public GetUserPicture(newestReporterInterface newestReporterInterface){
+            this.newestReporterInterface = newestReporterInterface;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            final String userPic = strings[0];
+            if(userPic != null){
+                StorageReference myStorageRef = FirebaseStorage.getInstance()
+                        .getReference("profpics/" + userPic);
+                myStorageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        try{
+                            if(task.getResult() != null){
+                                String userPicUri = String.valueOf(task.getResult());
+                                newestReporterInterface.getUserPic(userPicUri);
+                            }
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+            return null;
+        }
+    }
+
+    private class GetUserName extends AsyncTask<String, Integer, String> {
+
+        newReporterInterface newReporterInterface;
+
+        public GetUserName(newReporterInterface newReporterInterface) {
+            this.newReporterInterface = newReporterInterface;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            final String user = strings[0];
+            if (user != null) {
+                FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
+                DocumentReference myDocRef = myFireStoreRef.collection("users").document(user);
+                myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
+                            if (doc.exists()) {
+                                String userName = (String) doc.get("fname");
+                                newReporterInterface.getName(userName);
+                            }
+                        }
+                    }
+                });
+            }
+            return null;
+        }
     }
 
     private class GetRoute extends AsyncTask<String, Integer, String> {
@@ -212,6 +317,11 @@ public class GetARideAdapter extends BaseAdapter implements TaskLoadedCallback {
 
         public GetRoute(ReporterInterface callbackInterface) {
             this.reporterInterface = callbackInterface;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
 
         @Override

@@ -75,8 +75,9 @@ public class GetARideProfileActivity extends AppCompatActivity {
         luggageEditText.setVisibility(View.INVISIBLE);
 
         Bundle bundle = getIntent().getExtras();
-        bUserPic = bundle.getString("userPic");
+
         bUser = bundle.getString("user");
+        bUserPic = bundle.getString("userPic");
         bStartP = bundle.getString("start");
         bDest = bundle.getString("destination");
         bDate = bundle.getString("date");
@@ -95,7 +96,6 @@ public class GetARideProfileActivity extends AppCompatActivity {
         durationTextView.setText("Duration: " + bDur);
         priceTextView.setText("Price for trip: " + bPrice);
         freeSeatsTextView.setText("Available seats: " + bSeats);
-        Log.d("TAG", "onCreate: " + bWayPoint.get(0));
 
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(Long.parseLong(bDate));
@@ -136,11 +136,8 @@ public class GetARideProfileActivity extends AppCompatActivity {
     }
 
     public void goToProfile(View view){
-        //-------- Go to ride provider profile ---------// TODO: ride provider's profile view for other users.
-        if(bUid != null){
-            DatabaseHandler handler = new DatabaseHandler();
-            handler.GoToProfile(GetARideProfileActivity.this, bUid);
-        }
+        //-------- Go to ride provider profile ---------//
+
     }
 
     private void BookTripDialog()

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -25,12 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 
 interface ReporterInterface{
-    void setUserName(String s);
-    void setImageUri(String s);
-    String getUserName1();
-    String getImageUri1();
     void getTripData(String uid, String startAddress, String endAddress, String duration, String rideId,
-                     String price, String leaveTime, long freeSlots, List<String> wayPoints, List<String> participants, String userName, String picUri);
+                     String price, String leaveTime, long freeSlots, List<String> wayPoints, List<String> participants);
 }
 
 public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
@@ -55,14 +50,6 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
     }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        pd = new ProgressDialog(context);
-        pd.setMessage("Loading matching trips");
-    }
-
-
-    @Override
     protected String doInBackground(Float... floats) {
         float startlat = floats[0];
         float startlon = floats[1];
@@ -72,20 +59,14 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
         float t2 = floats[5];
 
         try {
-            GetMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
+            return GetMatchingRoutes(t1, t2, startlat, startlon, stoplat, stoplon);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        pd.dismiss();
-    }
-
-    private void GetMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
+    private String GetMatchingRoutes(float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
         Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -94,12 +75,13 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                     for(QueryDocumentSnapshot doc : task.getResult()){
                         if((long) doc.get("freeSlots") >= 1){
                             try{
-                                long pickupDistance = (long) doc.get("pickUpDistance");
+                                long pickupDistance = 10;
                                 points = (List) doc.get("points");
                                 if(isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                    Log.d(TAG, "onComplete: " + doc.getId());
-                                    rideId = doc.getId();
+
+                                    Log.d(TAG, "onComplete: doc.getId()" + doc.getId());
                                     uid = (String) doc.get("uid");
+                                    rideId = doc.getId();
                                     startAddress = (String) doc.get("startAddress");
                                     endAddress = (String) doc.get("endAddress");
                                     duration = (String) doc.get("duration");
@@ -109,10 +91,8 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                                     price = doc.get("price").toString();
                                     wayPoints = (List) doc.get("waypointAddresses");
 
-                                    if (uid != null) {
-                                        setProfilePicture(uid);
-                                        setUserName(uid);
-                                    }
+                                    reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price,
+                                            leaveTime, freeSlots, participants, wayPoints);
                                 }
                                 else{
                                     Log.d(TAG, "onComplete: Failed isRouteInRange");
@@ -127,6 +107,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                 }
             }
         });
+        return "hihiihi";
     }
 
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
@@ -185,32 +166,29 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
     }
 
     private void setUserName(final String uid) {
+        Log.d(TAG, "setUserName: täsänäi" + uid);
         FirebaseFirestore myFirebaseStoreRef = FirebaseFirestore.getInstance();
         DocumentReference myDocRef = myFirebaseStoreRef.collection("users").document(uid);
         myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot doc = task.getResult();
-                if(doc.exists()){
+                if (doc.exists()) {
                     userName = (String) doc.get("fname");
-                    reporterInterface.setUserName(userName);
-
-                    reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price, leaveTime,
-                            freeSlots, wayPoints, participants, reporterInterface.getUserName1(), reporterInterface.getImageUri1());
                 }
             }
         });
     }
 
-    private void setProfilePicture(String uid){
+    private void setProfilePicture(final String uid){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
         storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 try{
                     if(task.getResult() != null){
+                        Log.d(TAG, "onComplete: setProfPic: " + uid);
                         picUri = String.valueOf(task.getResult());
-                        reporterInterface.setImageUri(picUri);
                     }
                 }
                 catch (Exception e){
