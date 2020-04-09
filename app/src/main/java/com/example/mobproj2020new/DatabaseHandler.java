@@ -289,8 +289,10 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
-    public void BookTrip(final String rideId, final String userId)
+    public void BookTrip(final String rideId, final String userId, final Context context)
     {
+        final Context mContext = context;
+
         if(rideId.equals("") || userId.equals("")) // Big failure
             return;
 
@@ -329,7 +331,9 @@ public class DatabaseHandler {
                                     }
                                     mUsersDocRef.set(user);
 
-                                    // TODO: Go to main here, displaying that ride booked successfully :)
+                                    Intent i = new Intent(mContext, MainActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    mContext.startActivity(i);
                                 }
                             }
                         });

@@ -81,15 +81,15 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
 
                                     Log.d(TAG, "onComplete: doc.getId()" + doc.getId());
                                     uid = (String) doc.get("uid");
-                                    rideId = doc.getId();
                                     startAddress = (String) doc.get("startAddress");
                                     endAddress = (String) doc.get("endAddress");
                                     duration = (String) doc.get("duration");
-                                    freeSlots = (long) doc.get("freeSlots");
-                                    leaveTime = doc.get("leaveTime").toString();
-                                    participants = (List) doc.get("participants");
+                                    rideId = doc.getId();
                                     price = doc.get("price").toString();
+                                    leaveTime = doc.get("leaveTime").toString();
+                                    freeSlots = (long) doc.get("freeSlots");
                                     wayPoints = (List) doc.get("waypointAddresses");
+                                    participants = (List) doc.get("participants");
 
                                     reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price,
                                             leaveTime, freeSlots, participants, wayPoints);

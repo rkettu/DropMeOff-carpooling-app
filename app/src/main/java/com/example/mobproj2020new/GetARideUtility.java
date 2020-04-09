@@ -50,8 +50,8 @@ public class GetARideUtility implements Serializable {
         }
     }
 
-    public GetARideUtility(String uid, String startAddress, String endAddress, String duration, String rideId, float price, long leaveTime, long freeSlots,
-                           List<String> waypointAddresses, List<String> participants) {
+    public GetARideUtility(String uid, String startAddress, String endAddress, String duration, String rideId, float price, long leaveTime, long freeSlots
+            , List<String> participants ,List<String> waypointAddresses) {
         this.uid = uid;
         this.startAddress = startAddress;
         this.endAddress = endAddress;
