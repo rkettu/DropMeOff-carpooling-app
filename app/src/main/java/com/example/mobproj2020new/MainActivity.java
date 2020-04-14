@@ -29,6 +29,9 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -47,7 +50,8 @@ public class MainActivity extends AppCompatActivity{
     private static String image;
     private static String uid;
     private List<Route> myOfferedRidesInfoList = new ArrayList<>();
-    private HashMap<String,Route> myOfferedRidesMap = new HashMap<>();
+    private List<Route> myBookedRidesInfoList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,24 +183,38 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Booked trips");
 
-        //------------List to test AlertDialog---------//
-        final List<String> trips = new ArrayList<>();
-        trips.add("Oulu - Helsinki");
-        trips.add("Oulu - Kannus");
-        trips.add("Oulu - Pyhäjärvi");
-        trips.add("Helsinki - Oulu");
-        trips.add("Helsinki - Jyväskylä - Oulu");
+        myBookedRidesInfoList.clear();
+        final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myBookedRidesInfoList);
 
-        ArrayAdapter<String> bookedTrips = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, trips);
-        builder.setAdapter(bookedTrips, new DialogInterface.OnClickListener() {
+        new DatabaseHandler().GetBookedRides(ridesAdapter, myBookedRidesInfoList);
+
+        builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, trips.get(which) + " trip chosen ", Toast.LENGTH_LONG).show();
+                final Route r = myBookedRidesInfoList.get(which);
+                Toast.makeText(MainActivity.this, r.getEndAddress() + " ride chosen ", Toast.LENGTH_LONG).show();
 
-                ///////////////////Varattujen matkojen info näkymä\\\\\\\\\\\\\\\\\\\\
-                Intent i = new Intent(MainActivity.this, BookedTripsInfoActivity.class);
-                startActivity(i);
+                final DocumentReference userDoc = FirebaseFirestore.getInstance().collection("users").document(r.getUid());
+                userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful())
+                        {
+                            DocumentSnapshot doc = task.getResult();
+                            if(doc.exists()) {
+                                User u = doc.toObject(User.class);
+                                Intent i = new Intent(MainActivity.this, BookedTripsInfoActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i.putExtra("MYKEY1",r);
+                                i.putExtra("MYKEY2", u);
+                                startActivity(i);
+                            }
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "Error getting ride data", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
@@ -209,17 +227,6 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Offered rides");
 
-
-        //------------List to test AlertDialog---------//
-        //final List<String> rides = new ArrayList<>();
-        /*
-        rides.add("Oulu - Helsinki");
-        rides.add("Oulu - Kannus");
-        rides.add("Oulu - Pyhäjärvi");
-        rides.add("Helsinki - Oulu");
-        rides.add("Jyväskylä - Oulu");
-        */
-        //final ArrayAdapter<String> offeredRides = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, rides);
         myOfferedRidesInfoList.clear();
         final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myOfferedRidesInfoList);
 

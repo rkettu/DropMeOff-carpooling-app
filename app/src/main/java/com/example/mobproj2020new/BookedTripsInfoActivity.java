@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booked_trips_info);
         findViewById(R.id.removeTrip).setOnClickListener(this);
+
+        Log.d("HEIHALOJATA", ((Route)getIntent().getSerializableExtra("MYKEY1")).getEndAddress() + " " + ((User)getIntent().getSerializableExtra("MYKEY2")).getLname());
 
         headline = findViewById(R.id.tripHeadline);
         name = findViewById(R.id.nameText);

@@ -312,6 +312,29 @@ public class DatabaseHandler {
         });
     }
 
+    public void GetBookedRides(final ArrayAdapter<Route> aa, final List<Route> routeData)
+    {
+        Query q = mRoutesColRef.whereArrayContains("participants", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot doc : task.getResult())
+                    {
+                        Route r = doc.toObject(Route.class);
+
+                        routeData.add(r);
+
+                        aa.notifyDataSetChanged();
+
+
+                    }
+                }
+            }
+        });
+    }
+
     private void gotoProfileActivity(final User user){
         Intent intent = new Intent(profileContext, ProfileActivity.class);
         intent.putExtra("JOKUKEY", user);
