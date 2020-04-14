@@ -53,7 +53,8 @@
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintEnd_toStartOf="@+id/textViewlName"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        android:fontFamily="@font/montserrat_medium"  />
 
     <EditText
         android:id="@+id/firstNameedit"
@@ -68,7 +69,8 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/lastNameedit"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/textViewfName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewfName"
+        />
 
     <TextView
         android:id="@+id/textViewlName"
@@ -80,7 +82,8 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/textViewfName"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/lastNameedit"
@@ -107,7 +110,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameedit" />
+        app:layout_constraintTop_toBottomOf="@+id/firstNameedit"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/emailedit"
@@ -125,7 +129,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
         android:drawableStart="@drawable/ic_mail_outline_black_24dp"
-        android:drawablePadding="16dp"/>
+        android:drawablePadding="16dp"
+        />
 
     <TextView
         android:id="@+id/textViewPhoNum"
@@ -137,7 +142,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/emailedit" />
+        app:layout_constraintTop_toBottomOf="@+id/emailedit"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/phoNumedit"
@@ -167,7 +173,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/phoNumedit" />
+        app:layout_constraintTop_toBottomOf="@+id/phoNumedit"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/bioedit"
@@ -187,7 +194,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewBio"
-        android:background="@drawable/custom_edittext1"/>
+        android:background="@drawable/custom_edittext1"
+        />
 
     <Button
         android:id="@+id/saveProfileDetailButton"

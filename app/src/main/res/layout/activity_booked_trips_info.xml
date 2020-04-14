@@ -27,7 +27,8 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/montserrat_medium"/>
 
 
     <TextView
@@ -40,7 +41,8 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/tripStartPoint"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/Name"
@@ -50,9 +52,10 @@
         android:layout_marginTop="28dp"
         android:text="Name"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint" />
+        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/nameText"
@@ -67,7 +70,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/Name"
-        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint" />
+        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/Phone"
@@ -77,9 +81,10 @@
         android:layout_marginTop="18dp"
         android:text="Phone"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Name" />
+        app:layout_constraintTop_toBottomOf="@+id/Name"
+        android:fontFamily="@font/montserrat_medium"/>
 
 
     <TextView
@@ -94,7 +99,8 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Phone"
-        app:layout_constraintTop_toBottomOf="@+id/nameText" />
+        app:layout_constraintTop_toBottomOf="@+id/nameText"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/Distance"
@@ -104,9 +110,10 @@
         android:layout_marginTop="18dp"
         android:text="Distance"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Phone" />
+        app:layout_constraintTop_toBottomOf="@+id/Phone"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/distanceNum"
@@ -120,7 +127,8 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Distance"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneNum"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/price"
@@ -130,9 +138,10 @@
         android:layout_marginTop="18dp"
         android:text="Price"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Distance" />
+        app:layout_constraintTop_toBottomOf="@+id/Distance"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/costSum"
@@ -146,7 +155,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.181"
         app:layout_constraintStart_toEndOf="@+id/price"
-        app:layout_constraintTop_toBottomOf="@+id/distanceNum" />
+        app:layout_constraintTop_toBottomOf="@+id/distanceNum"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/date"
@@ -156,9 +166,10 @@
         android:layout_marginTop="18dp"
         android:text="Date of trip"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
+        app:layout_constraintTop_toBottomOf="@+id/price"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/infoDate"
@@ -172,7 +183,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@+id/costSum" />
+        app:layout_constraintTop_toBottomOf="@+id/costSum"
+        android:fontFamily="@font/open_sans_semibold"/>
 
 
     <TextView
@@ -183,9 +195,10 @@
         android:layout_marginTop="18dp"
         android:text="Info"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
+        app:layout_constraintTop_toBottomOf="@+id/duration"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/infoBox"
@@ -197,7 +210,8 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/info"
-        app:layout_constraintTop_toBottomOf="@+id/durationTime" />
+        app:layout_constraintTop_toBottomOf="@+id/durationTime"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/duration"
@@ -207,9 +221,10 @@
         android:layout_marginTop="18dp"
         android:text="Duration"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/durationTime"
@@ -221,7 +236,8 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/duration"
-        app:layout_constraintTop_toBottomOf="@+id/infoDate" />
+        app:layout_constraintTop_toBottomOf="@+id/infoDate"
+        android:fontFamily="@font/open_sans_semibold"/>
 
 
     <Button
@@ -236,7 +252,8 @@
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
