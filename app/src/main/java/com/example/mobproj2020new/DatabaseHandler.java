@@ -2,12 +2,9 @@ package com.example.mobproj2020new;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 
@@ -29,12 +26,8 @@ import com.google.firebase.storage.UploadTask;
 import com.google.firebase.firestore.CollectionReference;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.prefs.PreferenceChangeEvent;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 // Maybe make everything static?
@@ -98,7 +91,7 @@ public class DatabaseHandler {
                             ? leaveTime - Constant.DayInMillis
                             : leaveTime - (Constant.HourInMillis * 3)
                             ;
-                    String timeString = CalendarHelper.getTimeString(leaveTime);
+                    String timeString = CalendarHelper.getFullTimeString(leaveTime);
                     SleepReceiver.setAlarm(context, time, "Created ride Reminder", (route.getStartAddress() + " - " + route.getEndAddress() + " leaving at " + timeString));
                     // Return to main activity...
                     // Show Toast text / pop up text or whatever in main instead...
@@ -296,6 +289,29 @@ public class DatabaseHandler {
         });
     }
 
+    public void GetOfferedRides(final ArrayAdapter<Route> aa, final List<Route> routeData)
+    {
+        Query q = mRoutesColRef.whereEqualTo("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot doc : task.getResult())
+                    {
+                        Route r = doc.toObject(Route.class);
+
+                        routeData.add(r);
+
+                        aa.notifyDataSetChanged();
+
+
+                    }
+                }
+            }
+        });
+    }
+
     private void gotoProfileActivity(final User user){
         Intent intent = new Intent(profileContext, ProfileActivity.class);
         intent.putExtra("JOKUKEY", user);
@@ -353,7 +369,7 @@ public class DatabaseHandler {
                                             ? leaveTime - Constant.DayInMillis
                                             : leaveTime - (Constant.HourInMillis * 3)
                                     ;
-                                    String timeString = CalendarHelper.getTimeString(leaveTime);
+                                    String timeString = CalendarHelper.getFullTimeString(leaveTime);
                                     SleepReceiver.setAlarm(context, time, "Booked ride Reminder", (startAdd) + " - " + endAdd + " leaving at " + timeString);
                                   
                                   Intent i = new Intent(mContext, MainActivity.class);

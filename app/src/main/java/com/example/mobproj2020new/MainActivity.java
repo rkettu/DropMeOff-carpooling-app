@@ -36,6 +36,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity{
     private static CircleImageView btnSettings;
     private static String image;
     private static String uid;
+    private List<Route> myOfferedRidesInfoList = new ArrayList<>();
+    private HashMap<String,Route> myOfferedRidesMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,8 +187,6 @@ public class MainActivity extends AppCompatActivity{
         trips.add("Helsinki - Oulu");
         trips.add("Helsinki - Jyväskylä - Oulu");
 
-
-
         ArrayAdapter<String> bookedTrips = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, trips);
         builder.setAdapter(bookedTrips, new DialogInterface.OnClickListener() {
@@ -210,22 +211,28 @@ public class MainActivity extends AppCompatActivity{
 
 
         //------------List to test AlertDialog---------//
-        final List<String> rides = new ArrayList<>();
+        //final List<String> rides = new ArrayList<>();
+        /*
         rides.add("Oulu - Helsinki");
         rides.add("Oulu - Kannus");
         rides.add("Oulu - Pyhäjärvi");
         rides.add("Helsinki - Oulu");
         rides.add("Jyväskylä - Oulu");
+        */
+        //final ArrayAdapter<String> offeredRides = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, rides);
+        myOfferedRidesInfoList.clear();
+        final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myOfferedRidesInfoList);
 
-        ArrayAdapter<String> offeredRides = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, rides);
-        builder.setAdapter(offeredRides, new DialogInterface.OnClickListener() {
+        new DatabaseHandler().GetOfferedRides(ridesAdapter, myOfferedRidesInfoList);
+
+        builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, rides.get(which) + " ride chosen ", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, myOfferedRidesInfoList.get(which).getEndAddress() + " ride chosen ", Toast.LENGTH_LONG).show();
 
                 /////////////////Offered rides view\\\\\\\\\\\\\\\\\\
                 Intent i = new Intent(MainActivity.this, OfferedTripsInfoActivity.class);
+                i.putExtra("MYKEY", myOfferedRidesInfoList.get(which));
                 startActivity(i);
             }
         });

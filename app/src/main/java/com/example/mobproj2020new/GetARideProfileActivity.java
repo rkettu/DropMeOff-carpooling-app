@@ -165,7 +165,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Booking this trip?");
-        builder.setMessage("The estimated cost for this trip is " + bPrice + " per Kilometer");
+        builder.setMessage("The estimated cost for this trip is " + bPrice);
         builder.setCancelable(true);
         builder.setPositiveButton("BOOK", new DialogInterface.OnClickListener() {
             @Override
