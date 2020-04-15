@@ -37,108 +37,85 @@ public class RatingActivity extends AppCompatActivity {
     final Long currentTime = Calendar.getInstance().getTimeInMillis();
 
     private List<UserData> allParticipants = new ArrayList<>();
+    private List<UserData> allDrivers = new ArrayList<>();
 
-    //kuljettajien arviot
-    private List<String> bookedRides;
-    private List<String> startAddress;
-    private List<String> endAddresses;
-    private List<String> userUid;
-    private List<String> userName;
+    private RatingCustomList aa1;
+    private RatingCustomList2 aa2;
 
-    //kyytiläisten arviot
-    private List<String> rParticipants;
-    private List<String> partiUserName;
-    private List<String> partiStartAddress;
-    private List<String> partiEndAddress;
 
-    private RatingCustomList2 aa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
 
-        startAddress = new ArrayList<>();
-        endAddresses = new ArrayList<>();
-        userUid = new ArrayList<>();
-        userName = new ArrayList<>();
-
-        rParticipants = new ArrayList<>();
-        partiUserName = new ArrayList<>();
-        partiStartAddress = new ArrayList<>();
-        partiEndAddress = new ArrayList<>();
-
-
-
+        lv = (ListView)findViewById(R.id.driverList);
         lv2 = (ListView)findViewById(R.id.participantsList);
 
-        aa = new RatingCustomList2(this, allParticipants);
-        lv2.setAdapter(aa);
+        aa1 = new RatingCustomList(this, allDrivers);
+        aa2 = new RatingCustomList2(this, allParticipants);
+        lv.setAdapter(aa1);
+        lv2.setAdapter(aa2);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserData ud = allDrivers.get(position);
+                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this,ud.user,ud.uid,allDrivers,position,aa1);
+                cdrc.show();
+            }
+        });
         lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //Intent i = new Intent(JokuActivity.this, JokuMuuActivity.class);
                 UserData ud = allParticipants.get(position);
-                //i.putExtra(ud);
-                //startActivity(i);
-                Log.d("TESTIIIIII", "TESTIIIIIIIIIIIIIIIIII " + allParticipants.get(position).user.getFname());
-                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this, ud.user.getUid(), ud.user.getFname(), ud.user);
+                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this,ud.user,ud.uid,allParticipants,position,aa2);
                 cdrc.show();
             }
         });
 
-        getUserUid();
+        FillListViews();
     }
 
-    private void getUserUid() {
+    private void FillListViews()
+    {
+        findRiders();
+        findParticipants();
+    }
+
+    private void findRiders() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        findUserRides(uid);
-        findParticipants(uid);
-        Log.d("TESTIII", "Get current UID: " + uid);
-    }
-
-    private void findUserRides(final String uid) {
-
-        Query query = FirebaseFirestore.getInstance().collection("rides").whereArrayContains("participants", uid);
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Query q = FirebaseFirestore.getInstance().collection("rides").whereArrayContains("participants", uid);
+        q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot doc : task.getResult())
                     {
-                        index++;
                         if((Long)doc.get("leaveTime") < currentTime)
                         {
-                            try {
-                                userUid.add(doc.getString("uid"));
-                                startAddress.add(doc.getString("startAddress"));
-                                endAddresses.add(doc.getString("endAddress"));
-                                userName.add(doc.getString("username"));
-                                Log.d("TESTIII", "UID:T " + userName);
-
-                                if(task.getResult().size() <= index){
-                                    setDataToList();
+                            final Route r = doc.toObject(Route.class);
+                            FirebaseFirestore.getInstance().collection("users").document(r.getUid())
+                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful())
+                                    {
+                                        DocumentSnapshot doc = task.getResult();
+                                        User u = doc.toObject(User.class);
+                                        UserData ud = new UserData(r,u,r.getUid());
+                                        allDrivers.add(ud);
+                                        aa1.notifyDataSetChanged();
+                                    }
                                 }
-
-                            }catch (Exception e){
-                                startAddress = new ArrayList<>();
-                                Log.d("TESTIII","vittu");
-                            }
+                            });
                         }
                     }
-
                 }
             }
         });
     }
 
-    private void findRidesDetails() {
-    }
-
-
-    private void findParticipants(String uid) {
+    private void findParticipants() {
         Query q = FirebaseFirestore.getInstance().collection("rides").whereEqualTo("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
         q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -148,11 +125,10 @@ public class RatingActivity extends AppCompatActivity {
                     for(QueryDocumentSnapshot doc : task.getResult())
                     {
                         final Route r = doc.toObject(Route.class);
-
-                        rParticipants = (List) r.getParticipants();
+                        List<String> rParticipants = (List) r.getParticipants();
 
                         try {
-                            for(String uid : rParticipants)
+                            for(final String uid : rParticipants)
                             {
                                 FirebaseFirestore.getInstance().collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
@@ -161,10 +137,9 @@ public class RatingActivity extends AppCompatActivity {
                                         {
                                             DocumentSnapshot doc = task.getResult();
                                             User u = doc.toObject(User.class);
-                                            UserData ud = new UserData(r.getUid(), r.getStartAddress(), r.getEndAddress(), u);
+                                            UserData ud = new UserData(r, u, uid);
                                             allParticipants.add(ud);
-                                            aa.notifyDataSetChanged();
-                                            Log.d("TESTIIII", "fasdfasdfasdfa " + ud.user.getFname());
+                                            aa2.notifyDataSetChanged();
                                         }
                                     }
                                 });
@@ -172,33 +147,9 @@ public class RatingActivity extends AppCompatActivity {
                         }catch (Exception e){
 
                         }
-
                     }
                 }
             }
         });
-
-    }
-
-
-
-    private void setDataToList() {
-
-        RatingCustomList listAdapter = new RatingCustomList(RatingActivity.this,  startAddress, userName, endAddresses);
-        lv = (ListView)findViewById(R.id.driverList);
-        lv.setAdapter(listAdapter);
-
-
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this, userUid.get(position), userName.get(position) );
-                cdrc.show();
-            }
-        });
-
-
     }
 }
