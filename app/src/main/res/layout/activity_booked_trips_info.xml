@@ -1,243 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:padding="20dp"
     android:background="@drawable/background_login"
-    tools:context=".BookedTripsInfoActivity">
 
-    <TextView
-        android:id="@+id/tripHeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:hint="Start - Destination headline"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    >
 
-
-    <TextView
-        android:id="@+id/Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:text="Name"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
-
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="45dp"
-        android:hint="Ilmoittajan nimi tähän"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/Name"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
-
-    <TextView
-        android:id="@+id/Phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:text="Phone"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Name" />
-
-
-    <TextView
-        android:id="@+id/phoneNum"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="45dp"
-        android:hint="Ilmoittajan Puh. tähän"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Phone"
-        app:layout_constraintTop_toBottomOf="@+id/nameText" />
-
-    <TextView
-        android:id="@+id/Distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:text="Distance"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Phone" />
-
-    <TextView
-        android:id="@+id/distanceNum"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="45dp"
-        android:hint="Matkan pituus tähän"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Distance"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
-
-    <TextView
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:text="Price"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Distance" />
-
-    <TextView
-        android:id="@+id/costSum"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="21dp"
-        android:hint="Matkan hinta tähän"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
-        app:layout_constraintStart_toEndOf="@+id/price"
-        app:layout_constraintTop_toBottomOf="@+id/distanceNum" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:text="Date of trip"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
-
-    <TextView
-        android:id="@+id/infoDate"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="21dp"
-        android:hint="Pvm ja aika tähän"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@+id/costSum" />
-
-
-    <TextView
-        android:id="@+id/info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:text="Info"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
-
-    <TextView
-        android:id="@+id/infoBox"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="20dp"
-        android:hint="Muu info tähän esim. matkustajien määrä/vapaat paikat"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/info"
-        app:layout_constraintTop_toBottomOf="@+id/durationTime" />
-
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="18dp"
-        android:text="Duration"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
-
-    <TextView
-        android:id="@+id/durationTime"
-        android:layout_width="236dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="21dp"
-        android:hint="Matkan kesto"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/duration"
-        app:layout_constraintTop_toBottomOf="@+id/infoDate" />
-
-
-    <Button
-        android:id="@+id/removeTrip"
-        android:layout_width="113dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="496dp"
-        android:layout_marginEnd="168dp"
-        android:background="@drawable/custom_button1"
-        android:onClick="removeTripBtn"
-        android:text="Remove trip"
-        android:textAllCaps="false"
-        android:textColor="@color/pastelGreen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="24dp" />
+        android:layout_gravity="top"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HEADING"
+            android:textSize="24dp"
+            android:textColor="@color/white"
+            android:id="@+id/bookedHeading"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="15dp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="40dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date of trip"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Duration"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/white"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date of trip"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:id="@+id/bookedLeaveTime"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Participants"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:id="@+id/bookedDuration"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DATE o trip"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:id="@+id/bookedDistance"
+
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DATE o trip"
+                    android:textSize="16dp"
+                    android:paddingVertical="8dp"
+                    android:id="@+id/bookedPrice"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bookedCancelBookingButton"
+            android:layout_width="113dp"
+            android:layout_height="60dp"
+            android:background="@drawable/custom_button1"
+            android:text="Cancel booking"
+            android:textAllCaps="false"
+            android:layout_gravity="right"
+
+            android:textColor="@color/pastelGreen" />
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="45dp" />
+        android:text="Driver"
+        android:textSize="24dp"
+        android:textColor="@color/white"
+        android:id="@+id/bookedDriverHeading"
+        android:paddingBottom="8dp"
+        />
 
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="130dp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NameHere"
+                android:id="@+id/bookedDriverName"
+                android:paddingVertical="8dp"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PhoneHere"
+                android:id="@+id/bookedDriverPhone"
+                android:paddingVertical="8dp"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/bookedDriverImage"
+            android:layout_height="80dp"
+            android:layout_width="80dp"
+            android:src="@drawable/ic_person_black_100dp"
+        />
+
+    </LinearLayout>
+</LinearLayout>

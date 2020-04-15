@@ -39,12 +39,13 @@
             android:onClick="backArrow"/>
 
         <ImageView
+            android:id="@+id/editProfileBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:onClick="editProfile"
             android:src="@drawable/ic_settings_icon_foreground"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="editProfile"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"

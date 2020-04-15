@@ -2,51 +2,93 @@ package com.example.mobproj2020new;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class OfferedTripsInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView headline, distance, price, dateOfTrip,duration,info;
+    TextView headline, dateOfTrip, duration, participants, pricePer, priceTotal;
     ArrayList<OfferedTrips> tripInfo = new ArrayList<>();
+    Route thisRoute = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offered_trips_info);
-        findViewById(R.id.removeTrip).setOnClickListener(this);
-        findViewById(R.id.editTrip).setOnClickListener(this);
+        findViewById(R.id.cancelTripButton).setOnClickListener(this);
 
-        headline = findViewById(R.id.tripHeadline);
-        distance = findViewById(R.id.distanceNum);
-        price = findViewById(R.id.costSum);
-        dateOfTrip = findViewById(R.id.infoDate);
-        duration = findViewById(R.id.durationTime);
-        info = findViewById(R.id.infoBox);
+        headline = findViewById(R.id.headingTV);
+        dateOfTrip = findViewById(R.id.leaveTimeTV);
+        duration = findViewById(R.id.durationTV);
+        participants = findViewById(R.id.participantsAmountTV);
+        pricePer = findViewById(R.id.pricePerTV);
+        priceTotal = findViewById(R.id.priceTotalTV);
 
-        //-------Shows up in all trips now-------//
-        headline.setText("Oulu - Helsinki");
-        distance.setText("600km");
-        price.setText("18€");
-        dateOfTrip.setText("15.7.2020 - klo 14:00");
-        duration.setText("8h");
-        info.setText("Only one luggage per passenger");
+        DecimalFormat df = new DecimalFormat("#.##");
 
+        thisRoute = (Route) getIntent().getSerializableExtra("MYKEY");
+        if(thisRoute != null)
+        {
+            int participantsAmount;
+            try {
+                participantsAmount = thisRoute.getParticipants().size();
+            } catch(Exception e) {
+                participantsAmount = 0;
+            }
+
+            headline.setText(thisRoute.getStartAddress() + " - " + thisRoute.getEndAddress());
+            dateOfTrip.setText(CalendarHelper.getFullTimeString(thisRoute.getLeaveTime()));
+            duration.setText(thisRoute.getDuration());
+            participants.setText(participantsAmount + " / " + (participantsAmount + thisRoute.getFreeSlots()));
+            pricePer.setText(df.format((double)thisRoute.getPrice() * (double)thisRoute.getDistance()) + " €");
+            priceTotal.setText(df.format((double)thisRoute.getPrice() * (double)thisRoute.getDistance()*participantsAmount*0.8) + " €"); // 0.8 because we take 20%
         }
+    }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.removeTrip){
+        if (v.getId() == R.id.cancelTripButton){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Are you sure you want to cancel this trip?");
+            builder.setMessage("Repeat offenders may be penalized according to the Terms of Service.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("DELETE TRIP", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d("CANCELLING", "canceling trip... " + which);
+                    if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(thisRoute.getUid()))
+                    {
+                        // TODO: delete document from firestore and send notification to participants (Firebase Cloud Messaging, users subscribe to topic "*ride id here*" on booking, publish cancel message to topic here)
+                        Intent i = new Intent(OfferedTripsInfoActivity.this, MainActivity.class);
+                        Toast.makeText(OfferedTripsInfoActivity.this, "Trip cancelled successfully", Toast.LENGTH_LONG).show();
+                        startActivity(i);
+                    }
+                    else {
+                        Toast.makeText(OfferedTripsInfoActivity.this, "Not your trip to cancel, mate", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            builder.setNegativeButton("BACK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d("CANCELLING", "not canceling trip" + which);
+                }
+            });
 
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
-        if (v.getId() == R.id.editTrip){
-
-        }
-
     }
 
     //--------------Button edit trip info-------------//

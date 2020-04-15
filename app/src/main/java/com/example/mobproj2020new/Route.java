@@ -1,16 +1,18 @@
 package com.example.mobproj2020new;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class Route {
+public class Route implements Serializable {
     private String uid;
     private String duration;
     //private String startDate;
     //private String startTime;
+    private int pickUpDistance;
     private long leaveTime;
     private String startAddress;
     private String endAddress;
@@ -19,18 +21,23 @@ public class Route {
     private List<HashMap<String,String>> points;
     private List<String> waypointAddresses;
     private List<String> participants;
-    private String username;
+
+    private double distance;
+
 
 
     public Route() {}
 
     public Route(String uid, String duration, long leaveTime,
-                 String startAddress, String endAddress, int freeSlots, float price,
+                 String startAddress, String endAddress, int freeSlots, float price, double distance,
                  List<HashMap<String,String>> points, List<String> waypointAddresses,
-                 List<String> participants, String username)
+
+                 List<String> participants, int pickUpDistance)
+
     {
         this.uid = uid;
         this.duration = duration;
+        this.pickUpDistance = pickUpDistance;
         //this.startDate = startDate;
         //this.startTime = startTime;
         this.leaveTime = leaveTime;
@@ -41,7 +48,9 @@ public class Route {
         this.points = points;
         this.waypointAddresses = waypointAddresses;
         this.participants = participants;
-        this.username = username;
+
+        this.distance = distance;
+
     }
 
     public String getUid() {
@@ -53,7 +62,7 @@ public class Route {
     //public String getStartDate(){return startDate;}
     //public String getStartTime() {return startTime;}
     public long getLeaveTime() { return leaveTime; }
-
+    public int getPickUpDistance(){return pickUpDistance; }
     public String getStartAddress() {
         return startAddress;
     }
@@ -73,7 +82,8 @@ public class Route {
         return waypointAddresses;
     }
     public List<String> getParticipants() { return participants; }
-    public String getUsername() { return username; }
+
+    public double getDistance() { return distance; }
 
     public void removeFreeSlot() { this.freeSlots--; }
 
