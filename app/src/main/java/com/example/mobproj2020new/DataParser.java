@@ -71,7 +71,7 @@ public class DataParser {
                     //matka ajan määritys
                     int hours = (totalSeconds / 3600);
                     int minutes = ((totalSeconds - hours * 3600) / 60);
-                    Constant.DURATION = String.valueOf(hours + " h" + minutes + " mins");
+                    Constant.DURATION = String.valueOf(hours + "h " + minutes + "mins");
                 }
             }
 

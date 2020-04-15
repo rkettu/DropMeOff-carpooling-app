@@ -4,53 +4,47 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.loader.content.AsyncTaskLoader;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener{
+
+
 
     ArrayList<RideDetailPart> fullDetails = new ArrayList<>();
 
@@ -69,6 +63,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private ImageButton etappiRemoveBtn, etappiRemoveBtn2;
     private int lukitus = 0;
 
+    Animation ttbAnim, bttAnim;
+    private LinearLayout linearContainer;
+    private Button drawerButton;
+    private ImageButton sijaintiButton;
+    private boolean drawer_expand = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +84,10 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         nextBtn.setEnabled(false);
 
         findViewById(R.id.haeButton).setOnClickListener(this);
-        findViewById(R.id.sijaintiButton).setOnClickListener(this);
         findViewById(R.id.nextBtn).setOnClickListener(this);
         findViewById(R.id.etappiBtn).setOnClickListener(this);
+        sijaintiButton = findViewById(R.id.sijaintiButton);
+        sijaintiButton.setOnClickListener(this);
 
         etappiRemoveBtn = (ImageButton)findViewById(R.id.etappiRemoveBtn);
         etappiRemoveBtn2 = (ImageButton)findViewById(R.id.etappiRemoveBtn2);
@@ -98,6 +99,51 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         etappiEditori = (SearchView) findViewById(R.id.etappiEdit);
         etappiEditori2 = (SearchView) findViewById(R.id.etappiEdit2);
 
+        ttbAnim = new AnimationUtils().loadAnimation(this, R.anim.toptobottomanimation);
+        bttAnim = new AnimationUtils().loadAnimation(this, R.anim.bottomtotopanimation);
+
+        linearContainer = (LinearLayout) findViewById(R.id.linearLayout);
+        drawerButton = (Button) findViewById(R.id.drawer_bottom);
+
+
+        bttAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                linearContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 0));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+
+    public void expandableDrawer(View view) {
+        animationHandler();
+    }
+
+    private void animationHandler(){
+        if (!drawer_expand){
+            linearContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            doAnimation(ttbAnim);
+            drawer_expand = true;
+        }else{
+            doAnimation(bttAnim);
+            drawer_expand = false;
+        }
+    }
+
+    private void doAnimation(Animation anim){
+        linearContainer.startAnimation(anim);
+        drawerButton.startAnimation(anim);
+        sijaintiButton.startAnimation(anim);
     }
 
     @Override
@@ -125,6 +171,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             {
                 try {
                     geoLocate(strLahto, strLoppu, strWaypoint1, strWaypoint2);
+                    animationHandler();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -310,7 +357,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             currentPolyline.remove();
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
 
-        TextView distance = (TextView) findViewById(R.id.testiTxt);
+        TextView distance = (TextView) findViewById(R.id.infoTxt);
         matka = Constant.DISTANCE;
         aika = Constant.DURATION;
         distance.setText(Constant.DISTANCE + " km " + Constant.DURATION);
@@ -341,9 +388,10 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             float price = newPart.price;
             int range = newPart.range;
 
-            TextView teksti = (TextView) findViewById(R.id.testailua);
-            teksti.setText(date+ " " + time + " " + passenger + " " + price + " " + range);
+            /*TextView teksti = (TextView) findViewById(R.id.testailua);
+            teksti.setText(date+ " " + time + " " + passenger + " " + price + " " + range);*/
 
         }
     }
+
 }

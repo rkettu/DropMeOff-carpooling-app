@@ -37,10 +37,11 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     EditText txtDate, txtTime, np;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute;
-    SeekBar seekBar;
-    SeekBar seekBar3;
-    TextView hintaTxt, exampleTxt, minRange;
+    //seek1 hinta, seek2 pickupRange, seek3 range
+    SeekBar seekBar, seekBar2, seekBar3;
+    TextView hintaTxt, exampleTxt, minRange, rangeValueTextView;
     TextView pass;
+    EditText pickUpDistanceEditText;
     private Button confirmBtn;
     String newMatka;
     String newAika;
@@ -96,8 +97,12 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         exampleTxt = (TextView) findViewById(R.id.examplePrice);
         minRange = (TextView) findViewById(R.id.pickUpRangeTxt);
         minRange.setText("PickUp range: " + 5 + "km");
+        rangeValueTextView = (TextView) findViewById(R.id.rangeValueTextView);
+        rangeValueTextView.setText("Minimum Passanger trip: " + intMatka + "km");
 
         seekBar = (SeekBar) findViewById(R.id.priceSeekBar);
+        seekBar2 = (SeekBar) findViewById(R.id.rangeValue);
+        seekBar2.setProgress(100);
         seekBar3 = (SeekBar) findViewById(R.id.pickUpRangeValue);
         seekBar3.setProgress((int) ((5.00f / intMatka) * 100.00f));
 
@@ -139,12 +144,29 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                range = progress;
+                rangeValueTextView.setText("Minimum Passanger trip: " + range + "km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float s = ((intMatka / 100.00f) * progress);
                 range = (int) s;
-
                 Log.d("####matka3####", range + ", " + intMatka + ", " + progress + ", " + (intMatka / 100.00f) * progress);
                 minRange.setText("PickUp range: " + range + "km");
             }
@@ -227,7 +249,10 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                     new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            strTime = (hourOfDay + ":" + minute);
+                            String format = "%1$02d";
+                            String estHour = String.format(format, hourOfDay);
+                            String estMin = String.format(format, minute);
+                            strTime = (estHour + ":" + estMin);
                             txtTime.setText(strTime);
                             pickedHour = hourOfDay;
                             pickedMinute = minute;
@@ -241,6 +266,9 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
                 mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
                 long leaveTime = mC.getTimeInMillis();
+                //pickUpDistanceEditText = findViewById(R.id.pickUpDistanceEditText);
+                String pickUpDistance = pickUpDistanceEditText.getText().toString();
+                int pickUpDist = Integer.parseInt(pickUpDistance);
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String duration = newAika;
@@ -255,7 +283,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 List<String> waypointAddresses = Constant.waypointAddressesList;
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                        freeSlots, price, points, waypointAddresses, participants);
+                        freeSlots, price, points, waypointAddresses, participants, pickUpDist);
                 db.createRide(route, RideDetailsActivity.this);
             } else {
                 FirebaseHelper.GoToLogin(getApplicationContext());

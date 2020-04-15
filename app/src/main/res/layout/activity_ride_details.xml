@@ -56,6 +56,8 @@
         app:layout_constraintTop_toBottomOf="@id/dateTxt"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
+        android:focusableInTouchMode="false"
+        />
 
     <TextView
         android:id="@+id/timeTxt"
@@ -83,6 +85,8 @@
         app:layout_constraintTop_toBottomOf="@id/timeTxt"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
+        android:focusableInTouchMode="false"
+        />
 
     <TextView
         android:id="@+id/passengerTxt"
@@ -152,6 +156,54 @@
         android:id="@+id/numberPicker"/>-->
 
     <TextView
+        android:id="@+id/pickUpRangeTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:text="PickUp range:"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/numberPicker"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right" />
+
+    <SeekBar
+        android:id="@+id/pickUpRangeValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/white"
+        android:progressDrawable="@drawable/custom_seekbar_progress"
+        android:thumb="@drawable/custom_seekbar_thumb"
+        app:layout_constraintTop_toBottomOf="@id/pickUpRangeTxt"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
+
+    <TextView
+        android:id="@+id/rangeValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:text="Minimum Passanger trip: 0km"
+        app:layout_constraintTop_toBottomOf="@id/pickUpRangeValue"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"/>
+
+    <SeekBar
+        android:id="@+id/rangeValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/white"
+        android:progressDrawable="@drawable/custom_seekbar_progress"
+        android:thumb="@drawable/custom_seekbar_thumb"
+        app:layout_constraintTop_toBottomOf="@id/rangeValueTextView"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"/>
+
+    <TextView
         android:id="@+id/seekBarPriceText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -159,7 +211,7 @@
         android:textSize="20dp"
         android:textColorHint="@color/white"
         android:hint="Price"
-        app:layout_constraintTop_toBottomOf="@id/numberPicker"
+        app:layout_constraintTop_toBottomOf="@id/rangeValue"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
 
@@ -171,7 +223,7 @@
         android:backgroundTint="@color/white"
         android:progressDrawable="@drawable/custom_seekbar_progress"
         android:thumb="@drawable/custom_seekbar_thumb"
-        app:layout_constraintTop_toBottomOf="@id/seekBarPriceText"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarPriceText"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
 
@@ -188,29 +240,6 @@
         app:layout_constraintTop_toBottomOf="@id/priceSeekBar"
         app:layout_constraintStart_toStartOf="@id/guideline_left"/>
 
-    <TextView
-        android:id="@+id/pickUpRangeTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="PickUp range:"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/examplePrice"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintEnd_toStartOf="@id/guideline_right" />
-
-    <SeekBar
-        android:id="@+id/pickUpRangeValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@color/white"
-        android:progressDrawable="@drawable/custom_seekbar_progress"
-        android:thumb="@drawable/custom_seekbar_thumb"
-        app:layout_constraintTop_toBottomOf="@id/pickUpRangeTxt"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
-
     <Button
         android:id="@+id/confirmBtn"
         android:layout_width="0dp"
@@ -223,7 +252,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"
-        app:layout_constraintTop_toBottomOf="@id/pickUpRangeValue" />
+        app:layout_constraintTop_toBottomOf="@id/examplePrice" />
 
     <!--<Button
         android:id="@+id/confirmBtn"

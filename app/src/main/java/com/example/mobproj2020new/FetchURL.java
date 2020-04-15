@@ -31,6 +31,7 @@ public class FetchURL extends AsyncTask<String, Void, String> {
         } catch (Exception e) {
             Log.d("Background Task", e.toString());
         }
+        Log.d("TAG", "doInBackground: " + data);
         return data;
     }
 
