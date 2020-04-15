@@ -28,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".RatingActivity"></activity>
+
+
         <receiver android:name=".SleepReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -36,19 +39,16 @@
         </receiver>
 
         <activity android:name=".GetARideProfileActivity"></activity>
+
         <activity android:name=".BookedTripsInfoActivity" />
         <activity android:name=".OfferedTripsInfoActivity" />
         <activity android:name=".RouteActivity" />
-
-        <activity android:name=".GetRideActivity"></activity>
-
-        <activity android:name=".RideDetailsActivity"></activity>
-
+        <activity android:name=".GetRideActivity" />
+        <activity android:name=".RideDetailsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".CreateUserActivity" />
-        <activity android:name=".LogInActivity"/>
-
+        <activity android:name=".LogInActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
