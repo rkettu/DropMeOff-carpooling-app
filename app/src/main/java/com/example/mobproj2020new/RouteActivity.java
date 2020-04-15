@@ -145,8 +145,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                             @Override
                             public void onSuccess(Location location) {
                                 if( location != null ){
-                                    latitude = String.valueOf(location.getLatitude());
-                                    longitude = String.valueOf(location.getLongitude());
+                                    //latitude = String.valueOf(location.getLatitude());
+                                    //longitude = String.valueOf(location.getLongitude());
 
                                     try{
                                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -210,18 +210,36 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         mMap.clear();
 
         Geocoder gc = new Geocoder(this);
+        double startLat = 0;
+        double startLon = 0;
+        double stopLat = 0;
+        double stopLon = 0;
 
-        List<Address> listStart = gc.getFromLocationName(start, 1);
-        Address add = listStart.get(0);
+        try
+        {
+            List<Address> listStart = gc.getFromLocationName(start, 1);
+            Address add = listStart.get(0);
+            startLat = add.getLatitude();
+            startLon = add.getLongitude();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),"Lähtösijainti väärin", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        List<Address> listStop = gc.getFromLocationName(stop, 1);
-        Address add2 = listStop.get(0);
+        try
+        {
+            List<Address> listStop = gc.getFromLocationName(stop, 1);
+            Address add2 = listStop.get(0);
+            stopLat = add2.getLatitude();
+            stopLon = add2.getLongitude();
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),"Määränpääsijainti väärin", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        double startLat = add.getLatitude();
-        double startLon = add.getLongitude();
-
-        double stopLat = add2.getLatitude();
-        double stopLon = add2.getLongitude();
 
         if(strWaypoint1 != null && !strWaypoint1.isEmpty())
         {
@@ -241,16 +259,16 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             wayPoint2 = new MarkerOptions().position(new LatLng(way2Lat, way2Lon)).title("WayPoint2");
             mMap.addMarker(wayPoint2);
         }
-        if(latitude != null && !latitude.isEmpty()){
+        /*if(latitude != null && !latitude.isEmpty()){
             Double gpsLat = Double.valueOf(latitude);
             Double gpsLon = Double.valueOf(longitude);
             place1 = new MarkerOptions().position(new LatLng(gpsLat, gpsLon)).title("Location 1");
             latitude = null;
             longitude = null;
-        }
+        }*/
         else {
             place1 = new MarkerOptions().position(new LatLng(startLat, startLon)).title("Location 1");
-        }
+    }
 
         place2 = new MarkerOptions().position(new LatLng(stopLat, stopLon)).title("Location 2");
 
