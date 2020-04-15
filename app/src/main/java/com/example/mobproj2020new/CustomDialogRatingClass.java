@@ -26,7 +26,12 @@ public class CustomDialogRatingClass extends Dialog implements View.OnClickListe
         this.id = uid;
         this.name = fname;
     }
-
+    public CustomDialogRatingClass(Activity a, String uid, String fname, User user){
+        super(a);
+        this.c = a;
+        this.id = uid;
+        this.name = fname;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

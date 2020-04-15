@@ -36,6 +36,8 @@ public class RatingActivity extends AppCompatActivity {
     private ListView lv, lv2;
     final Long currentTime = Calendar.getInstance().getTimeInMillis();
 
+    private List<UserData> allParticipants = new ArrayList<>();
+
     //kuljettajien arviot
     private List<String> bookedRides;
     private List<String> startAddress;
@@ -44,12 +46,12 @@ public class RatingActivity extends AppCompatActivity {
     private List<String> userName;
 
     //kyytiläisten arviot
-    private List<String> participants;
+    private List<String> rParticipants;
     private List<String> partiUserName;
     private List<String> partiStartAddress;
     private List<String> partiEndAddress;
 
-
+    private RatingCustomList2 aa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +63,30 @@ public class RatingActivity extends AppCompatActivity {
         userUid = new ArrayList<>();
         userName = new ArrayList<>();
 
-        participants = new ArrayList<>();
+        rParticipants = new ArrayList<>();
         partiUserName = new ArrayList<>();
         partiStartAddress = new ArrayList<>();
         partiEndAddress = new ArrayList<>();
+
+
+
+        lv2 = (ListView)findViewById(R.id.participantsList);
+
+        aa = new RatingCustomList2(this, allParticipants);
+        lv2.setAdapter(aa);
+        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Intent i = new Intent(JokuActivity.this, JokuMuuActivity.class);
+                UserData ud = allParticipants.get(position);
+                //i.putExtra(ud);
+                //startActivity(i);
+                Log.d("TESTIIIIII", "TESTIIIIIIIIIIIIIIIIII " + allParticipants.get(position).user.getFname());
+                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this, ud.user.getUid(), ud.user.getFname(), ud.user);
+                cdrc.show();
+            }
+        });
 
         getUserUid();
     }
@@ -117,44 +139,47 @@ public class RatingActivity extends AppCompatActivity {
 
 
     private void findParticipants(String uid) {
-        index = 0;
-        final List<HashMap<String,String>> list = new ArrayList<>();
-
-        Query query = FirebaseFirestore.getInstance().collection("rides").whereEqualTo("uid", uid);
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Query q = FirebaseFirestore.getInstance().collection("rides").whereEqualTo("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        q.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    Log.d("TESTIII", "PARTIT: " + task.getResult().size());
-                    for(DocumentSnapshot doc : task.getResult())
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot doc : task.getResult())
                     {
-                        Log.d("TESTIII", "PARTIT: " + task.getResult().size());
-                        index++;
-                        if((Long)doc.get("leaveTime") > currentTime)
-                        {
-                            try {
-                                String address = doc.get("startAddress") + " " + doc.get("endAddress");
-                                List<String> participants = (List) doc.get("participants");
-                                for(int i = 0; i < participants.size(); i++)
-                                {
-                                    HashMap<String,String> hm = new HashMap<String, String>();
-                                    hm.put(participants.get(i), address);
-                                    list.add(hm);
-                                }
+                        final Route r = doc.toObject(Route.class);
 
-                            }catch (Exception e){
-                                startAddress = new ArrayList<>();
-                                Log.d("TESTIII","vittu");
+                        rParticipants = (List) r.getParticipants();
+
+                        try {
+                            for(String uid : rParticipants)
+                            {
+                                FirebaseFirestore.getInstance().collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.isSuccessful())
+                                        {
+                                            DocumentSnapshot doc = task.getResult();
+                                            User u = doc.toObject(User.class);
+                                            UserData ud = new UserData(r.getUid(), r.getStartAddress(), r.getEndAddress(), u);
+                                            allParticipants.add(ud);
+                                            aa.notifyDataSetChanged();
+                                            Log.d("TESTIIII", "fasdfasdfasdfa " + ud.user.getFname());
+                                        }
+                                    }
+                                });
                             }
-                        }
-                    }
+                        }catch (Exception e){
 
+                        }
+
+                    }
                 }
             }
         });
 
     }
+
 
 
     private void setDataToList() {
@@ -169,7 +194,7 @@ public class RatingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this, userUid.get(position), userName.get(position));
+                CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this, userUid.get(position), userName.get(position) );
                 cdrc.show();
             }
         });
