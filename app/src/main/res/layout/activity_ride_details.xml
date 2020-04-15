@@ -31,6 +31,7 @@
         android:id="@+id/dateEdit"
         android:gravity="center"
         android:hint="Enter Date"
+        android:focusableInTouchMode="false"
         />
 
 
@@ -57,6 +58,7 @@
         android:id="@+id/timeEdit"
         android:gravity="center"
         android:hint="Enter Time"
+        android:focusableInTouchMode="false"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -80,7 +82,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/rangeValue"
+        app:layout_constraintTop_toBottomOf="@id/pickUpDistanceEditText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="15dp"
@@ -139,6 +141,32 @@
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
         android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/rangeValue"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:text="Deviation from the route in kilometers"
+        android:gravity="center"
+        android:id="@+id/pickUpDistanceTextView"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"
+        />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:maxLines="1"
+        android:gravity="center"
+        android:id="@+id/pickUpDistanceEditText"
+        app:layout_constraintTop_toBottomOf="@+id/pickUpDistanceTextView"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right"
+        />
 
 
     <androidx.constraintlayout.widget.Guideline

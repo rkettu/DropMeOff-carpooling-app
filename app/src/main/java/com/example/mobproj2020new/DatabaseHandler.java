@@ -28,6 +28,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.firebase.firestore.CollectionReference;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.prefs.PreferenceChangeEvent;
@@ -50,7 +52,6 @@ public class DatabaseHandler {
 
     private Context profileContext;
     private String profileUid;
-
 
     public void setUserCreationInfo(String fname, String lname, String phone)
     {
@@ -84,16 +85,28 @@ public class DatabaseHandler {
     }
 
     // Saves route to database, informing of success, failure
-    public void createRide(Route route, final Context context)
+    public void createRide(final Route route, final Context context)
     {
         DocumentReference mRoutesDocRef = mRoutesColRef.document();
         mRoutesDocRef.set(route).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    // Set notification alarm for ride, day before ride or hour after posting if ride is less than a day away
+                    long leaveTime = route.getLeaveTime();
+                    long time = leaveTime - Calendar.getInstance().getTimeInMillis() > Constant.DayInMillis
+                            ? leaveTime - Constant.DayInMillis
+                            : leaveTime - (Constant.HourInMillis * 3)
+                            ;
+                    String timeString = CalendarHelper.getTimeString(leaveTime);
+                    SleepReceiver.setAlarm(context, time, "Created ride Reminder", (route.getStartAddress() + " - " + route.getEndAddress() + " leaving at " + timeString));
                     // Return to main activity...
                     // Show Toast text / pop up text or whatever in main instead...
                     Toast.makeText(context, "Ride Created", Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(context, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
                 }
                 else {
                     Toast.makeText(context, "FAILED", Toast.LENGTH_SHORT).show();
@@ -132,6 +145,7 @@ public class DatabaseHandler {
                         {
                             FirebaseHelper.loggedIn = false;
                             Intent intent = new Intent(varContext, EditProfileActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             varContext.startActivity(intent);
                         }
@@ -181,110 +195,6 @@ public class DatabaseHandler {
         // Add listeners for fail/complete/success?
     }
 
-    //---Async task to take care of matching routes from GetRideActivity---//
-    public class getMatchingRoutes extends AsyncTask<Float, Integer, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Float... floats) {
-            float dist = floats[0];
-            float startlat = floats[1];
-            float startlon = floats[2];
-            float stoplat = floats[3];
-            float stoplon = floats[4];
-            float t1 = floats[5];
-            float t2 = floats[6];
-
-            try {
-                getMatchingRoutes(dist, t1, t2, startlat, startlon, stoplat, stoplon);
-                Log.d("TAG", "doInBackground: doInBackgoruasoaadsa");
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("TAG", "doInBackground: catch");
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-
-        public void getMatchingRoutes(final float pickupDistance, float time1, float time2, final float startLat, final float startLng, final float endLat, final float endLng) {
-            GetARideUtility.arrayList.removeAll(GetARideUtility.arrayList);
-            User.arrayList.removeAll(User.arrayList);
-            Log.d("my lat and lon", "getMatchingRoutes: My own lat and lon are: " + startLat + " " + startLng);
-            // Checking all rides with free passenger slots
-            Query query = mRoutesColRef.whereGreaterThanOrEqualTo("leaveTime", time1).whereLessThanOrEqualTo("leaveTime", time2); // TODO also add checking for ride distance...
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            if ((long) doc.get("freeSlots") >= 1) {
-                                try {
-                                    List<HashMap<String, String>> points = (List) doc.get("points");
-                                    if (isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
-                                        final String rideId = doc.getId();
-                                        Log.d("HALOOOOOOOO", "Found route matching criteria: " + rideId);
-                                        final GetARideUtility utility = doc.toObject(GetARideUtility.class);
-                                        utility.setRideId(rideId);
-
-                                        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
-                                        DocumentReference myDocRef = myFireStoreRef.collection("users").document(utility.getUid());
-                                        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    DocumentSnapshot doc = task.getResult();
-                                                    if (doc.exists()) {
-                                                        final User user = doc.toObject(User.class);
-                                                        User.arrayList.add(user);
-                                                        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + utility.getUid());
-                                                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Uri> task) {
-                                                                try {
-                                                                    if (task.getResult() != null) {
-                                                                        Log.d("######ImgUri####", String.valueOf(task.getResult()));
-                                                                        struri = String.valueOf(task.getResult());
-                                                                        user.setImgUid(struri);
-                                                                    } else {
-                                                                        Log.d("TAG", "No image found");
-                                                                    }
-                                                                } catch (Exception e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                        GetARideUtility.arrayList.add(utility);
-                                    } else {
-                                        Log.d("HALOOOOOOOO", "onComplete: " + points);
-                                    }
-                                } catch (Exception e) {
-                                    Log.d("EXCEPTIONALERT", e.toString());
-                                }
-                            }
-                        }
-                    } else {
-                        Log.d("VITTUJENPERKELE", "Error getting documents: ", task.getException());
-                    }
-                }
-            });
-        }
-    }
-
-    // Move to some Math class?
-    // Returns distance in km
     private double distanceBetweenCoordinates(double lat1, double lng1, double lat2, double lng2)
     {
         // Haversine Algorithm
@@ -393,8 +303,10 @@ public class DatabaseHandler {
         profileContext.startActivity(intent);
     }
 
-    public void BookTrip(final String rideId, final String userId)
+    public void BookTrip(final String rideId, final String userId, final Context context)
     {
+        final Context mContext = context;
+
         if(rideId.equals("") || userId.equals("")) // Big failure
             return;
 
@@ -416,6 +328,9 @@ public class DatabaseHandler {
                             route.addToParticipants(userId);
                         }
                         routeDoc.set(route);
+                        final long leaveTime = route.getLeaveTime();
+                        final String startAdd = route.getStartAddress();
+                        final String endAdd = route.getEndAddress();
                         // Adding ride to user's booked trips...
                         mUsersDocRef = FirebaseFirestore.getInstance().collection("users").document(userId);
                         mUsersDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -433,7 +348,18 @@ public class DatabaseHandler {
                                     }
                                     mUsersDocRef.set(user);
 
-                                    // TODO: Go to main here, displaying that ride booked successfully :)
+                                    // Creating timed notification for ride
+                                    long time = leaveTime - Calendar.getInstance().getTimeInMillis() > Constant.DayInMillis
+                                            ? leaveTime - Constant.DayInMillis
+                                            : leaveTime - (Constant.HourInMillis * 3)
+                                    ;
+                                    String timeString = CalendarHelper.getTimeString(leaveTime);
+                                    SleepReceiver.setAlarm(context, time, "Booked ride Reminder", (startAdd) + " - " + endAdd + " leaving at " + timeString);
+                                  
+                                  Intent i = new Intent(mContext, MainActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    mContext.startActivity(i);
+
                                 }
                             }
                         });

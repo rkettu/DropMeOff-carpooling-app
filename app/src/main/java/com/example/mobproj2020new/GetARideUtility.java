@@ -14,100 +14,63 @@ public class GetARideUtility implements Serializable {
     private float price;
     private String duration;
     private Long leaveTime;
-    private int freeSlots;
+    private long freeSlots;
     private String uid;
     private List<String> waypointAddresses;
+    private List<String> participants;
     private List <HashMap<String, String>> points;
     private String rideId;
 
-    private String newName;
-    private String newUri;
-
     public GetARideUtility(){}
 
-    public GetARideUtility(String tripaUser, String startAddress, String endAddress, String tripDuration, Long leaveTime, int freeSlots, float price, String rideId) {
+    public GetARideUtility(String uid, String startAddress, String endAddress, String duration, String rideId, float price, long leaveTime,
+                           long freeSlots, List<String> participants ,List<String> waypointAddresses) {
+        this.uid = uid;
         this.startAddress = startAddress;
         this.endAddress = endAddress;
-        this.freeSlots = freeSlots;
-        this.uid = tripaUser;
-        this.duration = tripDuration;
+        this.duration = duration;
+        this.rideId = rideId;
         this.price = price;
         this.leaveTime = leaveTime;
-        this.rideId = rideId;
+        this.freeSlots = freeSlots;
+        this.waypointAddresses = waypointAddresses;
+        this.participants = participants;
     }
-
-    public static ArrayList<GetARideUtility> arrayList = new ArrayList<>();
 
     public String getStartAddress() {
         return startAddress;
-    }
-
-    public void setStartAddress(String startAddress) {
-        this.startAddress = startAddress;
     }
 
     public String getEndAddress() {
         return endAddress;
     }
 
-    public void setEndAddress(String endAddress) {
-        this.endAddress = endAddress;
-    }
-
     public float getPrice() {
         return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     public String getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public int getFreeSlots() {
+    public long getFreeSlots() {
         return freeSlots;
-    }
-
-    public void setFreeSlots(int freeSlots) {
-        this.freeSlots = freeSlots;
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public List<String> getWaypointAddresses() {
         return waypointAddresses;
-    }
-
-    public void setWaypointAddresses(List<String> waypointAddresses) {
-        this.waypointAddresses = waypointAddresses;
     }
 
     public List<HashMap<String, String>> getPoints() {
         return points;
     }
 
-    public void setPoints(List<HashMap<String, String>> points) {
-        this.points = points;
-    }
-
     public Long getLeaveTime() {
         return leaveTime;
-    }
-
-    public void setLeaveTime(Long leaveTime) {
-        this.leaveTime = leaveTime;
     }
 
     public String getRideId() { return rideId; }

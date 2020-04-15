@@ -62,7 +62,8 @@
                 android:inputType="date"
                 android:onClick="dateOfTimeClicked"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
         <LinearLayout
@@ -87,7 +88,8 @@
                 android:textColor="@color/white"
                 android:id="@+id/estTimeEditText"
                 android:onClick="estTimeClicked"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
         <TextView
@@ -123,7 +125,8 @@
                 android:id="@+id/dateEditText2"
                 android:inputType="date"
                 android:onClick="dateOfTimeClicked"
-                android:backgroundTint="@color/white"/>
+                android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
 
@@ -152,6 +155,7 @@
                 android:id="@+id/estTimeEditText2"
                 android:onClick="estTimeClicked"
                 android:backgroundTint="@color/white"
+                android:focusableInTouchMode="false"
                 />
 
         </LinearLayout>
@@ -164,6 +168,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
+        android:id="@+id/linearLayout"
         >
 
         <LinearLayout
@@ -180,7 +185,7 @@
                 android:backgroundTint="@color/white"
                 android:textColor="@color/white"
                 android:maxLines="1"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 />
 
             <EditText
@@ -190,7 +195,7 @@
                 android:hint="Set your destination"
                 android:textColor="@color/white"
                 android:maxLines="1"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 android:backgroundTint="@color/white"
                 />
         </LinearLayout>
@@ -294,6 +299,18 @@
 
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tripsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="hohoho"
+        android:textSize="30dp"
+        android:gravity="top|center"
+        android:layout_marginBottom="10dp"
+        />
 
 </LinearLayout>
