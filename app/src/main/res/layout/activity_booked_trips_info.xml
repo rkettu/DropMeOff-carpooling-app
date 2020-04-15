@@ -61,17 +61,17 @@
         android:id="@+id/nameText"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
+        android:layout_marginStart="57dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="45dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Ilmoittajan nimi tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/Name"
-        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint" />
 
     <TextView
         android:id="@+id/Phone"
@@ -91,16 +91,16 @@
         android:id="@+id/phoneNum"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="45dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Ilmoittajan Puh. tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Phone"
-        app:layout_constraintTop_toBottomOf="@+id/nameText"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/nameText" />
 
     <TextView
         android:id="@+id/Distance"
@@ -119,16 +119,16 @@
         android:id="@+id/distanceNum"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="45dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Matkan pituus tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Distance"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNum"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/phoneNum" />
 
     <TextView
         android:id="@+id/price"
@@ -148,15 +148,15 @@
         android:layout_width="236dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="55dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="17dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Matkan hinta tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.181"
         app:layout_constraintStart_toEndOf="@+id/price"
-        app:layout_constraintTop_toBottomOf="@+id/distanceNum"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/distanceNum" />
 
     <TextView
         android:id="@+id/date"
@@ -175,16 +175,16 @@
         android:id="@+id/infoDate"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Pvm ja aika tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/date"
-        app:layout_constraintTop_toBottomOf="@+id/costSum"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/costSum" />
 
 
     <TextView
@@ -204,14 +204,14 @@
         android:id="@+id/infoBox"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="17dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Muu info tähän esim. matkustajien määrä/vapaat paikat"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/info"
-        app:layout_constraintTop_toBottomOf="@+id/durationTime"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/durationTime" />
 
     <TextView
         android:id="@+id/duration"
@@ -230,14 +230,14 @@
         android:id="@+id/durationTime"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Matkan kesto"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/duration"
-        app:layout_constraintTop_toBottomOf="@+id/infoDate"
-        android:fontFamily="@font/open_sans_semibold"/>
+        app:layout_constraintTop_toBottomOf="@+id/infoDate" />
 
 
     <Button
@@ -249,11 +249,13 @@
         android:background="@drawable/custom_button1"
         android:onClick="removeTripBtn"
         android:text="Remove trip"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/montserrat_medium"/>
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="16sp"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

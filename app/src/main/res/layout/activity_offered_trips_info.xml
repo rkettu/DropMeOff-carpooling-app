@@ -5,19 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
-    tools:context=".OfferedTripsInfoActivity">
+    tools:context=".BookedTripsInfoActivity">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="btnBackArrow"/>
+
 
     <TextView
-        android:id="@+id/tripHeadline"
+        android:id="@+id/tripStartPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:hint="Start - Destination headline"
+        android:layout_marginTop="50dp"
+        android:hint="Start -"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/montserrat_medium"/>
+
+
+    <TextView
+        android:id="@+id/tripDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="50dp"
+        android:hint="Destination"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tripStartPoint"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/montserrat_medium"/>
+
 
     <TextView
         android:id="@+id/Distance"
@@ -25,25 +51,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Distance"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
+        app:layout_constraintTop_toBottomOf="@+id/tripStartPoint" />
 
     <TextView
         android:id="@+id/distanceNum"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="33dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="45dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Matkan pituus tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Distance"
-        app:layout_constraintTop_toBottomOf="@+id/tripHeadline" />
+        app:layout_constraintTop_toBottomOf="@+id/tripDestination" />
 
     <TextView
         android:id="@+id/price"
@@ -53,16 +81,18 @@
         android:layout_marginTop="18dp"
         android:text="Price"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Distance" />
+        app:layout_constraintTop_toBottomOf="@+id/Distance"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/costSum"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="55dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Matkan hinta tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -79,16 +109,18 @@
         android:layout_marginTop="18dp"
         android:text="Date of trip"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/price" />
+        app:layout_constraintTop_toBottomOf="@+id/price"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/infoDate"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Pvm ja aika tähän"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -106,16 +138,18 @@
         android:layout_marginTop="18dp"
         android:text="Info"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/duration" />
+        app:layout_constraintTop_toBottomOf="@+id/duration"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/infoBox"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="17dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Muu info tähän esim. matkustajien määrä/vapaat paikat"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -130,16 +164,18 @@
         android:layout_marginTop="18dp"
         android:text="Duration"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
+        app:layout_constraintTop_toBottomOf="@+id/date"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/durationTime"
         android:layout_width="236dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:hint="Matkan kesto"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -154,11 +190,14 @@
         android:layout_marginEnd="84dp"
         android:background="@drawable/custom_button1"
         android:text="Remove trip"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="removeTripBtn"/>
+        android:onClick="removeTripBtn"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <Button
         android:id="@+id/editTrip"
@@ -168,12 +207,16 @@
         android:layout_marginTop="480dp"
         android:background="@drawable/custom_button1"
         android:text="Edit trip"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toStartOf="@+id/removeTrip"
         app:layout_constraintHorizontal_bias="0.037"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserrat_medium"
+
         android:onClick="editTripBtn"/>
 
     <androidx.constraintlayout.widget.Guideline

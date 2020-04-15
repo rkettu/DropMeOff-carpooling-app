@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RideDetailsActivity"
+    android:background="@drawable/background_login">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
@@ -12,13 +19,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date of travel"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
-        android:id="@+id/dateTxt"/>
+        android:id="@+id/dateTxt"
+        android:fontFamily="@font/montserrat_medium"/>
+
+
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,12 +50,14 @@
         android:layout_height="wrap_content"
         android:text="Estimated time of departure"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_marginTop="10dp"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
         app:layout_constraintTop_toBottomOf="@id/dateEdit"
-        android:id="@+id/timeTxt"/>
+        android:id="@+id/timeTxt"
+        android:fontFamily="@font/montserrat_medium"/>
+
     <EditText
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,13 +76,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Max passengers"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
         app:layout_constraintTop_toBottomOf="@id/timeEdit"
-        android:id="@+id/passengerTxt"/>
+        android:id="@+id/passengerTxt"
+        android:fontFamily="@font/montserrat_medium"/>
+
     <NumberPicker
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -79,17 +93,24 @@
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
         app:layout_constraintTop_toBottomOf="@id/passengerTxt"
         android:id="@+id/numberPicker"/>
+
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/pickUpDistanceEditText"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/confirmBtn"
+        android:layout_width="113dp"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:textSize="15dp"
-        android:text="CONFIRM"
-        android:background="@drawable/bs_round"
-        android:id="@+id/confirmBtn"/>
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/custom_button1"
+        android:text="Confirm"
+        android:textStyle="bold"
+        android:textColor="@color/pastelGreen"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pickUpDistanceEditText"
+        android:fontFamily="@font/montserrat_medium"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,10 +119,12 @@
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
         android:layout_marginTop="10dp"
-        android:textSize="30dp"
+        android:textSize="20sp"
         android:hint="Price"
         android:textColorHint="@color/white"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_medium"/>
+
     <SeekBar
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -111,6 +134,7 @@
         android:layout_marginTop="5dp"
         android:id="@+id/seekBar"
         />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -130,9 +154,10 @@
         app:layout_constraintTop_toBottomOf="@id/examplePrice"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
-        android:textSize="30dp"
+        android:textSize="20sp"
         android:text="Min range:"
         android:textColor="@color/white"/>
+
     <SeekBar
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -147,13 +172,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/rangeValue"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:text="Deviation from the route in kilometers"
         android:gravity="center"
         android:id="@+id/pickUpDistanceTextView"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         app:layout_constraintRight_toRightOf="@id/guideline_right"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:layout_width="100dp"
@@ -193,3 +218,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

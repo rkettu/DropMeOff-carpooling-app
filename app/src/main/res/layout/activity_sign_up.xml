@@ -54,7 +54,9 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="17sp"/>
 
     <EditText
         android:id="@+id/lastNameedit"
@@ -69,7 +71,9 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameedit" />
+        app:layout_constraintTop_toBottomOf="@+id/firstNameedit"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="17sp"/>
 
     <ImageView
         android:id="@+id/backButton"
@@ -95,7 +99,9 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/lastNameedit" />
+        app:layout_constraintTop_toBottomOf="@+id/lastNameedit"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="17sp"/>
 
     <EditText
         android:id="@+id/phoNumedit"
@@ -111,7 +117,9 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/emailedit" />
+        app:layout_constraintTop_toBottomOf="@+id/emailedit"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="17sp"/>
 
     <EditText
         android:id="@+id/passedit"
@@ -126,7 +134,9 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/phoNumedit" />
+        app:layout_constraintTop_toBottomOf="@+id/phoNumedit"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="17sp"/>
 
     <EditText
         android:id="@+id/passtwoedit"
@@ -141,12 +151,16 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/passedit" />
+        app:layout_constraintTop_toBottomOf="@+id/passedit"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="17sp"/>
 
     <CheckBox
         android:id="@+id/serviceBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/open_sans_semibold"
         android:text="I accept the Terms of Service."
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -156,8 +170,9 @@
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Terms of Services Here."
+        android:fontFamily="@font/open_sans_semibold"
         android:paddingLeft="10dp"
+        android:text="Terms of Services Here."
         android:textColor="#0000FF"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -167,12 +182,15 @@
         android:id="@+id/confirmSignUpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:background="@drawable/custom_button1"
+        android:fontFamily="@font/montserrat_medium"
         android:onClick="confirmSignUp"
         android:text="Sign Up"
-        android:textColor="@color/pastelGreen"
-        android:layout_marginTop="10dp"
+        android:textStyle="bold"
         android:textAllCaps="false"
+        android:textColor="@color/pastelGreen"
+        android:textSize="19sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"

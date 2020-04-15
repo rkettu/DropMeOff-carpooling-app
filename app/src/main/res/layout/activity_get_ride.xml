@@ -28,7 +28,7 @@
         android:paddingTop="0dp"
         android:paddingBottom="5dp"
         android:textColor="@color/white"
-        />
+        android:fontFamily="@font/montserrat_medium" />
 
 
     <LinearLayout
@@ -63,7 +63,8 @@
                 android:onClick="dateOfTimeClicked"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/white"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -89,7 +90,8 @@
                 android:id="@+id/estTimeEditText"
                 android:onClick="estTimeClicked"
                 android:backgroundTint="@color/white"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                />
         </LinearLayout>
 
         <TextView
@@ -99,7 +101,8 @@
             android:textSize="20sp"
             android:paddingHorizontal="16dp"
             android:textColor="@color/white"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/montserrat_medium"/>
 
 
         <LinearLayout
@@ -126,7 +129,8 @@
                 android:inputType="date"
                 android:onClick="dateOfTimeClicked"
                 android:backgroundTint="@color/white"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                />
         </LinearLayout>
 
 
@@ -147,16 +151,16 @@
 
             <EditText
                 android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="hh:mm"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:id="@+id/estTimeEditText2"
-                android:onClick="estTimeClicked"
-                android:backgroundTint="@color/white"
-                android:focusableInTouchMode="false"
-                />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="hh:mm"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:id="@+id/estTimeEditText2"
+            android:onClick="estTimeClicked"
+            android:backgroundTint="@color/white"
+            android:focusableInTouchMode="false"
+            />
 
         </LinearLayout>
 
@@ -208,9 +212,10 @@
             android:background="@drawable/custom_button1"
             android:onClick="searchButton"
             android:text="Search"
+            android:textStyle="bold"
             android:textColor="@color/pastelGreen"
             android:layout_marginLeft="10dp"
-            />
+            android:fontFamily="@font/montserrat_medium"/>
     </LinearLayout>
 
 
@@ -308,9 +313,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="hohoho"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:gravity="top|center"
         android:layout_marginBottom="10dp"
-        />
+        android:fontFamily="@font/open_sans_semibold"/>
 
 </LinearLayout>

@@ -98,18 +98,12 @@
         android:layout_height="wrap_content"
         android:text="Way points:"
         android:textSize="16dp"
-<<<<<<< HEAD
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/profTV7"
-        android:fontFamily="@font/montserrat_medium"/>
-=======
+        android:fontFamily="@font/montserrat_medium"
         android:layout_marginTop="10dp"
-
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/profTV7"
         app:layout_constraintRight_toLeftOf="@id/guideline_middle"
         />
->>>>>>> master
 
     <CheckBox
         android:id="@+id/luggageCB"
@@ -148,17 +142,18 @@
 
     <Button
         android:id="@+id/btnBookThisTrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_button1"
-        android:text="Book This Trip"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="141dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="24dp"
-        app:layout_constraintRight_toRightOf="@id/guideline_right"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        android:background="@drawable/custom_button1"
+        android:fontFamily="@font/montserrat_medium"
         android:onClick="btnBookTrip"
-        android:fontFamily="@font/montserrat_medium"/>
+        android:text="Book This Trip"
+        android:textColor="@color/pastelGreen"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right" />
 
 
     <androidx.constraintlayout.widget.Guideline

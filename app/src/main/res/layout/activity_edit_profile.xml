@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toStartOf="@+id/lastNameedit"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewfName"
-        android:typeface="@font/open_sans_semibold"/>
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewlName"
@@ -99,7 +99,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/firstNameedit"
         app:layout_constraintTop_toBottomOf="@+id/textViewlName"
-        android:typeface="@font/open_sans_semibold"/>
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewEmail"
@@ -131,7 +131,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
         android:drawableStart="@drawable/ic_mail_outline_black_24dp"
         android:drawablePadding="16dp"
-        android:typeface="@font/open_sans_semibold"/>
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewPhoNum"
@@ -163,7 +163,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewPhoNum"
         android:drawableStart="@drawable/ic_call_black_24dp"
         android:drawablePadding="16dp"
-        android:typeface="@font/open_sans_semibold"/>
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewBio"
@@ -205,6 +205,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button1"
         android:text="Apply Changes"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         android:layout_marginTop="10dp"
@@ -276,6 +277,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button1"
         android:text="Change Password"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         android:layout_marginTop="10dp"
