@@ -25,13 +25,12 @@
         android:id="@+id/profTV1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="30dp"
         android:text="User First name"
         android:textSize="16dp"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/getRideImage"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV2"
@@ -39,10 +38,9 @@
         android:layout_height="wrap_content"
         android:text="Start point"
         android:textSize="16dp"
-
         app:layout_constraintTop_toBottomOf="@id/profTV1"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV3"
@@ -50,10 +48,9 @@
         android:layout_height="wrap_content"
         android:text="destination"
         android:textSize="16dp"
-
         app:layout_constraintTop_toBottomOf="@id/profTV2"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV4"
@@ -61,10 +58,9 @@
         android:layout_height="wrap_content"
         android:text="start time"
         android:textSize="16dp"
-
         app:layout_constraintTop_toBottomOf="@id/profTV3"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV5"
@@ -72,10 +68,9 @@
         android:layout_height="wrap_content"
         android:text="duration"
         android:textSize="16dp"
-
         app:layout_constraintTop_toBottomOf="@id/profTV4"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV6"
@@ -83,10 +78,9 @@
         android:layout_height="wrap_content"
         android:text="price"
         android:textSize="16dp"
-
         app:layout_constraintTop_toBottomOf="@id/profTV5"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV7"
@@ -94,10 +88,9 @@
         android:layout_height="wrap_content"
         android:text="free seats"
         android:textSize="16dp"
-
         app:layout_constraintTop_toBottomOf="@id/profTV6"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:id="@+id/profTV8"
@@ -105,10 +98,9 @@
         android:layout_height="wrap_content"
         android:text="waypoints"
         android:textSize="16dp"
-
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/profTV7"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
     <CheckBox
         android:id="@+id/luggageCB"
@@ -142,7 +134,7 @@
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/luggageCB"
-        />
+        android:typeface="@font/open_sans_semibold"/>
 
 
     <Button
@@ -157,7 +149,7 @@
         app:layout_constraintRight_toRightOf="@id/guideline_right"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         android:onClick="btnBookTrip"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
 
 
     <androidx.constraintlayout.widget.Guideline

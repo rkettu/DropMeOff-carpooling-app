@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toStartOf="@+id/lastNameedit"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewfName"
-        />
+        android:typeface="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewlName"
@@ -98,7 +98,8 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/firstNameedit"
-        app:layout_constraintTop_toBottomOf="@+id/textViewlName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewlName"
+        android:typeface="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewEmail"
@@ -130,7 +131,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
         android:drawableStart="@drawable/ic_mail_outline_black_24dp"
         android:drawablePadding="16dp"
-        />
+        android:typeface="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewPhoNum"
@@ -161,7 +162,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewPhoNum"
         android:drawableStart="@drawable/ic_call_black_24dp"
-        android:drawablePadding="16dp"/>
+        android:drawablePadding="16dp"
+        android:typeface="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewBio"
@@ -195,7 +197,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewBio"
         android:background="@drawable/custom_edittext1"
-        />
+        android:typeface="@font/open_sans_semibold"/>
 
     <Button
         android:id="@+id/saveProfileDetailButton"
@@ -209,7 +211,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/bioedit"
-        android:onClick="saveChanges"/>
+        android:onClick="saveChanges"
+        android:fontFamily="@font/montserrat_medium" />
 
     <TextView
         android:id="@+id/textViewPassword"
@@ -221,7 +224,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/saveProfileDetailButton" />
+        app:layout_constraintTop_toBottomOf="@+id/saveProfileDetailButton"
+        android:fontFamily="@font/montserrat_medium" />
 
     <EditText
         android:id="@+id/oldPassedit"
@@ -278,7 +282,8 @@
         android:layout_marginBottom="50dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/passtwoedit"/>
+        app:layout_constraintTop_toBottomOf="@+id/passtwoedit"
+        android:fontFamily="@font/montserrat_medium" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
