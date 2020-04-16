@@ -83,7 +83,7 @@
             android:rating="2.5"
             android:stepSize="0.1"
             android:progressTint="@color/starColor"
-            android:secondaryProgressTint="@color/starSecondaryColor"
+            android:secondaryProgressTint="#00000000"
             android:progressBackgroundTint="@color/pastelGreen"
             android:isIndicator="true"
             tools:layout_editor_absoluteX="91dp"
