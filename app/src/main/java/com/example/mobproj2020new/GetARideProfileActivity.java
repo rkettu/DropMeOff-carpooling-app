@@ -132,7 +132,6 @@ public class GetARideProfileActivity extends AppCompatActivity {
         }
         catch (Exception e){
             e.printStackTrace();
-            Log.d("GetARideProfile", "onCreate: waypointsize null");
         }
     }
 
