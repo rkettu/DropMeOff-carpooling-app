@@ -237,6 +237,7 @@
 
     </LinearLayout>
 
+
     <ImageButton
         android:id="@+id/sijaintiButton"
         android:layout_width="wrap_content"
