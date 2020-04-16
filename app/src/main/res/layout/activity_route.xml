@@ -67,8 +67,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textSize="20dp"
-                    android:text="Valitse lähtöpaikka:"
+                    android:text="Choose start point:"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                     app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
@@ -78,8 +79,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/open_sans_semibold"
                     android:inputType="textCapWords"
-                    android:queryHint="Esimerkiksi: Kaarnatie 5, Oulu"
+                    android:queryHint="Example: Kaarnatie 5, Oulu"
                     android:background="@drawable/bg_round"
                     android:iconifiedByDefault="false"
                     android:elevation="5dp"
@@ -92,8 +94,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textSize="20dp"
-                    android:text="Välietappi"
+                    android:text="Waypoint"
                     app:layout_constraintTop_toBottomOf="@+id/lahtoEdit"
                     app:layout_constraintStart_toStartOf="@+id/guideline_left"
                     app:layout_constraintEnd_toStartOf="@id/guideline_center_right"/>
@@ -118,7 +121,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:inputType="textCapWords"
-                    android:queryHint="Esimerkiksi: Lahti"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:queryHint="Example: Lahti"
                     android:background="@drawable/bg_round"
                     android:iconifiedByDefault="false"
                     android:elevation="5dp"
@@ -147,7 +151,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:inputType="textCapWords"
-                    android:queryHint="Esimerkiksi: Tampere"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:queryHint="Example: Tampere"
                     android:background="@drawable/bg_round"
                     android:iconifiedByDefault="false"
                     android:elevation="5dp"
@@ -175,8 +180,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:fontFamily="@font/montserrat_medium"
                     android:textSize="20dp"
-                    android:text="Valitse määränpää:"
+                    android:text="Choose destination:"
                     app:layout_constraintTop_toBottomOf="@+id/etappiRemoveBtn2"
                     app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                     app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
@@ -188,7 +194,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:inputType="textCapWords"
-                    android:queryHint="Esimerkiksi: Mannerheimintie 5, Helsinki"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:queryHint="Example: Mannerheimintie 5, Helsinki"
                     android:background="@drawable/bg_round"
                     android:iconifiedByDefault="false"
                     android:elevation="5dp"
@@ -201,20 +208,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Hae reitti"
+                    android:text="search a route"
+                    android:fontFamily="@font/montserrat_medium"
                     android:background="@drawable/bg_round"
                     app:layout_constraintTop_toBottomOf="@+id/maaranpaaEdit"
                     app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                     app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
 
 
-                <TextView
-                    android:id="@+id/infoTxt"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/haeButton"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -255,14 +257,59 @@
         app:layout_constraintTop_toBottomOf="@+id/outherLayout"
         app:layout_constraintRight_toRightOf="parent"/>
 
+
     <Button
         android:id="@+id/nextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
+        android:fontFamily="@font/montserrat_medium"
         android:background="@drawable/bg_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/routeDetails"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/nextBtn"
+        app:layout_constraintRight_toLeftOf="@id/nextBtn"
+        android:background="@drawable/bg_round"
+        android:visibility="gone">
+
+
+        <TextView
+            android:id="@+id/infoTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:drawableStart="@drawable/ic_drive_eta_black_24dp"
+            android:drawablePadding="5dp"
+            />
+
+        <TextView
+            android:id="@+id/infoTxt2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="155dp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:drawableStart="@drawable/ic_access_time_black_24dp"
+            android:drawablePadding="5dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

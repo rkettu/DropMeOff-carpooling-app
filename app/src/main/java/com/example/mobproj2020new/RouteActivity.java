@@ -2,6 +2,7 @@ package com.example.mobproj2020new;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -65,6 +66,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     Animation ttbAnim, bttAnim;
     private LinearLayout linearContainer;
+    private ConstraintLayout routeDetails;
     private Button drawerButton;
     private ImageButton sijaintiButton;
     private boolean drawer_expand = true;
@@ -105,6 +107,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         linearContainer = (LinearLayout) findViewById(R.id.linearLayout);
         drawerButton = (Button) findViewById(R.id.drawer_bottom);
 
+        routeDetails = (ConstraintLayout) findViewById(R.id.routeDetails);
 
         bttAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -165,13 +168,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
             if (strLahto.trim().equals("") || strLoppu.trim().equals(""))
             {
-                Toast.makeText(getApplicationContext(),"Valitse lahtö- ja loppupiste", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Choose start and destination points", Toast.LENGTH_SHORT).show();
             }
             else
             {
                 try {
                     geoLocate(strLahto, strLoppu, strWaypoint1, strWaypoint2);
-                    animationHandler();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -206,7 +208,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                                     }
                                 }
                                 else {
-                                    Toast.makeText(getApplicationContext(),"Ei sijaintia", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Location failed", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -268,10 +270,11 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             Address add = listStart.get(0);
             startLat = add.getLatitude();
             startLon = add.getLongitude();
+
         }
         catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(),"Lähtösijainti väärin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Start position wrong", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -283,28 +286,39 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             stopLon = add2.getLongitude();
         }catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(),"Määränpääsijainti väärin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Destination wrong", Toast.LENGTH_SHORT).show();
             return;
         }
 
 
         if(strWaypoint1 != null && !strWaypoint1.isEmpty())
         {
-            List<Address> listWay1 = gc.getFromLocationName(waypoint1,1);
-            Address add3 = listWay1.get(0);
-            double way1Lat = add3.getLatitude();
-            double way1Lon = add3.getLongitude();
-            wayPoint1 = new MarkerOptions().position(new LatLng(way1Lat, way1Lon)).title("WayPoint1");
-            mMap.addMarker(wayPoint1);
+            try {
+                List<Address> listWay1 = gc.getFromLocationName(waypoint1,1);
+                Address add3 = listWay1.get(0);
+                double way1Lat = add3.getLatitude();
+                double way1Lon = add3.getLongitude();
+                wayPoint1 = new MarkerOptions().position(new LatLng(way1Lat, way1Lon)).title("WayPoint1");
+                mMap.addMarker(wayPoint1);
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(),"Waypoint wrong", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         }
         if(strWaypoint2 != null && !strWaypoint2.isEmpty())
         {
-            List<Address> listWay2 = gc.getFromLocationName(waypoint2,1);
-            Address add4 = listWay2.get(0);
-            double way2Lat = add4.getLatitude();
-            double way2Lon = add4.getLongitude();
-            wayPoint2 = new MarkerOptions().position(new LatLng(way2Lat, way2Lon)).title("WayPoint2");
-            mMap.addMarker(wayPoint2);
+            try {
+                List<Address> listWay2 = gc.getFromLocationName(waypoint2,1);
+                Address add4 = listWay2.get(0);
+                double way2Lat = add4.getLatitude();
+                double way2Lon = add4.getLongitude();
+                wayPoint2 = new MarkerOptions().position(new LatLng(way2Lat, way2Lon)).title("WayPoint2");
+                mMap.addMarker(wayPoint2);
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(),"Waypoint wrong", Toast.LENGTH_SHORT).show();
+            }
+
         }
         /*if(latitude != null && !latitude.isEmpty()){
             Double gpsLat = Double.valueOf(latitude);
@@ -319,7 +333,11 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
 
         place2 = new MarkerOptions().position(new LatLng(stopLat, stopLon)).title("Location 2");
 
+
+        animationHandler();
         new FetchURL(RouteActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"), "driving");
+
+        routeDetails.setVisibility(View.VISIBLE);
 
         mMap.addMarker(place1);
         mMap.addMarker(place2); 
@@ -376,9 +394,12 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
 
         TextView distance = (TextView) findViewById(R.id.infoTxt);
+        TextView duration = (TextView) findViewById(R.id.infoTxt2);
+
         matka = Constant.DISTANCE;
         aika = Constant.DURATION;
-        distance.setText(Constant.DISTANCE + " km " + Constant.DURATION);
+        distance.setText(Constant.DISTANCE + " km ");
+        duration.setText(Constant.DURATION);
 
         Button nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setEnabled(true);
