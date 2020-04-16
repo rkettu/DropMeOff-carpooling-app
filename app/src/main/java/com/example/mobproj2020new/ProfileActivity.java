@@ -55,8 +55,8 @@ public class ProfileActivity extends AppCompatActivity {
         dbHandler.init(FirebaseAuth.getInstance().getCurrentUser());
         user = dbHandler.getProfilepick(user);*/
 
-        //Picasso.with(ProfileActivity.this).load(user.getImgUri()).into(profileImageView);
-        AppUser.getImg(getApplicationContext(), profileImageView);
+        Picasso.with(ProfileActivity.this).load(user.getImgUri()).into(profileImageView);
+        //AppUser.getImg(getApplicationContext(), profileImageView);
         profileNameTextView.setText(user.getFname() + " " + user.getLname());
         profileEmailTextView.setText(user.getEmail());
         profilePhoNumTextView.setText(user.getPhone());
