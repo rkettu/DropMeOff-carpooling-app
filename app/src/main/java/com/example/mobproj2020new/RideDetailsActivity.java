@@ -2,49 +2,45 @@ package com.example.mobproj2020new;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class RideDetailsActivity extends AppCompatActivity implements View.OnClickListener{
+public class RideDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Calendar mC;
     private String strDate;
     private String strTime;
-    private int passengers = 1;
+    private int passengers = 4;
     private float hinta;
     private int range;
 
-    EditText txtDate, txtTime;
+    EditText txtDate, txtTime, np;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute;
-    SeekBar seekBar;
-    SeekBar seekBar2;
-    TextView hintaTxt, exampleTxt, minRange;
+    //seek1 hinta, seek2 pickupRange, seek3 range
+    SeekBar seekBar, seekBar2, seekBar3;
+    TextView hintaTxt, exampleTxt, minRange, rangeValueTextView;
+    TextView pass;
     EditText pickUpDistanceEditText;
     private Button confirmBtn;
     String newMatka;
@@ -53,6 +49,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     String newLoppuOs;
     Double doubleMatka;
     int intMatka;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,58 +57,69 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
         mC = new GregorianCalendar();
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null){
+            if (extras == null) {
                 newMatka = null;
-            }else{
+            } else {
                 newMatka = extras.getString("MATKA");
                 newAika = extras.getString("AIKA");
                 newLahtoOs = extras.getString("ALKUOSOITE");
                 newLoppuOs = extras.getString("LOPPUOSOITE");
-        }
-        }
-        else {
-            newMatka = (String)savedInstanceState.getSerializable("MATKA");
-            newAika = (String)savedInstanceState.getSerializable("AIKA");
-            newLahtoOs = (String)savedInstanceState.getSerializable("ALKUOSOITE");
-            newLoppuOs = (String)savedInstanceState.getSerializable("LOPPUOSOITE");
+            }
+        } else {
+            newMatka = (String) savedInstanceState.getSerializable("MATKA");
+            newAika = (String) savedInstanceState.getSerializable("AIKA");
+            newLahtoOs = (String) savedInstanceState.getSerializable("ALKUOSOITE");
+            newLoppuOs = (String) savedInstanceState.getSerializable("LOPPUOSOITE");
         }
 
-        if(newMatka != null && !newMatka.isEmpty()){
+        if (newMatka != null && !newMatka.isEmpty()) {
             doubleMatka = Double.valueOf(newMatka);
             intMatka = Integer.valueOf(doubleMatka.intValue());
         }
-        NumberPicker np = findViewById(R.id.numberPicker);
-        np.setMinValue(1);
-        np.setMaxValue(10);
+        np = findViewById(R.id.numberPicker);
+        //np.setMinValue(1);
+        //np.setMaxValue(10);
 
         final Button confirmBtn = (Button) findViewById(R.id.confirmBtn);
         confirmBtn.setOnClickListener(this);
         confirmBtn.setEnabled(false);
 
 
-        txtDate=(EditText)findViewById(R.id.dateEdit);
-        txtTime=(EditText)findViewById(R.id.timeEdit);
+        txtDate = (EditText) findViewById(R.id.dateEdit);
+        txtTime = (EditText) findViewById(R.id.timeEdit);
 
         txtDate.setOnClickListener(this);
         txtTime.setOnClickListener(this);
 
-        hintaTxt = (TextView)findViewById(R.id.seekBarText);
-        exampleTxt = (TextView)findViewById(R.id.examplePrice);
-        minRange = (TextView) findViewById(R.id.minimumRangeTxt);
-        minRange.setText("Min range: " + newMatka);
+        hintaTxt = (TextView) findViewById(R.id.seekBarPriceText);
+        exampleTxt = (TextView) findViewById(R.id.examplePrice);
+        minRange = (TextView) findViewById(R.id.pickUpRangeTxt);
+        minRange.setText("PickUp range: " + 5 + "km");
+        rangeValueTextView = (TextView) findViewById(R.id.rangeValueTextView);
+        rangeValueTextView.setText("Minimum Passanger trip: " + intMatka + "km");
 
-        seekBar=(SeekBar)findViewById(R.id.seekBar);
-        seekBar2=(SeekBar)findViewById(R.id.rangeValue);
+        seekBar = (SeekBar) findViewById(R.id.priceSeekBar);
+        seekBar2 = (SeekBar) findViewById(R.id.rangeValue);
         seekBar2.setProgress(100);
+        seekBar3 = (SeekBar) findViewById(R.id.pickUpRangeValue);
+        seekBar3.setProgress((int) ((5.00f / intMatka) * 100.00f));
 
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        Log.d("####matka1####", intMatka + ", " + (int) (intMatka * 0.05f) + ", " + (intMatka / 100.00f));
+
+        Log.d("####matka3####", intMatka + ", " + (intMatka / 100.00f) + ", " + ((5.00f / intMatka) * 100.00f) + ", " + intMatka * (5.00f / intMatka));
+
+        exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: 0.00 eur");
+
+        np = findViewById(R.id.numberPicker);
+        //passengers = Integer.parseInt(np.getText().toString());
+        /*np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 passengers = newVal;
             }
-        });
+        });*/
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -119,8 +127,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 hinta = ((float) progress / 1000);
                 hintaTxt.setText(String.format("%.3f", hinta) + " per kilometer");
                 hintaTxt.setTextColor(Color.WHITE);
-                exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: " + String.format("%.2f", doubleMatka * hinta) + " eur") ;
-                if(strTime != null & strDate!= null & hinta > 0 ){
+                exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: " + String.format("%.2f", doubleMatka * hinta) + " eur");
+                if (strTime != null & strDate != null & hinta > 0) {
                     confirmBtn.setEnabled(true);
                 }
             }
@@ -139,8 +147,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                range = ((intMatka / 100) * progress);
-                minRange.setText("Min range: " + range);
+                range = progress;
+                rangeValueTextView.setText("Minimum Passanger trip: " + range + "km");
             }
 
             @Override
@@ -154,11 +162,67 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float s = ((intMatka / 100.00f) * progress);
+                range = (int) s;
+                Log.d("####matka3####", range + ", " + intMatka + ", " + progress + ", " + (intMatka / 100.00f) * progress);
+                minRange.setText("PickUp range: " + range + "km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        pass = findViewById(R.id.passengerTxt);
+
+        //Check if passenger count is more than 0
+        np.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if ( passengers <= 1) {
+                    findViewById(R.id.minusBtn).setEnabled(false);
+                }else findViewById(R.id.minusBtn).setEnabled(true);
+
+                if (np.getText() != null && np.length() > 0) {
+                    if (Integer.parseInt(np.getText().toString()) < 1){
+                        passengers = 1;
+                        findViewById(R.id.minusBtn).setEnabled(false);
+                        np.setText(String.valueOf(passengers));
+                    }else if(passengers != Integer.parseInt(np.getText().toString())){
+                        passengers = Integer.parseInt(np.getText().toString());
+                        findViewById(R.id.minusBtn).setEnabled(false);
+                        np.setText(String.valueOf(passengers));
+                    }
+
+                }
+                Log.d("####passengers####", String.valueOf(passengers));
+            }
+        });
+
     }
 
     @Override
     public void onClick(View v) {
-        if(v == txtDate){
+        if (v == txtDate) {
             final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
@@ -176,8 +240,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
-        }
-        else if (v == txtTime){
+        } else if (v == txtTime) {
             final Calendar c = Calendar.getInstance();
             mHour = c.get(Calendar.HOUR_OF_DAY);
             mMinute = c.get(Calendar.MINUTE);
@@ -197,31 +260,33 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                     }, mHour, mMinute, true);
 
             timePickerDialog.show();
-        }
-        else if (v.getId() == R.id.confirmBtn)
-        {
-            if(FirebaseHelper.loggedIn) {
+        } else if (v.getId() == R.id.confirmBtn) {
+            if (FirebaseHelper.loggedIn) {
                 DatabaseHandler db = new DatabaseHandler();
 
                 mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
                 long leaveTime = mC.getTimeInMillis();
-                pickUpDistanceEditText = findViewById(R.id.pickUpDistanceEditText);
+                //pickUpDistanceEditText = findViewById(R.id.pickUpDistanceEditText);
                 String pickUpDistance = pickUpDistanceEditText.getText().toString();
                 int pickUpDist = Integer.parseInt(pickUpDistance);
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
                 String duration = newAika;
                 //String startDate = strDate;
                 //String startTime = strTime;
                 String startAddress = newLahtoOs;
                 String endAddress = newLoppuOs;
-                int freeSlots = passengers;
+                //int freeSlots = passengers;
+                int freeSlots = Integer.parseInt(np.getText().toString());
                 float price = hinta;
-                List<HashMap<String,String>> points = Constant.pointsList;
+                List<HashMap<String, String>> points = Constant.pointsList;
                 List<String> waypointAddresses = Constant.waypointAddressesList;
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
-                        freeSlots, price, points, waypointAddresses, participants, pickUpDist);
+
+                        freeSlots, price, doubleMatka, points, waypointAddresses, participants, pickUpDist);
+
                 db.createRide(route, RideDetailsActivity.this);
             } else {
                 FirebaseHelper.GoToLogin(getApplicationContext());
@@ -229,4 +294,14 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    //Pluss and Minus Buttons
+    public void addButtons(View v){
+        if (np.getText() != null && np.length() > 0) {
+            passengers = Integer.parseInt(np.getText().toString());
+            if (v == findViewById(R.id.plussBtn)){passengers++;}
+            else if (v == findViewById(R.id.minusBtn) ){passengers--;}
+        }
+
+        np.setText(String.valueOf(passengers));
+    }
 }

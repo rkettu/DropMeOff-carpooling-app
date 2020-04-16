@@ -26,16 +26,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver
-            android:name=".SleepReceiver"
-            android:exported="true">
+
+        <activity android:name=".RatingActivity"></activity>
+
+
+        <receiver android:name=".SleepReceiver" android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".GetARideProfileActivity" />
+
+        <activity android:name=".GetARideProfileActivity"></activity>
+
         <activity android:name=".BookedTripsInfoActivity" />
         <activity android:name=".OfferedTripsInfoActivity" />
         <activity android:name=".RouteActivity" />

@@ -1,112 +1,107 @@
 package com.example.mobproj2020new;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import com.squareup.picasso.Picasso;
+
+import java.text.DecimalFormat;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BookedTripsInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView startPointTextView, destinationTextView, nameTextView, phoneTextView, distanceTextView,
-             priceTextView, dateOfTripTextView, durationTextView, infoTextView;
+    TextView headingTV,leaveTimeTV,durationTV,distanceTV,priceTV,driverHeadingTV,driverNameTV,driverPhoneTV;
+    CircleImageView driverProfileImg;
 
-    GetARideAdapter getARideAdapter;
+    User mUser = null;
+    Route mRoute = null;
 
-    private String bStartP, bDest, bName, bPhone, bDistance, bPrice, bDateOfTrip, bDuration, bInfo, bDate, bRideId;
-    private ArrayList<GetARideUtility> tripList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booked_trips_info);
-        findViewById(R.id.removeTrip).setOnClickListener(this);
 
-        //getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
+        findViewById(R.id.bookedCancelBookingButton).setOnClickListener(this);
 
-        startPointTextView = findViewById(R.id.tripStartPoint);
-        destinationTextView = findViewById(R.id.tripDestination);
-        nameTextView = findViewById(R.id.nameText);
-        phoneTextView = findViewById(R.id.phoneNum);
-        distanceTextView = findViewById(R.id.distanceNum);
-        priceTextView = findViewById(R.id.costSum);
-        dateOfTripTextView = findViewById(R.id.infoDate);
-        durationTextView = findViewById(R.id.durationTime);
-        infoTextView = findViewById(R.id.infoBox);
-
-               //------------Makes app crash---------------//
-        /*Bundle bundle = getIntent().getExtras();
-        bStartP = bundle.getString("start");
-        bDest = bundle.getString("destination");
-        bName = bundle.getString("name");
-        bPhone = bundle.getString("phone");
-        bDistance = bundle.getString("distance");
-        bDate = bundle.getString("date");
-        bDuration = bundle.getString("duration");
-        bPrice = bundle.getString("price");
-        bInfo = bundle.getString("info");
-        bRideId = bundle.getString("rideId");
+        mRoute = (Route)getIntent().getSerializableExtra("MYKEY1");
+        mUser = (User)getIntent().getSerializableExtra("MYKEY2");
 
 
-        Calendar c = new GregorianCalendar();
-        c.setTimeInMillis(Long.parseLong(bDate));
-        String timeString = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR)+
-                                " - "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
+        headingTV = findViewById(R.id.bookedHeading);
+        leaveTimeTV = findViewById(R.id.bookedLeaveTime);
+        durationTV = findViewById(R.id.bookedDuration);
+        distanceTV = findViewById(R.id.bookedDistance);
+        priceTV = findViewById(R.id.bookedPrice);
+        driverHeadingTV = findViewById(R.id.bookedDriverHeading);
+        driverNameTV = findViewById(R.id.bookedDriverName);
+        driverPhoneTV = findViewById(R.id.bookedDriverPhone);
+        driverProfileImg = findViewById(R.id.bookedDriverImage);
 
-        dateOfTripTextView.setText(timeString);*/
-        startPointTextView.setText(bStartP);
-        destinationTextView.setText(bDest);
-        nameTextView.setText(bName);
-        durationTextView.setText(bDuration);
-        priceTextView.setText(bPrice + "per Kilometer");
+        DecimalFormat df = new DecimalFormat("#.##");
 
-                //---Hard coded info---//
-        startPointTextView.setText("Oulu" + "\r-");
-        destinationTextView.setText("Helsinki");
-        nameTextView.setText("Urho Kekkonen");
-        phoneTextView.setText("+3584621944131");
-        distanceTextView.setText("600km");
-        priceTextView.setText("18€");
-        dateOfTripTextView.setText("15.7.2020 - klo 14:00");
-        durationTextView.setText("8h");
-        infoTextView.setText("Only one luggage per passenger");
+        if(mRoute != null)
+        {
+            headingTV.setText(mRoute.getStartAddress() + " - " + mRoute.getEndAddress());
+            leaveTimeTV.setText(CalendarHelper.getFullTimeString(mRoute.getLeaveTime()));
+            durationTV.setText(mRoute.getDuration());
+            distanceTV.setText(mRoute.getDistance() + " km");
+            priceTV.setText(df.format((double)mRoute.getPrice() * (double)mRoute.getDistance()) + " €");
+        }
+        if(mUser != null)
+        {
+            driverNameTV.setText(mUser.getFname());
+            driverPhoneTV.setText(mUser.getPhone());
+            Picasso.with(BookedTripsInfoActivity.this).load(mUser.getImgUri()).into(driverProfileImg);
+        }
 
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.removeTrip){
+        if (v.getId() == R.id.bookedCancelBookingButton){
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+            builder.setTitle("Are you sure you want to remove yourself from this trip?");
+            builder.setMessage("Repeat offenders may be penalized according to the Terms of Service.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("CANCEL BOOKING", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d("CANCELLING", "canceling trip... " + which);
+                    if(mRoute.getParticipants().contains(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    {
+                        // TODO: delete user from trip's participants, add one extra slot back to trip's freeSlots
+                        Intent i = new Intent(BookedTripsInfoActivity.this, MainActivity.class);
+                        Toast.makeText(BookedTripsInfoActivity.this, "Booking deleted successfully", Toast.LENGTH_LONG).show();
+                        startActivity(i);
+                    }
+                    else {
+                        Toast.makeText(BookedTripsInfoActivity.this, "You're not even on this trip, mate", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+            builder.setNegativeButton("BACK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.d("CANCELLING", "not canceling trip" + which);
+                }
+            });
 
-        }
-
-    }
-
-    public void btnBackArrow(View v){
-        onBackPressed();
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        return;
-    }
-
-    //------------------Varauksen poisto-----------------//
-    public void removeTripBtn(View v){
-        if(FirebaseHelper.loggedIn){
-            //removeTripDialog();
-        } else{
-            Toast.makeText(getApplicationContext(), "Please log in or sign up to book this trip.",Toast.LENGTH_LONG).show();
-            FirebaseHelper.GoToLogin(getApplicationContext());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 

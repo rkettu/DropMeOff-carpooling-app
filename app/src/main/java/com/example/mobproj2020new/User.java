@@ -17,6 +17,8 @@ public class User implements Serializable {
     private String bio;
     private boolean profileCreated;
     private List<String> bookedRides;
+    private float rating;
+    private int ratingNumber;
 
     public User()  {}
 
@@ -29,7 +31,7 @@ public class User implements Serializable {
     }
 
     //Used on AppUser to create user from Static data
-    public User(String fname, String lname, String phone, String email, String bio, String imgUri, String uid, List<String> bookedRides)
+    public User(String fname, String lname, String phone, String email, String bio, String imgUri, String uid, List<String> bookedRides, float rating, int ratingNumber)
     {
         this.fname = fname;
         this.lname = lname;
@@ -39,6 +41,8 @@ public class User implements Serializable {
         this.imgUri = imgUri;
         this.uid = uid;
         this.bookedRides = bookedRides;
+        this.rating = 0;
+        this.ratingNumber = 0;
     }
 
     public static ArrayList<User> arrayList = new ArrayList<>();
@@ -59,6 +63,8 @@ public class User implements Serializable {
     public String getImgUri() { return imgUri; }
     public String getUid() { return uid; }
     public List<String> getBookedRides() { return bookedRides; }
+    public Float getRating() { return rating; }
+    public int getRatingNumber() { return ratingNumber; }
 
     public boolean getProfileCreated() { return profileCreated; }
 
@@ -77,4 +83,8 @@ public class User implements Serializable {
     {
         bookedRides = new ArrayList<>();
     }
+
+    public void setRating(Float rating) { this.rating = rating; }
+
+    public void setRatingNumber(int ratingNumber) { this.ratingNumber = ratingNumber; }
 }
