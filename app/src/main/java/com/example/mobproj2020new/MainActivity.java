@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity{
     //Exit app with pressing back putton on your phone
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        return;
+        finishAffinity();
+        finish();
     }
 }

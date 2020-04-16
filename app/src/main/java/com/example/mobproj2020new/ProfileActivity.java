@@ -70,14 +70,20 @@ public class ProfileActivity extends AppCompatActivity {
         profilePhoNumTextView.setText(user.getPhone());
         profileBioTextView.setText(user.getBio());
 
-        if(!user.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-        {
+        try {
+            if (!user.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                // Currently viewing someone elses profile - hiding edit profile button
+                findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+            }
+            else{
+                Log.d("TAG", "onCreate: " + AppUser.getUid());
+                getRating(AppUser.getUid());
+            }
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
             findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
             getRating(user.getUid());
-        }
-        else{
-            Log.d("TAG", "onCreate: " + AppUser.getUid());
-            getRating(AppUser.getUid());
         }
     }
 
