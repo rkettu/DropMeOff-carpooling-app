@@ -40,7 +40,7 @@ public class RatingCustomList2 extends ArrayAdapter<UserData> {
         TextView txtUserName = (TextView)convertView.findViewById(R.id.userName);
 
         txtUserName.setText(ud.user.getFname());
-        txtStartAddress.setText(ud.routeStartAddress + " - " + ud.routeEndAddress);
+        txtStartAddress.setText(ud.route.getStartAddress() + " - " + ud.route.getEndAddress());
 
         // get TextViews etc of list item and setText to them with values from UserData object
 

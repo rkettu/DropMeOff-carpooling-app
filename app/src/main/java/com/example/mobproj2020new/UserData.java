@@ -4,17 +4,15 @@ import java.io.Serializable;
 
 public class UserData implements Serializable {
 
-    String routeId;
-    String routeStartAddress;
-    String routeEndAddress;
+    Route route;
     User user;
+    String uid;
 
-    UserData(String routeId, String routeStartAddress, String routeEndAddress, User user)
+    UserData(Route route, User user, String uid)
     {
-        this.routeId = routeId;
-        this.routeEndAddress = routeEndAddress;
-        this.routeStartAddress = routeStartAddress;
+        this.route = route;
         this.user = user;
+        this.uid = uid;
     }
 
 }
