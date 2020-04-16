@@ -78,8 +78,6 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                                 if(isRouteInRange(pickupDistance, startLat, startLng, endLat, endLng, points)) {
 
                                     //----------Add String from db to variables if route is in range------//
-
-                                    Log.d(TAG, "onComplete: doc.getId()" + doc.getId());
                                     uid = (String) doc.get("uid");
                                     startAddress = (String) doc.get("startAddress");
                                     endAddress = (String) doc.get("endAddress");

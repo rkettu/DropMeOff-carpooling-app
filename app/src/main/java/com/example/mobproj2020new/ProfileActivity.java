@@ -95,13 +95,25 @@ public class ProfileActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot doc = task.getResult();
                 if(doc.exists()){
-                    //TODO: if myRating is integer, crashes
-                    double myRating = (double) doc.get("rating");
-                    long myRatingAmount = (long) doc.get("ratingAmount");
+                    double myRating;
+                    long myRating2; long myRatingAmount;
+                    String myNewRating; String myNewRating2;
+                    float newestRating; float newestRating2;
+
+                    try{
+                        myRating = (double) doc.get("rating");
+                        myNewRating = String.valueOf(myRating);
+                        newestRating = Float.parseFloat(myNewRating);
+                        rating.setRating(newestRating);
+                    }
+                    catch (Exception e){
+                        myRating2 = (long) doc.get("rating");
+                        myNewRating2 = String.valueOf(myRating2);
+                        newestRating2 = Long.parseLong(myNewRating2);
+                        rating.setRating(newestRating2);
+                    }
+                    myRatingAmount = (long) doc.get("ratingAmount");
                     String myNewRatingAmount = String.valueOf(myRatingAmount);
-                    String myNewRating = String.valueOf(myRating);
-                    float newestRating = Float.parseFloat(myNewRating);
-                    rating.setRating(newestRating);
                     profileRatingTextView.setText("(" + myNewRatingAmount + ")");
                 }
             }
