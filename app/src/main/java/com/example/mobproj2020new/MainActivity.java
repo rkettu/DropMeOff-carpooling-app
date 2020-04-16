@@ -13,17 +13,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -191,7 +195,12 @@ public class MainActivity extends AppCompatActivity{
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        TextView titleTV = new TextView(this);
+        titleTV.setText("Booked trips");
+        titleTV.setTextSize(24);
+        titleTV.setGravity(Gravity.START);
+        titleTV.setTextColor(Color.WHITE);
         builder.setTitle("Booked trips");
 
         myBookedRidesInfoList.clear();
@@ -232,17 +241,24 @@ public class MainActivity extends AppCompatActivity{
 
         AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
     }
 
     //---------------Button OfferTrips---------------//
     public void SelectOfferedTrips(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Offered rides");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        TextView titleTV = new TextView(this);
+        titleTV.setText("Offered trips");
+        titleTV.setTextSize(26);
+        titleTV.setGravity(Gravity.CENTER);
+        titleTV.setTextColor(Color.WHITE);
+        builder.setTitle("Offered trips");
 
         myOfferedRidesInfoList.clear();
         final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myOfferedRidesInfoList);
 
         new DatabaseHandler().GetOfferedRides(ridesAdapter, myOfferedRidesInfoList);
+
 
         builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
             @Override
@@ -258,6 +274,7 @@ public class MainActivity extends AppCompatActivity{
 
         AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
     }
 
     //-------------Button Get A Ride----------------//
@@ -275,7 +292,7 @@ public class MainActivity extends AppCompatActivity{
     //Exit app with pressing back putton on your phone
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        return;
+        finishAffinity();
+        finish();
     }
 }

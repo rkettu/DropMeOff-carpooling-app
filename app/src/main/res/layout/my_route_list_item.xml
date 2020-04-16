@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
     >
 
     <View
@@ -23,6 +24,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/ListItemText1"
             android:text="placeholder"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginLeft="6dp"
             />
 
         <LinearLayout
@@ -39,6 +43,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ListItemText2"
                 android:text="placeholder"
+                android:gravity="center"
+                android:layout_marginRight="6dp"
+                android:textColor="@color/white"
                 />
 
             <TextView
@@ -46,6 +53,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ListItemText3"
                 android:text="placeholder"
+                android:gravity="center"
+                android:layout_marginRight="6dp"
+                android:textColor="@color/white"
                 />
 
         </LinearLayout>
