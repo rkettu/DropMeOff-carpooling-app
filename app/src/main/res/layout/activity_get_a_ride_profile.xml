@@ -28,6 +28,7 @@
         android:layout_marginTop="30dp"
         android:text="User First name"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/getRideImage"
         android:fontFamily="@font/montserrat_medium"/>
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:text="Start point"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV1"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
@@ -48,6 +50,7 @@
         android:layout_height="wrap_content"
         android:text="destination"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV2"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
@@ -58,6 +61,7 @@
         android:layout_height="wrap_content"
         android:text="start time"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV3"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
@@ -68,6 +72,7 @@
         android:layout_height="wrap_content"
         android:text="duration"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV4"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
@@ -78,6 +83,7 @@
         android:layout_height="wrap_content"
         android:text="price"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV5"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
@@ -88,6 +94,7 @@
         android:layout_height="wrap_content"
         android:text="free seats"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV6"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
@@ -98,6 +105,7 @@
         android:layout_height="wrap_content"
         android:text="Way points:"
         android:textSize="16dp"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/profTV7"
         android:fontFamily="@font/montserrat_medium"
@@ -111,7 +119,6 @@
         android:layout_height="wrap_content"
         android:text="Luggage"
         android:textSize="16dp"
-
         android:layout_marginTop="10dp"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintTop_toBottomOf="@id/profTV8"
