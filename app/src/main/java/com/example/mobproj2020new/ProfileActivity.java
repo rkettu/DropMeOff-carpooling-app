@@ -11,9 +11,14 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -30,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileEmailTextView;
     TextView profilePhoNumTextView;
     TextView profileBioTextView;
+    TextView profileRatingTextView;
     RatingBar rating;
     User user;
 
@@ -45,7 +51,9 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmailTextView = findViewById(R.id.profileEmailText);
         profilePhoNumTextView= findViewById(R.id.profilePhoNumText);
         profileBioTextView = findViewById(R.id.profileBioText);
+        profileRatingTextView = findViewById(R.id.profileRatingText);
         rating = findViewById(R.id.ratingBar);
+
 
         Intent i = getIntent();
         user = (User) i.getSerializableExtra("JOKUKEY");
@@ -55,23 +63,67 @@ public class ProfileActivity extends AppCompatActivity {
         dbHandler.init(FirebaseAuth.getInstance().getCurrentUser());
         user = dbHandler.getProfilepick(user);*/
 
-        //Picasso.with(ProfileActivity.this).load(user.getImgUri()).into(profileImageView);
-        AppUser.getImg(getApplicationContext(), profileImageView);
+        Picasso.with(ProfileActivity.this).load(user.getImgUri()).into(profileImageView);
+        //AppUser.getImg(getApplicationContext(), profileImageView);
         profileNameTextView.setText(user.getFname() + " " + user.getLname());
         profileEmailTextView.setText(user.getEmail());
         profilePhoNumTextView.setText(user.getPhone());
         profileBioTextView.setText(user.getBio());
 
-        if(!user.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
-        {
-            // Currently viewing someone elses profile - hiding edit profile button
-            findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+        try {
+            if (!user.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                // Currently viewing someone elses profile - hiding edit profile button
+                findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+            }
+            else{
+                Log.d("TAG", "onCreate: " + AppUser.getUid());
+                getRating(AppUser.getUid());
+            }
         }
+        catch (NullPointerException e){
+            e.printStackTrace();
+            findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+            getRating(user.getUid());
+        }
+    }
+
+    private void getRating(String uid){
+        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
+        DocumentReference myDocRef = myFireStoreRef.collection("users").document(uid);
+        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot doc = task.getResult();
+                if(doc.exists()){
+                    double myRating;
+                    long myRating2; long myRatingAmount;
+                    String myNewRating; String myNewRating2;
+                    float newestRating; float newestRating2;
+
+                    try{
+                        myRating = (double) doc.get("rating");
+                        myNewRating = String.valueOf(myRating);
+                        newestRating = Float.parseFloat(myNewRating);
+                        rating.setRating(newestRating);
+                    }
+                    catch (Exception e){
+                        myRating2 = (long) doc.get("rating");
+                        myNewRating2 = String.valueOf(myRating2);
+                        newestRating2 = Long.parseLong(myNewRating2);
+                        rating.setRating(newestRating2);
+                    }
+                    myRatingAmount = (long) doc.get("ratingAmount");
+                    String myNewRatingAmount = String.valueOf(myRatingAmount);
+                    profileRatingTextView.setText("(" + myNewRatingAmount + ")");
+                }
+            }
+        });
     }
 
     public void editProfile(View v) {
         gotoEdit();
     }
+    
     private void gotoEdit(){
         Intent intent = new Intent(this, EditProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
