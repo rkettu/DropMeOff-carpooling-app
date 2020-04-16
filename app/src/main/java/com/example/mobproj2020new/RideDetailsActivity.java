@@ -13,12 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -90,6 +92,46 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         txtDate = (EditText) findViewById(R.id.dateEdit);
         txtTime = (EditText) findViewById(R.id.timeEdit);
 
+        txtDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!txtTime.getText().toString().equals(""))
+                {
+                    confirmBtn.setEnabled(true);
+                }
+            }
+        });
+
+        txtTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!txtDate.getText().toString().equals(""))
+                {
+                    confirmBtn.setEnabled(true);
+                }
+            }
+        });
+
         txtDate.setOnClickListener(this);
         txtTime.setOnClickListener(this);
 
@@ -100,6 +142,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         rangeValueTextView = (TextView) findViewById(R.id.rangeValueTextView);
         rangeValueTextView.setText("Minimum Passanger trip: " + intMatka + "km");
 
+        exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: " + String.format("%.2f", doubleMatka * 0.03) + " eur");
+
         seekBar = (SeekBar) findViewById(R.id.priceSeekBar);
         seekBar2 = (SeekBar) findViewById(R.id.rangeValue);
         seekBar2.setProgress(100);
@@ -109,8 +153,6 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         Log.d("####matka1####", intMatka + ", " + (int) (intMatka * 0.05f) + ", " + (intMatka / 100.00f));
 
         Log.d("####matka3####", intMatka + ", " + (intMatka / 100.00f) + ", " + ((5.00f / intMatka) * 100.00f) + ", " + intMatka * (5.00f / intMatka));
-
-        exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: 0.00 eur");
 
         np = findViewById(R.id.numberPicker);
         //passengers = Integer.parseInt(np.getText().toString());
@@ -125,12 +167,10 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 hinta = ((float) progress / 1000);
-                hintaTxt.setText(String.format("%.3f", hinta) + " per kilometer");
+                hintaTxt.setText(String.format("Price: %.3f", hinta) + " per kilometer");
                 hintaTxt.setTextColor(Color.WHITE);
                 exampleTxt.setText("Example km: " + newMatka + " km \n" + "Price: " + String.format("%.2f", doubleMatka * hinta) + " eur");
-                if (strTime != null & strDate != null & hinta > 0) {
-                    confirmBtn.setEnabled(true);
-                }
+
             }
 
             @Override
@@ -147,8 +187,10 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         seekBar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                range = progress;
-                rangeValueTextView.setText("Minimum Passanger trip: " + range + "km");
+                float testi = ((intMatka / 100.00f) * progress);
+                //range = progress;
+                DecimalFormat df = new DecimalFormat("#.##");
+                rangeValueTextView.setText("Minimum Passanger trip: " + (int)testi + "km");
             }
 
             @Override
@@ -165,7 +207,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float tempDist = ((intMatka / 100.00f) * progress);
+                float tempDist = ((50 / 100.00f) * progress);
                 pickUpDistance = (int) tempDist;
                 range = pickUpDistance;
                 Log.d("####matka3####", range + ", " + intMatka + ", " + progress + ", " + (intMatka / 100.00f) * progress);
