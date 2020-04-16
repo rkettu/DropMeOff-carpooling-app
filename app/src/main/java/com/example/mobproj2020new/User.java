@@ -65,7 +65,7 @@ public class User implements Serializable {
     public List<String> getBookedRides() { return bookedRides; }
     public float getRating() { return rating; }
 
-    public int getRatingNumber() { return ratingNumber; }
+    public int getRatingAmount() { return ratingAmount; }
 
     public boolean getProfileCreated() { return profileCreated; }
 
