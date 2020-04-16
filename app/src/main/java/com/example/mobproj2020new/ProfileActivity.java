@@ -11,9 +11,14 @@ import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -30,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileEmailTextView;
     TextView profilePhoNumTextView;
     TextView profileBioTextView;
+    TextView profileRatingTextView;
     RatingBar rating;
     User user;
 
@@ -45,7 +51,9 @@ public class ProfileActivity extends AppCompatActivity {
         profileEmailTextView = findViewById(R.id.profileEmailText);
         profilePhoNumTextView= findViewById(R.id.profilePhoNumText);
         profileBioTextView = findViewById(R.id.profileBioText);
+        profileRatingTextView = findViewById(R.id.profileRatingText);
         rating = findViewById(R.id.ratingBar);
+
 
         Intent i = getIntent();
         user = (User) i.getSerializableExtra("JOKUKEY");
@@ -56,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
         user = dbHandler.getProfilepick(user);*/
 
         Picasso.with(ProfileActivity.this).load(user.getImgUri()).into(profileImageView);
+        //AppUser.getImg(getApplicationContext(), profileImageView);
         profileNameTextView.setText(user.getFname() + " " + user.getLname());
         profileEmailTextView.setText(user.getEmail());
         profilePhoNumTextView.setText(user.getPhone());
@@ -66,11 +75,37 @@ public class ProfileActivity extends AppCompatActivity {
                 // Currently viewing someone elses profile - hiding edit profile button
                 findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
             }
+            else{
+                Log.d("TAG", "onCreate: " + AppUser.getUid());
+                getRating(AppUser.getUid());
+            }
         }
         catch (NullPointerException e){
             e.printStackTrace();
             findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+            getRating(user.getUid());
         }
+    }
+
+    private void getRating(String uid){
+        FirebaseFirestore myFireStoreRef = FirebaseFirestore.getInstance();
+        DocumentReference myDocRef = myFireStoreRef.collection("users").document(uid);
+        myDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot doc = task.getResult();
+                if(doc.exists()){
+                    //TODO: if myRating is integer, crashes
+                    double myRating = (double) doc.get("rating");
+                    long myRatingAmount = (long) doc.get("ratingAmount");
+                    String myNewRatingAmount = String.valueOf(myRatingAmount);
+                    String myNewRating = String.valueOf(myRating);
+                    float newestRating = Float.parseFloat(myNewRating);
+                    rating.setRating(newestRating);
+                    profileRatingTextView.setText("(" + myNewRatingAmount + ")");
+                }
+            }
+        });
     }
 
     public void editProfile(View v) {

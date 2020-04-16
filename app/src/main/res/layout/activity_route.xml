@@ -18,168 +18,229 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <TextView
+
+
+    <LinearLayout
+        android:id="@+id/outherLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Valitse lähtöpaikka:"
-        android:textSize="20dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/lahtoText"/>
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lahtoEdit"
-        android:queryHint="Esimerkiksi: Kaarnatie 5, Oulu"
-        app:layout_constraintTop_toBottomOf="@id/lahtoText"
-        android:inputType="textCapWords"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:iconifiedByDefault="false"
-        android:elevation="5dp"
-        android:background="@drawable/bg_round"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Välietappi"
-        android:textSize="20dp"
-        app:layout_constraintTop_toBottomOf="@id/lahtoEdit"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/valietappiTxt"/>
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etappiEdit"
-        android:queryHint="Esimerkiksi: Lahti"
-        app:layout_constraintTop_toBottomOf="@id/valietappiTxt"
-        app:layout_constraintRight_toLeftOf="@id/etappiBtn"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:inputType="textCapWords"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="60dp"
-        android:iconifiedByDefault="false"
-        android:elevation="5dp"
-        android:background="@drawable/bg_round"
-        android:visibility="gone"
-        />
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etappiEdit2"
-        android:queryHint="Esimerkiksi: Tampere"
-        app:layout_constraintTop_toBottomOf="@id/etappiEdit"
-        app:layout_constraintRight_toLeftOf="@id/etappiBtn"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:inputType="textCapWords"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="60dp"
-        android:iconifiedByDefault="false"
-        android:elevation="5dp"
-        android:background="@drawable/bg_round"
-        android:visibility="gone"
-        />
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/lahtoEdit"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/etappiBtn"
-        android:background="@drawable/bs_round"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="10dp"
-        android:drawablePadding="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:src="@drawable/ic_add_black_18dp"
-        android:tint="@color/colorPrimaryDark"
-        />
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#B3FFFFFF"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="24dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="24dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_center_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="68dp" />
+
+                <TextView
+                    android:id="@+id/lahtoText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:textSize="20dp"
+                    android:text="Valitse lähtöpaikka:"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
+                <SearchView
+                    android:id="@+id/lahtoEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textCapWords"
+                    android:queryHint="Esimerkiksi: Kaarnatie 5, Oulu"
+                    android:background="@drawable/bg_round"
+                    android:iconifiedByDefault="false"
+                    android:elevation="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/lahtoText"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
+                <TextView
+                    android:id="@+id/valietappiTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textSize="20dp"
+                    android:text="Välietappi"
+                    app:layout_constraintTop_toBottomOf="@+id/lahtoEdit"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_center_right"/>
+
+                <ImageButton
+                    android:id="@+id/etappiBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@drawable/bs_round"
+                    android:src="@drawable/ic_add_black_18dp"
+                    android:tint="@color/colorPrimaryDark"
+                    app:layout_constraintTop_toTopOf="@+id/valietappiTxt"
+                    app:layout_constraintStart_toEndOf="@+id/valietappiTxt"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"/>
+
+                <!-- android:visibility="gone" -->
+
+                <SearchView
+                    android:id="@+id/etappiEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textCapWords"
+                    android:queryHint="Esimerkiksi: Lahti"
+                    android:background="@drawable/bg_round"
+                    android:iconifiedByDefault="false"
+                    android:elevation="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/etappiBtn"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <ImageButton
+                    android:id="@+id/etappiRemoveBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@drawable/bs_round"
+                    android:src="@drawable/ic_remove_black_18dp"
+                    android:tint="@color/colorPrimaryDark"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/etappiEdit"
+                    app:layout_constraintBottom_toBottomOf="@+id/etappiEdit"
+                    app:layout_constraintStart_toEndOf="@+id/etappiEdit"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"/>
+
+                <SearchView
+                    android:id="@+id/etappiEdit2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textCapWords"
+                    android:queryHint="Esimerkiksi: Tampere"
+                    android:background="@drawable/bg_round"
+                    android:iconifiedByDefault="false"
+                    android:elevation="5dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/etappiEdit"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <ImageButton
+                    android:id="@+id/etappiRemoveBtn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@drawable/bs_round"
+                    android:src="@drawable/ic_remove_black_18dp"
+                    android:tint="@color/colorPrimaryDark"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/etappiEdit2"
+                    app:layout_constraintBottom_toBottomOf="@+id/etappiEdit2"
+                    app:layout_constraintStart_toEndOf="@+id/etappiEdit2"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"/>
+
+                <TextView
+                    android:id="@+id/maaranpaaText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textSize="20dp"
+                    android:text="Valitse määränpää:"
+                    app:layout_constraintTop_toBottomOf="@+id/etappiRemoveBtn2"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
+
+                <SearchView
+                    android:id="@+id/maaranpaaEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="textCapWords"
+                    android:queryHint="Esimerkiksi: Mannerheimintie 5, Helsinki"
+                    android:background="@drawable/bg_round"
+                    android:iconifiedByDefault="false"
+                    android:elevation="5dp"
+                    app:layout_constraintTop_toBottomOf="@+id/maaranpaaText"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
+                <Button
+                    android:id="@+id/haeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Hae reitti"
+                    android:background="@drawable/bg_round"
+                    app:layout_constraintTop_toBottomOf="@+id/maaranpaaEdit"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
+
+                <TextView
+                    android:id="@+id/infoTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/haeButton"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_left"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/drawer_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@drawable/hiden_drawer_bottom"
+            android:drawableTop="@drawable/ic_dehaze_black_24dp"
+            android:drawablePadding="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:onClick="expandableDrawer"/>
+
+
+    </LinearLayout>
+
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/etappiBtn"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/etappiRemoveBtn"
-        android:background="@drawable/bs_round"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="10dp"
-        android:drawablePadding="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:src="@drawable/ic_remove_black_18dp"
-        android:tint="@color/colorPrimaryDark"
-        android:visibility="gone"
-        />
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/etappiRemoveBtn"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/etappiRemoveBtn2"
-        android:background="@drawable/bs_round"
-        android:layout_marginTop="17dp"
-        android:layout_marginRight="10dp"
-        android:drawablePadding="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:src="@drawable/ic_remove_black_18dp"
-        android:tint="@color/colorPrimaryDark"
-        android:visibility="gone"
-    />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Valitse määränpää:"
-        android:textSize="20dp"
-        app:layout_constraintTop_toBottomOf="@id/etappiEdit2"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/maaranpaaText"/>
-
-
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="Esimerkiksi: Mannerheimintie 5, Helsinki"
-        android:id="@+id/maaranpaaEdit"
-        app:layout_constraintTop_toBottomOf="@id/maaranpaaText"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:inputType="textCapWords"
-        android:iconifiedByDefault="false"
-        android:elevation="5dp"
-        android:background="@drawable/bg_round"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hae reitti"
-        android:id="@+id/haeButton"
-        app:layout_constraintTop_toBottomOf="@id/maaranpaaEdit"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/bg_round"/>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/sijaintiButton"
-        app:layout_constraintTop_toBottomOf="@id/haeButton"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:drawablePadding="5dp"
@@ -190,27 +251,17 @@
         android:background="@drawable/bs_round"
         android:src="@android:drawable/ic_menu_mylocation"
         android:tint="@color/colorPrimaryDark"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/testiTxt"
-        app:layout_constraintTop_toBottomOf="@id/haeButton"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/outherLayout"
+        app:layout_constraintRight_toRightOf="parent"/>
+
     <Button
+        android:id="@+id/nextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
-        android:id="@+id/nextBtn"
+        android:background="@drawable/bg_round"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/bg_round"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/sijaintiButton"
-        android:id="@+id/testailua"
-        />
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
 

@@ -1,12 +1,13 @@
 package com.example.mobproj2020new;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class Route {
+public class Route implements Serializable {
     private String uid;
     private String duration;
     //private String startDate;
@@ -21,13 +22,18 @@ public class Route {
     private List<String> waypointAddresses;
     private List<String> participants;
 
+    private double distance;
+
+
 
     public Route() {}
 
     public Route(String uid, String duration, long leaveTime,
-                 String startAddress, String endAddress, int freeSlots, float price,
+                 String startAddress, String endAddress, int freeSlots, float price, double distance,
                  List<HashMap<String,String>> points, List<String> waypointAddresses,
+
                  List<String> participants, int pickUpDistance)
+
     {
         this.uid = uid;
         this.duration = duration;
@@ -42,6 +48,9 @@ public class Route {
         this.points = points;
         this.waypointAddresses = waypointAddresses;
         this.participants = participants;
+
+        this.distance = distance;
+
     }
 
     public String getUid() {
@@ -73,6 +82,8 @@ public class Route {
         return waypointAddresses;
     }
     public List<String> getParticipants() { return participants; }
+
+    public double getDistance() { return distance; }
 
     public void removeFreeSlot() { this.freeSlots--; }
 

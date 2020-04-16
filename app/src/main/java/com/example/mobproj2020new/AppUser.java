@@ -30,6 +30,8 @@ public class AppUser {
     private static String phone;
     private static String bio;
     private static List<String> bookedRides;
+    private static float rating;
+    private static int ratingAmount;
 
     public static boolean imgSelected;
 
@@ -70,9 +72,19 @@ public class AppUser {
                         bio = doc.getString("bio");
                         try {
                             bookedRides = (List) doc.get("bookedRides");
+
                         } catch (Exception e) {
                             bookedRides = new ArrayList<>();
+
                         }
+                        try {
+                            rating = (float)doc.get("rating");
+                            ratingAmount = (int)doc.get("ratingAmount");
+                        }catch(Exception e) {
+                            rating = 0;
+                            ratingAmount = 0;
+                        }
+
                     }
                 }
             }
@@ -117,7 +129,7 @@ public class AppUser {
 
     //Createing user from static Data
     public static User createStaticUser(){
-        User user = new User(fname, lname, phone, email, bio, imgUri, uid, bookedRides);
+        User user = new User(fname, lname, phone, email, bio, imgUri, uid, bookedRides, 0, 0);
         Log.d("######Appuser check####", "fname " + fname + "\nlname " + lname  + "\nphone " + phone
                 + "\nimgUri " + imgUri  + "\nemail " + email + "\nbio " + bio + "\nuid " + uid);
         return user;
