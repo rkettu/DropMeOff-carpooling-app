@@ -41,7 +41,6 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     SeekBar seekBar, seekBar2, seekBar3;
     TextView hintaTxt, exampleTxt, minRange, rangeValueTextView;
     TextView pass;
-    EditText pickUpDistanceEditText;
     private Button confirmBtn;
     String newMatka;
     String newAika;
@@ -49,6 +48,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     String newLoppuOs;
     Double doubleMatka;
     int intMatka;
+    int pickUpDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +166,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float s = ((intMatka / 100.00f) * progress);
-                range = (int) s;
+                pickUpDistance = (int) s;
+                range = pickUpDistance;
                 Log.d("####matka3####", range + ", " + intMatka + ", " + progress + ", " + (intMatka / 100.00f) * progress);
                 minRange.setText("PickUp range: " + range + "km");
             }
@@ -266,9 +267,6 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
 
                 mC.set(pickedYear, pickedMonth, pickedDate, pickedHour, pickedMinute);
                 long leaveTime = mC.getTimeInMillis();
-                //pickUpDistanceEditText = findViewById(R.id.pickUpDistanceEditText);
-                String pickUpDistance = pickUpDistanceEditText.getText().toString();
-                int pickUpDist = Integer.parseInt(pickUpDistance);
 
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
@@ -285,7 +283,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
 
-                        freeSlots, price, doubleMatka, points, waypointAddresses, participants, pickUpDist);
+                        freeSlots, price, doubleMatka, points, waypointAddresses, participants, pickUpDistance);
 
                 db.createRide(route, RideDetailsActivity.this);
             } else {
