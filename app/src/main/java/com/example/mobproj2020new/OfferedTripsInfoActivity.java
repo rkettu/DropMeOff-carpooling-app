@@ -26,6 +26,7 @@ public class OfferedTripsInfoActivity extends AppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offered_trips_info);
+
         findViewById(R.id.cancelTripButton).setOnClickListener(this);
 
         headline = findViewById(R.id.headingTV);
@@ -53,6 +54,7 @@ public class OfferedTripsInfoActivity extends AppCompatActivity implements View.
             participants.setText(participantsAmount + " / " + (participantsAmount + thisRoute.getFreeSlots()));
             pricePer.setText(df.format((double)thisRoute.getPrice() * (double)thisRoute.getDistance()) + " €");
             priceTotal.setText(df.format((double)thisRoute.getPrice() * (double)thisRoute.getDistance()*participantsAmount*0.8) + " €"); // 0.8 because we take 20%
+
         }
     }
 

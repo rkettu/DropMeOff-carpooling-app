@@ -68,10 +68,11 @@
             android:text="fName+lName_DEF"
             android:textColor="@color/white"
             android:gravity="center"
-            android:textSize="30dp"
+            android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+            app:layout_constraintTop_toBottomOf="@+id/profile_image"
+            android:fontFamily="@font/montserrat_medium"/>
         <!--android:drawableStart="@drawable/ic_perm_identity_black_24dp"
             android:drawablePadding="16dp"-->
 
@@ -94,7 +95,7 @@
 
         <View
             android:layout_width="0dp"
-            android:layout_height="5dp"
+            android:layout_height="2dp"
             android:background="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
@@ -109,10 +110,11 @@
             android:drawablePadding="16dp"
             android:text="Email_DEF"
             android:textColor="@color/white"
-            android:textSize="24dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+            android:fontFamily="@font/montserrat_medium"/>
 
         <View
             android:layout_width="0dp"
@@ -131,10 +133,11 @@
             android:drawablePadding="16dp"
             android:text="Cell_DEF"
             android:textColor="@color/white"
-            android:textSize="24dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/profileEmailText" />
+            app:layout_constraintTop_toBottomOf="@+id/profileEmailText"
+            android:fontFamily="@font/montserrat_medium"/>
 
         <View
             android:layout_width="0dp"
@@ -150,14 +153,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_edittext1"
-            android:textSize="24dp"
+            android:textSize="18sp"
             android:text="Bio Text JKHJLHÖKHLLKHLKHLKHLKHLKHLKHLKH LKHLKHLKHLKHLKHJLJGLJGLJGLJG LJGLJGLJGLJ GLJGLJGLJG LJGLJGL LKHLKHLK HLLKHLKH LHLKHLKHLKHLKH LJGKJGLJGLJGLJGLJGLJ GLJGLJGLJGLJG LJGLJGLJGLJGLJ GLJGLJGLJGL JGLJGLJGLJGLJGLJKHL"
             android:textColor="@color/black"
             android:gravity="top"
             android:padding="15dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_right"
             app:layout_constraintStart_toStartOf="@+id/guideline_left"
-            app:layout_constraintTop_toBottomOf="@+id/profilePhoNumText"/>
+            app:layout_constraintTop_toBottomOf="@+id/profilePhoNumText"
+            android:fontFamily="@font/open_sans_regular"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

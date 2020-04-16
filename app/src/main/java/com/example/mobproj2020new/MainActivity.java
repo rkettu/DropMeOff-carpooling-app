@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity{
         new DatabaseHandler().GetBookedRides(ridesAdapter, myBookedRidesInfoList);
 
         builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final Route r = myBookedRidesInfoList.get(which);

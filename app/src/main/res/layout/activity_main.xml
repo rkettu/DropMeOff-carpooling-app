@@ -29,7 +29,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@mipmap/my_icon_round" />
+        android:src="@mipmap/my_icon_round"
+        />
 
     <EditText
         android:id="@+id/usernameEdit"
@@ -47,7 +48,8 @@
         android:drawableStart="@drawable/ic_perm_identity_black_24dp"
         android:drawablePadding="16dp"
         android:maxLines="1"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/passwordEdit"
@@ -63,7 +65,8 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/white"
         android:drawableStart="@drawable/ic_lock_outline_black_24dp"
-        android:drawablePadding="16dp"/>
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -85,13 +88,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Log In"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/passwordEdit"
         android:background="@drawable/custom_button1"
-        android:onClick="login"/>
+        android:onClick="login"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <Button
         android:id="@+id/button"
@@ -99,13 +104,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Sign Up"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/loginButton"
         android:background="@drawable/custom_button1"
-        android:onClick="signUp"/>
+        android:onClick="signUp"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -116,7 +123,8 @@
         android:paddingRight="130dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        android:fontFamily="@font/montserrat_medium"/>
 
 
 

@@ -64,7 +64,8 @@ public class User implements Serializable {
     public String getUid() { return uid; }
     public List<String> getBookedRides() { return bookedRides; }
     public float getRating() { return rating; }
-    public int getRatingAmount() { return ratingAmount; }
+
+    public int getRatingNumber() { return ratingNumber; }
 
     public boolean getProfileCreated() { return profileCreated; }
 
@@ -84,7 +85,7 @@ public class User implements Serializable {
         bookedRides = new ArrayList<>();
     }
 
-    public void setRating(Float rating) { this.rating = rating; }
+    public void setRating(float rating) { this.rating = rating; }
 
     public void setRatingAmount(int ratingNumber) { this.ratingAmount = ratingNumber; }
 }
