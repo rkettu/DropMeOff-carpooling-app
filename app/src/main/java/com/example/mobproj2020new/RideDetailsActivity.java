@@ -48,7 +48,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     String newLoppuOs;
     Double doubleMatka;
     int intMatka;
-    int pickUpDistance;
+    int pickUpDistance = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,8 +165,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
         seekBar3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float s = ((intMatka / 100.00f) * progress);
-                pickUpDistance = (int) s;
+                float tempDist = ((intMatka / 100.00f) * progress);
+                pickUpDistance = (int) tempDist;
                 range = pickUpDistance;
                 Log.d("####matka3####", range + ", " + intMatka + ", " + progress + ", " + (intMatka / 100.00f) * progress);
                 minRange.setText("PickUp range: " + range + "km");
