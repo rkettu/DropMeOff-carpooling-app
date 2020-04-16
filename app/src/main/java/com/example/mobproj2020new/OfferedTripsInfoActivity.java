@@ -21,7 +21,7 @@ public class OfferedTripsInfoActivity extends AppCompatActivity implements View.
         findViewById(R.id.removeTrip).setOnClickListener(this);
         findViewById(R.id.editTrip).setOnClickListener(this);
 
-        headline = findViewById(R.id.tripHeadline);
+        headline = findViewById(R.id.tripDestination);
         distance = findViewById(R.id.distanceNum);
         price = findViewById(R.id.costSum);
         dateOfTrip = findViewById(R.id.infoDate);

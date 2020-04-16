@@ -32,7 +32,7 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_booked_trips_info);
         findViewById(R.id.removeTrip).setOnClickListener(this);
 
-        getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
+        //getARideAdapter = new GetARideAdapter(this, GetARideUtility.arrayList);
 
         startPointTextView = findViewById(R.id.tripStartPoint);
         destinationTextView = findViewById(R.id.tripDestination);
@@ -45,7 +45,7 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
         infoTextView = findViewById(R.id.infoBox);
 
                //------------Makes app crash---------------//
-        Bundle bundle = getIntent().getExtras();
+        /*Bundle bundle = getIntent().getExtras();
         bStartP = bundle.getString("start");
         bDest = bundle.getString("destination");
         bName = bundle.getString("name");
@@ -63,14 +63,14 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
         String timeString = c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR)+
                                 " - "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE);
 
+        dateOfTripTextView.setText(timeString);*/
         startPointTextView.setText(bStartP);
         destinationTextView.setText(bDest);
         nameTextView.setText(bName);
-        //dateOfTripTextView.setText(timeString);
         durationTextView.setText(bDuration);
         priceTextView.setText(bPrice + "per Kilometer");
 
-        /*          /---Hard coded info---//
+                //---Hard coded info---//
         startPointTextView.setText("Oulu" + "\r-");
         destinationTextView.setText("Helsinki");
         nameTextView.setText("Urho Kekkonen");
@@ -79,7 +79,7 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
         priceTextView.setText("18€");
         dateOfTripTextView.setText("15.7.2020 - klo 14:00");
         durationTextView.setText("8h");
-        infoTextView.setText("Only one luggage per passenger");*/
+        infoTextView.setText("Only one luggage per passenger");
 
     }
 
