@@ -123,6 +123,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void editProfile(View v) {
         gotoEdit();
     }
+    
     private void gotoEdit(){
         Intent intent = new Intent(this, EditProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
