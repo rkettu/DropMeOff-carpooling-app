@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/pastelGreenDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- <item name="fontFamily">@font/open_sans_semi_bold_italic</item> -->
     </style>
 
 </resources>

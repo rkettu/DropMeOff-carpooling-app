@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RideDetailsActivity"
+    android:background="@drawable/background_login">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_login"
@@ -12,6 +19,7 @@
         android:id="@+id/guideline_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5"
         />
@@ -36,11 +44,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textSize="20dp"
+
         android:textColor="@color/white"
         android:text="Date of travel"
         app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
+
 
     <EditText
         android:id="@+id/dateEdit"
@@ -63,11 +74,13 @@
         android:id="@+id/timeTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="10dp"
         android:textSize="20dp"
         android:textColor="@color/white"
         android:text="Estimated time of departure"
         app:layout_constraintTop_toBottomOf="@id/dateEdit"
+
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
 
@@ -92,11 +105,14 @@
         android:id="@+id/passengerTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="10dp"
         android:textSize="20dp"
         android:text="Max passengers"
+
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/timeEdit"
+
         app:layout_constraintStart_toStartOf="@id/guideline_left"
         app:layout_constraintEnd_toStartOf="@id/guideline_right"/>
 
@@ -147,13 +163,16 @@
         android:onClick="addButtons"/>
 
    <!-- <NumberPicker
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:solidColor="@android:color/transparent"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         app:layout_constraintRight_toLeftOf="@id/guideline_right"
+
         app:layout_constraintTop_toBottomOf="@id/passengerTxt"
         android:id="@+id/numberPicker"/>-->
+
 
     <TextView
         android:id="@+id/pickUpRangeTxt"
@@ -185,11 +204,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/white"
+
         android:textSize="20dp"
         android:text="Minimum Passanger trip: 0km"
         app:layout_constraintTop_toBottomOf="@id/pickUpRangeValue"
         app:layout_constraintLeft_toLeftOf="@id/guideline_left"
         app:layout_constraintRight_toRightOf="@id/guideline_right"/>
+
 
     <SeekBar
         android:id="@+id/rangeValue"
@@ -267,3 +288,4 @@
         android:background="@drawable/bs_round" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -2,9 +2,11 @@ package com.example.mobproj2020new;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -31,6 +34,7 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booked_trips_info);
+
         findViewById(R.id.bookedCancelBookingButton).setOnClickListener(this);
 
         mRoute = (Route)getIntent().getSerializableExtra("MYKEY1");
@@ -100,4 +104,21 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
             dialog.show();
         }
     }
+
+    /*
+    private void removeTripDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to remove booked trip?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DatabaseHandler db = new DatabaseHandler();
+                db.RemoveTrip(bRideId, FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+            }
+        });
+    }*/
+
 }

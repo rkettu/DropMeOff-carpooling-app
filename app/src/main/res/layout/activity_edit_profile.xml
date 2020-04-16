@@ -53,7 +53,8 @@
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintEnd_toStartOf="@+id/textViewlName"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        android:fontFamily="@font/montserrat_medium"  />
 
     <EditText
         android:id="@+id/firstNameedit"
@@ -68,7 +69,8 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/lastNameedit"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/textViewfName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewfName"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewlName"
@@ -80,7 +82,8 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/textViewfName"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/lastNameedit"
@@ -95,7 +98,8 @@
         android:textColorHint="@color/hintlog"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/firstNameedit"
-        app:layout_constraintTop_toBottomOf="@+id/textViewlName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewlName"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewEmail"
@@ -107,7 +111,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameedit" />
+        app:layout_constraintTop_toBottomOf="@+id/firstNameedit"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/emailedit"
@@ -125,7 +130,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
         android:drawableStart="@drawable/ic_mail_outline_black_24dp"
-        android:drawablePadding="16dp"/>
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewPhoNum"
@@ -137,7 +143,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/emailedit" />
+        app:layout_constraintTop_toBottomOf="@+id/emailedit"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/phoNumedit"
@@ -155,7 +162,8 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewPhoNum"
         android:drawableStart="@drawable/ic_call_black_24dp"
-        android:drawablePadding="16dp"/>
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <TextView
         android:id="@+id/textViewBio"
@@ -167,7 +175,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/phoNumedit" />
+        app:layout_constraintTop_toBottomOf="@+id/phoNumedit"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <EditText
         android:id="@+id/bioedit"
@@ -187,7 +196,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewBio"
-        android:background="@drawable/custom_edittext1"/>
+        android:background="@drawable/custom_edittext1"
+        android:typeface="@font/open_sans_semibold"/>
 
     <Button
         android:id="@+id/saveProfileDetailButton"
@@ -195,13 +205,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button1"
         android:text="Apply Changes"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/bioedit"
-        android:onClick="saveChanges"/>
+        android:onClick="saveChanges"
+        android:fontFamily="@font/montserrat_medium" />
 
     <TextView
         android:id="@+id/textViewPassword"
@@ -213,7 +225,8 @@
         android:paddingLeft="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/saveProfileDetailButton" />
+        app:layout_constraintTop_toBottomOf="@+id/saveProfileDetailButton"
+        android:fontFamily="@font/montserrat_medium" />
 
     <EditText
         android:id="@+id/oldPassedit"
@@ -264,13 +277,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button1"
         android:text="Change Password"
+        android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/pastelGreen"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/passtwoedit"/>
+        app:layout_constraintTop_toBottomOf="@+id/passtwoedit"
+        android:fontFamily="@font/montserrat_medium" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

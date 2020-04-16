@@ -9,12 +9,14 @@
 
     >
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="HEADING"
         android:textSize="24dp"
         android:textColor="@color/white"
+
         android:id="@+id/headingTV"
         />
     <LinearLayout
@@ -123,14 +125,17 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <Button
         android:id="@+id/cancelTripButton"
         android:layout_width="113dp"
         android:layout_height="60dp"
         android:background="@drawable/custom_button1"
+
         android:text="Cancel trip"
         android:textAllCaps="false"
         android:layout_gravity="right"
+
 
         android:textColor="@color/pastelGreen" />
 
