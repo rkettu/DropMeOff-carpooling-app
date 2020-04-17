@@ -65,7 +65,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         progImageView = findViewById(R.id.getRideImage);
         userNameTextView = findViewById(R.id.profTV1);
         startPointTextView = findViewById(R.id.profTV2);
-        //destinationTextView = findViewById(R.id.profTV3);
+        destinationTextView = findViewById(R.id.profTV3);
         startTimeTextView = findViewById(R.id.profTV4);
         durationTextView = findViewById(R.id.profTV5);
         priceTextView = findViewById(R.id.profTV6);
@@ -95,10 +95,9 @@ public class GetARideProfileActivity extends AppCompatActivity {
 
         Picasso.with(GetARideProfileActivity.this).load(bUserPic).into(progImageView);
         userNameTextView.setText(bUser);
-        String my_new_str = bDur.replace("/", ".");
-        startPointTextView.setText(bStartP + " - " +bDest);
-        //destinationTextView.setText("Destination: " + bDest);
-        durationTextView.setText("Duration: " + my_new_str);
+        startPointTextView.setText("Start point: " + bStartP);
+        destinationTextView.setText("Destination: " + bDest);
+        durationTextView.setText("Duration: " + bDur);
         priceTextView.setText("Price for trip: " + bPrice);
         freeSeatsTextView.setText("Available seats: " + bSeats);
 
@@ -116,7 +115,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         String format = "%1$02d";
         String hour = String.format(format, c.get(Calendar.HOUR_OF_DAY));
         String min = String.format(format, c.get(Calendar.MINUTE));
-        String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + " - " + hour + ":" + min;
+        String timeString = c.get(Calendar.DAY_OF_MONTH) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR) + " - " + hour + ":" + min;
         startTimeTextView.setText("Leaves at: " + timeString);
 
         try {

@@ -269,12 +269,12 @@ public class MainActivity extends AppCompatActivity{
         }
 
         if(myBookedRidesInfoList.size() == 0){
-            titleTV.setText("You haven't booked any trips");
+            //titleTV.setText("You haven't booked any trips");
         }
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
+        //AlertDialog dialog = builder.create();
+        //dialog.show();
+        //dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
     }
 
     //---------------Button OfferTrips---------------//
@@ -321,12 +321,12 @@ public class MainActivity extends AppCompatActivity{
         }
       
         if(myOfferedRidesInfoList.size() == 0){
-            titleTV.setText("You haven't offered any rides");
+            //titleTV.setText("You haven't offered any rides");
         }
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
+        //AlertDialog dialog = builder.create();
+        //dialog.show();
+        //dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
     }
 
     //-------------Button Get A Ride----------------//
