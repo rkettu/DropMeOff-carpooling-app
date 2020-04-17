@@ -62,7 +62,6 @@
         android:layout_height="80dp"
         android:text="Offered rides"
         android:background="@drawable/custom_button2"
-        android:layout_marginEnd="12dp"
         android:textColor="@color/white"
         android:layout_marginTop="24dp"
         android:layout_marginStart="12dp"

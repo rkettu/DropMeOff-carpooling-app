@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -66,6 +67,12 @@ public class BookedTripsInfoActivity extends AppCompatActivity implements View.O
             driverNameTV.setText(mUser.getFname());
             driverPhoneTV.setText(mUser.getPhone());
             Picasso.with(BookedTripsInfoActivity.this).load(mUser.getImgUri()).into(driverProfileImg);
+            driverProfileImg.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    new DatabaseHandler().GoToProfile(getApplicationContext(), mUser.getUid());
+                }
+            });
         }
 
     }

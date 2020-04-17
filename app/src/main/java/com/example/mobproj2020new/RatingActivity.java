@@ -61,6 +61,7 @@ public class RatingActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 UserData ud = allDrivers.get(position);
                 CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this,ud.user,ud.uid,allDrivers,position,aa1);
+                cdrc.getWindow().setBackgroundDrawableResource(R.drawable.background_rating);
                 cdrc.show();
             }
         });
@@ -69,6 +70,7 @@ public class RatingActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 UserData ud = allParticipants.get(position);
                 CustomDialogRatingClass cdrc = new CustomDialogRatingClass(RatingActivity.this,ud.user,ud.uid,allParticipants,position,aa2);
+                cdrc.getWindow().setBackgroundDrawableResource(R.drawable.background_rating);
                 cdrc.show();
             }
         });
@@ -91,18 +93,18 @@ public class RatingActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     for(DocumentSnapshot doc : task.getResult())
                     {
-                        if((Long)doc.get("leaveTime") < currentTime)
+                        //if((Long)doc.get("leaveTime") < currentTime)
+                        if(true)
                         {
                             final Route r = doc.toObject(Route.class);
                             FirebaseFirestore.getInstance().collection("users").document(r.getUid())
                                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if(task.isSuccessful())
-                                    {
+                                    if (task.isSuccessful()) {
                                         DocumentSnapshot doc = task.getResult();
                                         User u = doc.toObject(User.class);
-                                        UserData ud = new UserData(r,u,r.getUid());
+                                        UserData ud = new UserData(r, u, r.getUid());
                                         allDrivers.add(ud);
                                         aa1.notifyDataSetChanged();
                                     }
