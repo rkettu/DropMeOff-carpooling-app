@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity{
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
         if(FirebaseHelper.loggedIn) {
-          
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
             TextView titleTV = new TextView(this);
             titleTV.setText("Booked trips");
@@ -260,21 +259,17 @@ public class MainActivity extends AppCompatActivity{
                     });
                 }
             });
-
             AlertDialog dialog = builder.create();
             dialog.show();
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
-        } else {
+
+            if(myBookedRidesInfoList.size() == 0){
+                titleTV.setText("You haven't booked any trips");
+            }
+        }
+        else {
             FirebaseHelper.GoToLogin(getApplicationContext());
         }
-
-        if(myBookedRidesInfoList.size() == 0){
-            titleTV.setText("You haven't booked any trips");
-        }
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
     }
 
     //---------------Button OfferTrips---------------//
@@ -312,6 +307,10 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
 
+            if(myOfferedRidesInfoList.size() == 0){
+                titleTV.setText("You haven't offered any rides");
+            }
+
             AlertDialog dialog = builder.create();
             dialog.show();
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
@@ -319,14 +318,6 @@ public class MainActivity extends AppCompatActivity{
         else{
             Toast.makeText(getApplicationContext(), "You are not signed in", Toast.LENGTH_LONG).show();
         }
-      
-        if(myOfferedRidesInfoList.size() == 0){
-            titleTV.setText("You haven't offered any rides");
-        }
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
     }
 
     //-------------Button Get A Ride----------------//

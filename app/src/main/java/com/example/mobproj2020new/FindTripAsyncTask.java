@@ -25,7 +25,7 @@ import java.util.List;
 
 interface ReporterInterface{
     void getTripData(String uid, String startAddress, String endAddress, String duration, String rideId,
-                     String price, String leaveTime, long freeSlots, List<String> wayPoints, List<String> participants);
+                     String price, String leaveTime, long freeSlots, List<String> wayPoints, List<String> participants, String startCity, String endCity);
 }
 
 //--------This AsyncTask is for finding matching rides for user-defined trips--------//
@@ -34,7 +34,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
     private CollectionReference mRoutesColRef = FirebaseFirestore.getInstance().collection("rides");
     private ReporterInterface reporterInterface;
     private final static String TAG = "FindTripASyncTask";
-    private String uid, startAddress, endAddress, duration, price, leaveTime;
+    private String uid, startAddress, endAddress, duration, price, leaveTime, startCity, endCity;
     private long freeSlots;
     private String rideId;
     private List<String> wayPoints;
@@ -45,6 +45,11 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
     public FindTripAsyncTask(ReporterInterface callbackInterface, Context context){
         this.context = context;
         this.reporterInterface = callbackInterface;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
     }
 
     @Override
@@ -88,10 +93,12 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                                     freeSlots = (long) doc.get("freeSlots");
                                     wayPoints = (List) doc.get("waypointAddresses");
                                     participants = (List) doc.get("participants");
+                                    startCity = (String) doc.get("startCity");
+                                    endCity = (String) doc.get("endCity");
 
                                     //---------------callbackInterface--------------//
                                     reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price,
-                                            leaveTime, freeSlots, participants, wayPoints);
+                                            leaveTime, freeSlots, participants, wayPoints, startCity, endCity);
                                 }
                                 else{
                                     Log.d(TAG, "onComplete: Failed isRouteInRange");
