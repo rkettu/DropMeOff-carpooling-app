@@ -20,12 +20,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 interface ReporterInterface{
     void getTripData(String uid, String startAddress, String endAddress, String duration, String rideId,
                      String price, String leaveTime, long freeSlots, List<String> wayPoints, List<String> participants, String startCity, String endCity);
+    void dialogData(List<String> list);
 }
 
 //--------This AsyncTask is for finding matching rides for user-defined trips--------//
@@ -41,15 +43,12 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
     private List<HashMap<String, String>> points;
     private List<String> participants;
     private Context context;
+    private List<String> reporterList = new ArrayList<>();
+    private String reporterString;
 
     public FindTripAsyncTask(ReporterInterface callbackInterface, Context context){
         this.context = context;
         this.reporterInterface = callbackInterface;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
     }
 
     @Override
@@ -99,9 +98,14 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                                     //---------------callbackInterface--------------//
                                     reporterInterface.getTripData(uid, startAddress, endAddress, duration, rideId, price,
                                             leaveTime, freeSlots, participants, wayPoints, startCity, endCity);
+
+                                    reporterString = "completed";
+                                    reporterList.add(reporterString);
                                 }
                                 else{
                                     Log.d(TAG, "onComplete: Failed isRouteInRange");
+                                    reporterString = "failed";
+                                    reporterList.add(reporterString);
                                 }
                             }
                             catch (Exception e){
@@ -110,6 +114,7 @@ public class FindTripAsyncTask extends AsyncTask<Float, Integer, String> {
                             }
                         }
                     }
+                    reporterInterface.dialogData(reporterList);
                 }
             }
         });

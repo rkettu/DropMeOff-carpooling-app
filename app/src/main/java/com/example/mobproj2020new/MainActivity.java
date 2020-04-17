@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity{
             titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             titleTV.setTextColor(Color.WHITE);
             builder.setCustomTitle(titleTV);
+
             myBookedRidesInfoList.clear();
             final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myBookedRidesInfoList);
 
@@ -259,13 +260,10 @@ public class MainActivity extends AppCompatActivity{
                     });
                 }
             });
+
             AlertDialog dialog = builder.create();
             dialog.show();
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
-
-            if(myBookedRidesInfoList.size() == 0){
-                titleTV.setText("You haven't booked any trips");
-            }
         }
         else {
             FirebaseHelper.GoToLogin(getApplicationContext());
@@ -306,10 +304,6 @@ public class MainActivity extends AppCompatActivity{
                     startActivity(i);
                 }
             });
-
-            if(myOfferedRidesInfoList.size() == 0){
-                titleTV.setText("You haven't offered any rides");
-            }
 
             AlertDialog dialog = builder.create();
             dialog.show();
