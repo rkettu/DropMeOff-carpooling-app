@@ -97,13 +97,6 @@ public class GetRideActivity extends AppCompatActivity {
         pd.setMessage("Loading matching rides");
         pd.setCancelable(false);
         pd.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pd.dismiss();
-            }
-        },2000);
 
         textView.setVisibility(View.GONE);
         arrayList.removeAll(arrayList);
@@ -225,31 +218,24 @@ public class GetRideActivity extends AppCompatActivity {
                             adapter.setUserStartPoint(startPoint);
                             adapter.setUserEndPoint(endPoint);
                             arrayList.add(utility);
-                            tripListView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+
+                            if(adapter.getCount() == 0){
+                                textView.setVisibility(View.VISIBLE);
+                                textView.setText("There is no trips");
+                            }
                         }
                     });
                 }
             }, GetRideActivity.this);
             findTripASyncTask.execute(startLat, startLon, stopLat, stopLon, t1, t2);
-
-            if(adapter.getCount() == 0){
-                textView.setVisibility(View.VISIBLE);
-                textView.setText("There is no trips");
-            }
-
+            tripListView.setAdapter(adapter);
         }
         catch (Exception e){
             e.printStackTrace();
             textView.setVisibility(View.VISIBLE);
             Toast.makeText(GetRideActivity.this, "Failed to find trips", Toast.LENGTH_SHORT).show();
         }
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        },1500);
     }
 
     public void btnBackArrow(View v){
