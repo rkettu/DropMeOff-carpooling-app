@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -35,11 +37,13 @@ public class RideInfoListAdapter extends ArrayAdapter<Route> {
         TextView address = (TextView) convertView.findViewById(R.id.ListItemText1);
         TextView leaveTime1 = (TextView) convertView.findViewById(R.id.ListItemText2);
         TextView leaveTime2 = (TextView) convertView.findViewById(R.id.ListItemText3);
+        TextView address2 = convertView.findViewById(R.id.ListItemText4);
         String startAdd = r.getStartAddress();
         String outPutStartAdd = startAdd.substring(0, 1).toUpperCase() + startAdd.substring(1);
         String endAdd = r.getEndAddress();
         String outPutEndAdd = endAdd.substring(0, 1).toUpperCase() + endAdd.substring(1);
-        address.setText(outPutStartAdd + " - " + outPutEndAdd);
+        address.setText(outPutStartAdd);
+        address2.setText(outPutEndAdd);
         leaveTime1.setText(CalendarHelper.getDateTimeString(r.getLeaveTime()));
         leaveTime2.setText(CalendarHelper.getHHMMString(r.getLeaveTime()));
 

@@ -139,6 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
     public void backArrow(View v){
         onBackPressed();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
