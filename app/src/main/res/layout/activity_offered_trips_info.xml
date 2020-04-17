@@ -18,7 +18,7 @@
         android:textColor="@color/white"
 
         android:id="@+id/headingTV"
-        />
+        android:fontFamily="@font/montserrat_medium"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,14 +36,16 @@
                 android:text="Date of trip"
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_medium"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Duration"
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_medium"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -51,7 +53,8 @@
                 android:text="Participants"
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_medium"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,7 +62,8 @@
                 android:text="Price per"
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/montserrat_medium"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -68,7 +72,8 @@
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
                 android:textColor="@color/white"
-                android:tooltipText="80% of total trip cost"/>
+                android:tooltipText="80% of total trip cost"
+                android:fontFamily="@font/montserrat_medium"/>
 
         </LinearLayout>
         <LinearLayout
@@ -84,7 +89,8 @@
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
                 android:id="@+id/leaveTimeTV"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_semibold"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,17 +99,20 @@
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
                 android:id="@+id/durationTV"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_semibold"/>
 
             <TextView
+                android:id="@+id/participantsAmountTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DATE o trip"
-                android:textSize="16dp"
                 android:paddingVertical="8dp"
-                android:id="@+id/participantsAmountTV"
+                android:text="DATE o trip"
+                android:textColor="@color/white"
 
-                android:textColor="@color/white"/>
+                android:textSize="16dp"
+                android:fontFamily="@font/open_sans_semibold"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +120,8 @@
                 android:textSize="16dp"
                 android:paddingVertical="8dp"
                 android:id="@+id/pricePerTV"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_semibold"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,7 +129,8 @@
                 android:textSize="16dp"
                 android:id="@+id/priceTotalTV"
                 android:paddingVertical="8dp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_semibold"/>
 
 
         </LinearLayout>
@@ -136,7 +147,8 @@
         android:textAllCaps="false"
         android:layout_gravity="right"
 
-
-        android:textColor="@color/pastelGreen" />
+        android:textStyle="bold"
+        android:textColor="@color/pastelGreen"
+        android:fontFamily="@font/montserrat_medium" />
 
 </LinearLayout>
