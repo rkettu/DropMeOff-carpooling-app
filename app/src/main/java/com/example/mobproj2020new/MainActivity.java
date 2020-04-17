@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity{
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
         }
         else{
-            Toast.makeText(getApplicationContext(), "You are not signed in", Toast.LENGTH_LONG).show();
+            FirebaseHelper.GoToLogin(getApplicationContext());
         }
     }
 
