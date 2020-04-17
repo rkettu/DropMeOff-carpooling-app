@@ -74,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (!user.getUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 // Currently viewing someone elses profile - hiding edit profile button
                 findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
+                profilePhoNumTextView.setText("Private");
             }
             else{
                 Log.d("TAG", "onCreate: " + AppUser.getUid());
@@ -83,8 +84,8 @@ public class ProfileActivity extends AppCompatActivity {
         catch (NullPointerException e){
             e.printStackTrace();
             findViewById(R.id.editProfileBtn).setVisibility(View.GONE);
-            getRating(user.getUid());
         }
+        getRating(user.getUid());
     }
 
     private void getRating(String uid){
@@ -118,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
                         profileRatingTextView.setText("(" + myNewRatingAmount + ")");
                     }
                     catch (Exception e){
-                        profileRatingTextView.setText("");
+                        e.printStackTrace();
                     }
                 }
             }
