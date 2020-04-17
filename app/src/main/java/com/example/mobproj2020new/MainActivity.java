@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity{
 
         Log.d("TAG", "onCreate: ");
         btnSettings = findViewById(R.id.btnSettings);
+        btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground); 
 
         FirebaseAuth.AuthStateListener als = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -102,7 +103,6 @@ public class MainActivity extends AppCompatActivity{
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.getResult() != null) {
                         image = String.valueOf(task.getResult());
-                        Log.d("TAG", "onComplete: " + image);
                         Picasso.with(context).load(image).into(btnSettings);
                     }
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity{
             });
         }
         else{
-                Log.d("TAG", "setImageSettings: settingnappia laitetaan");btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
+                btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
         }
     }
 

@@ -112,9 +112,14 @@ public class ProfileActivity extends AppCompatActivity {
                         newestRating2 = Long.parseLong(myNewRating2);
                         rating.setRating(newestRating2);
                     }
-                    myRatingAmount = (long) doc.get("ratingAmount");
-                    String myNewRatingAmount = String.valueOf(myRatingAmount);
-                    profileRatingTextView.setText("(" + myNewRatingAmount + ")");
+                    try {
+                        myRatingAmount = (long) doc.get("ratingAmount");
+                        String myNewRatingAmount = String.valueOf(myRatingAmount);
+                        profileRatingTextView.setText("(" + myNewRatingAmount + ")");
+                    }
+                    catch (Exception e){
+                        profileRatingTextView.setText("");
+                    }
                 }
             }
         });
