@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
@@ -14,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,11 +29,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.Distribution;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -199,9 +203,14 @@ public class MainActivity extends AppCompatActivity{
         TextView titleTV = new TextView(this);
         titleTV.setText("Booked trips");
         titleTV.setTextSize(24);
-        titleTV.setGravity(Gravity.START);
+        Typeface face = ResourcesCompat.getFont(this, R.font.montserrat_medium);
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        params.setMarginStart(24);
+        titleTV.setLayoutParams(params);
+        titleTV.setTypeface(face);
+        titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         titleTV.setTextColor(Color.WHITE);
-        builder.setTitle("Booked trips");
+        builder.setCustomTitle(titleTV);
 
         myBookedRidesInfoList.clear();
         final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myBookedRidesInfoList);
@@ -239,6 +248,10 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        if(myBookedRidesInfoList.size() == 0){
+            titleTV.setText("You haven't booked any trips");
+        }
+
         AlertDialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
@@ -249,10 +262,15 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         TextView titleTV = new TextView(this);
         titleTV.setText("Offered trips");
-        titleTV.setTextSize(26);
-        titleTV.setGravity(Gravity.CENTER);
+        titleTV.setTextSize(24);
+        Typeface face = ResourcesCompat.getFont(this, R.font.montserrat_medium);
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        params.setMarginStart(24);
+        titleTV.setLayoutParams(params);
+        titleTV.setTypeface(face);
+        titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         titleTV.setTextColor(Color.WHITE);
-        builder.setTitle("Offered trips");
+        builder.setCustomTitle(titleTV);
 
         myOfferedRidesInfoList.clear();
         final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myOfferedRidesInfoList);
@@ -271,6 +289,10 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(i);
             }
         });
+
+        if(myOfferedRidesInfoList.size() == 0){
+            titleTV.setText("You haven't offered any rides");
+        }
 
         AlertDialog dialog = builder.create();
         dialog.show();
