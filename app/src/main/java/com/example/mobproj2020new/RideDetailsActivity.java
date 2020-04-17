@@ -33,7 +33,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     private String strDate;
     private String strTime;
     private int passengers = 4;
-    private float hinta;
+    private float hinta = 0.03f;
     private int range;
 
     EditText txtDate, txtTime, np;
@@ -44,10 +44,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
     TextView hintaTxt, exampleTxt, minRange, rangeValueTextView;
     TextView pass;
     private Button confirmBtn;
-    String newMatka;
-    String newAika;
-    String newLahtoOs;
-    String newLoppuOs;
+    String newMatka, newAika, newLahtoOs, newLoppuOs, newLahtoCity, newLoppuCity;
     Double doubleMatka;
     int intMatka;
     int pickUpDistance = 5;
@@ -68,12 +65,16 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 newAika = extras.getString("AIKA");
                 newLahtoOs = extras.getString("ALKUOSOITE");
                 newLoppuOs = extras.getString("LOPPUOSOITE");
+                newLahtoCity = extras.getString("ALKUCITY");
+                newLoppuCity = extras.getString("LOPPUCITY");
             }
         } else {
             newMatka = (String) savedInstanceState.getSerializable("MATKA");
             newAika = (String) savedInstanceState.getSerializable("AIKA");
             newLahtoOs = (String) savedInstanceState.getSerializable("ALKUOSOITE");
             newLoppuOs = (String) savedInstanceState.getSerializable("LOPPUOSOITE");
+            newLahtoCity = (String) savedInstanceState.getSerializable("ALKUCITY");
+            newLoppuCity = (String) savedInstanceState.getSerializable("LOPPYCITY");
         }
 
         if (newMatka != null && !newMatka.isEmpty()) {
@@ -317,6 +318,8 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 //String startTime = strTime;
                 String startAddress = newLahtoOs;
                 String endAddress = newLoppuOs;
+                String startCity = newLahtoCity;
+                String endCity = newLoppuCity;
                 //int freeSlots = passengers;
                 int freeSlots = Integer.parseInt(np.getText().toString());
                 float price = hinta;
@@ -325,7 +328,7 @@ public class RideDetailsActivity extends AppCompatActivity implements View.OnCli
                 List<String> participants = new ArrayList<>();
                 Route route = new Route(uid, duration, leaveTime, startAddress, endAddress,
 
-                        freeSlots, price, doubleMatka, points, waypointAddresses, participants, pickUpDistance);
+                        freeSlots, price, doubleMatka, points, waypointAddresses, participants, pickUpDistance, startCity, endCity);
 
                 db.createRide(route, RideDetailsActivity.this);
             } else {

@@ -14,6 +14,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -54,7 +55,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
     private FusedLocationProviderClient fusedLocationClient;
     private String latitude;
     private String longitude;
-    private String strLahto, strWaypoint1, strWaypoint2, strLoppu;
+    private String strLahto, strWaypoint1, strWaypoint2, strLoppu, strLahtoCity, strLoppuCity;
     private String matka;
     private SearchView lahtoEditori, etappiEditori, etappiEditori2, loppuEditori;
     private Button nextBtn;
@@ -197,7 +198,7 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
                                     try{
                                         List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                                         String address = addresses.get(0).getAddressLine(0);
-                                        String kaupunki = addresses.get(0).getLocality();
+                                        //String kaupunki = addresses.get(0).getLocality();
                                         lahtoEditori.setQuery(address, false);
                                     }
                                     catch (IOException e){
@@ -218,6 +219,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             details.putExtra("AIKA", aika);
             details.putExtra("ALKUOSOITE", strLahto);
             details.putExtra("LOPPUOSOITE", strLoppu);
+            details.putExtra("ALKUCITY", strLahtoCity);
+            details.putExtra("LOPPUCITY", strLoppuCity);
 
             startActivityForResult(details, INTENT_ID);
         }
@@ -267,7 +270,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             Address add = listStart.get(0);
             startLat = add.getLatitude();
             startLon = add.getLongitude();
-
+            strLahtoCity = add.getLocality();
+            Log.d("TESTIII", "startcity " + strLahtoCity);
         }
         catch (Exception e)
         {
@@ -281,6 +285,8 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             Address add2 = listStop.get(0);
             stopLat = add2.getLatitude();
             stopLon = add2.getLongitude();
+            strLoppuCity = add2.getLocality();
+            Log.d("TESTIII", "endtcity " + strLoppuCity);
         }catch (Exception e)
         {
             Toast.makeText(getApplicationContext(),"Destination wrong", Toast.LENGTH_SHORT).show();
