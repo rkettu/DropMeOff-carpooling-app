@@ -38,6 +38,7 @@ public class GetRideActivity extends AppCompatActivity {
     private Context context = this;
     String stringDate, stringEstTime;
     ArrayList<GetARideUtility> arrayList = new ArrayList<>();
+    ArrayList<String> dialogList = new ArrayList<>();
     EditText startPointEditText, endPointEditText, dateEditText, estTimeEditText, dateEditText2, estTimeEditText2;
     ListView tripListView;
     GetARideAdapter getARideAdapter;
@@ -95,7 +96,7 @@ public class GetRideActivity extends AppCompatActivity {
         hideKeyboard(this);
         pd = new ProgressDialog(this);
         pd.setMessage("Loading matching rides");
-        pd.setCancelable(true);
+        pd.setCancelable(false);
         pd.show();
 
         textView.setVisibility(View.GONE);
@@ -201,6 +202,29 @@ public class GetRideActivity extends AppCompatActivity {
             final GetARideAdapter adapter = new GetARideAdapter(context, arrayList);
 
             final FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
+
+                @Override
+                public void dialogData(final List<String> list) {
+
+                    Log.d(TAG, "dialogData:" + list);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!list.contains("completed")) {
+                                pd.dismiss();
+                                textView.setVisibility(View.VISIBLE);
+                                textView.setText("Cannot find trips");
+                                list.clear();
+                            } else {
+                                textView.setVisibility(View.GONE);
+                                list.clear();
+                            }
+                        }
+                    });
+                }
+
+
                 @Override
                 public void getTripData(final String uid, final String startAddress, final String endAddress, final String duration, final String rideId, String price, String leaveTime,
                                         final long freeSlots, final List<String> wayPoints, final List<String> participants, final String startCity, final String endCity) {
@@ -225,10 +249,12 @@ public class GetRideActivity extends AppCompatActivity {
             }, GetRideActivity.this);
             findTripASyncTask.execute(startLat, startLon, stopLat, stopLon, t1, t2);
             tripListView.setAdapter(adapter);
+
         }
         catch (Exception e){
             e.printStackTrace();
             textView.setVisibility(View.VISIBLE);
+            pd.dismiss();
             Toast.makeText(GetRideActivity.this, "Failed to find trips", Toast.LENGTH_SHORT).show();
         }
     }
