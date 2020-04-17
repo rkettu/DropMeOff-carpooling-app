@@ -20,11 +20,13 @@ public class GetARideUtility implements Serializable {
     private List<String> participants;
     private List <HashMap<String, String>> points;
     private String rideId;
+    private String startCity;
+    private String endCity;
 
     public GetARideUtility(){}
 
     public GetARideUtility(String uid, String startAddress, String endAddress, String duration, String rideId, float price, long leaveTime,
-                           long freeSlots, List<String> participants ,List<String> waypointAddresses) {
+                           long freeSlots, List<String> participants ,List<String> waypointAddresses, String startCity, String endCity) {
         this.uid = uid;
         this.startAddress = startAddress;
         this.endAddress = endAddress;
@@ -35,6 +37,16 @@ public class GetARideUtility implements Serializable {
         this.freeSlots = freeSlots;
         this.waypointAddresses = waypointAddresses;
         this.participants = participants;
+        this.startCity = startCity;
+        this.endCity = endCity;
+    }
+
+    public String getStartCity() {
+        return startCity;
+    }
+
+    public String getEndCity() {
+        return endCity;
     }
 
     public String getStartAddress() {

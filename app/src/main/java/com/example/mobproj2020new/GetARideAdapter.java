@@ -180,6 +180,7 @@ public class GetARideAdapter extends BaseAdapter {
                     }
                 }
             });
+
             getUserName.execute(tripList.get(position).getUid());
 
             //-------hidden param for ride providers picUri--------//
@@ -191,10 +192,9 @@ public class GetARideAdapter extends BaseAdapter {
             });
             getUserPicture.execute(tripList.get(position).getUid());
 
-
             //-------------Set startAddress and destination----------//
-            holder.startPoint.setText(locate(tripList.get(position).getStartAddress()));
-            holder.endPoint.setText(locate(tripList.get(position).getEndAddress()));
+            holder.startPoint.setText(tripList.get(position).getStartCity());
+            holder.endPoint.setText(tripList.get(position).getEndCity());
 
             //----------------Set time----------//
             long millis = tripList.get(position).getLeaveTime();
