@@ -42,6 +42,7 @@ import java.util.List;
 public class GetARideAdapter extends BaseAdapter {
 
     private ArrayList<GetARideUtility> tripList = new ArrayList<>();
+    private ArrayList<String> myList = new ArrayList<>();
     private String userStartPoint;
     private String userEndPoint;
 
@@ -164,7 +165,6 @@ public class GetARideAdapter extends BaseAdapter {
                 public void dataParsed(String output) {
                     float finalPrice = tripList.get(position).getPrice() * Float.parseFloat(output);
                     holder.price.setText(String.format("%.2f", finalPrice ) + "€");
-
                 }
             });
             getRoute.execute(getUserStartPoint(), getUserEndPoint());
@@ -174,7 +174,10 @@ public class GetARideAdapter extends BaseAdapter {
                 @Override
                 public void getName(String result) {
                     holder.tripUser.setText(result);
-
+                    myList.add(result);
+                    if(myList.size() == tripList.size()){
+                        GetRideActivity.shutPd();
+                    }
                 }
             });
             getUserName.execute(tripList.get(position).getUid());

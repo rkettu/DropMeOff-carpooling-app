@@ -25,6 +25,7 @@
             android:textSize="24dp"
             android:textColor="@color/white"
             android:id="@+id/bookedHeading"
+            android:fontFamily="@font/montserrat_medium"
             />
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,14 +44,16 @@
                     android:text="Date of trip"
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_medium"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Duration"
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_medium"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -58,7 +61,8 @@
                     android:text="Distance"
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_medium"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -66,7 +70,8 @@
                     android:text="Price"
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/montserrat_medium"/>
 
             </LinearLayout>
             <LinearLayout
@@ -82,7 +87,8 @@
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
                     android:id="@+id/bookedLeaveTime"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/open_sans_semibold"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,7 +97,8 @@
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
                     android:id="@+id/bookedDuration"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/open_sans_semibold"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -101,7 +108,8 @@
                     android:paddingVertical="8dp"
                     android:id="@+id/bookedDistance"
 
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/open_sans_semibold"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -109,7 +117,8 @@
                     android:textSize="16dp"
                     android:paddingVertical="8dp"
                     android:id="@+id/bookedPrice"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/open_sans_semibold"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -122,8 +131,9 @@
             android:text="Cancel booking"
             android:textAllCaps="false"
             android:layout_gravity="right"
-
-            android:textColor="@color/pastelGreen" />
+            android:textColor="@color/pastelGreen"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_medium"/>
 
 
     </LinearLayout>
@@ -136,6 +146,7 @@
         android:textColor="@color/white"
         android:id="@+id/bookedDriverHeading"
         android:paddingBottom="8dp"
+        android:fontFamily="@font/montserrat_medium"
         />
 
     <LinearLayout
@@ -159,7 +170,7 @@
                 android:paddingVertical="8dp"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                />
+                android:fontFamily="@font/open_sans_semibold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,7 +179,7 @@
                 android:paddingVertical="8dp"
                 android:textColor="@color/white"
                 android:textSize="16dp"
-                />
+                android:fontFamily="@font/open_sans_semibold"/>
 
         </LinearLayout>
 
