@@ -59,6 +59,8 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        AppUser.imgSelected = false;
+
         AppUser.init();
         Log.d("######EditProfile ImgUri####", "Uri: " + AppUser.getUri());
 
@@ -111,7 +113,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 + "\nbio " + AppUser.getBio() + "\nuid " + AppUser.getUid());
                     }
                 }
-                if (entryCheck || AppUser.imgSelected){
+                if (entryCheck && AppUser.imgSelected){
 
                     // TODO: Maybe add checks that need to be met for profile creation success
                     FirebaseHelper.loggedIn = true;
@@ -119,6 +121,9 @@ public class EditProfileActivity extends AppCompatActivity {
                     db.setProfileCreated(true);
                     db.updateUserInfo(getApplicationContext());
                     //startActivity(new Intent(EditProfileActivity.this, MainActivity.class));
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Add profile picture and bio", Toast.LENGTH_LONG);
                 }
 
             }
@@ -183,6 +188,7 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
             uData = data.getData();
+            Log.d("DATAAAAAAAAAAAAAAA", uData.toString());
             profileImage.setImageURI(data.getData());
             db.putImageToStorage(uData);
             AppUser.imgSelected = true;
