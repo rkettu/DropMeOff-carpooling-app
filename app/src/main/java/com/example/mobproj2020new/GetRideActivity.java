@@ -95,7 +95,7 @@ public class GetRideActivity extends AppCompatActivity {
         hideKeyboard(this);
         pd = new ProgressDialog(this);
         pd.setMessage("Loading matching rides");
-        pd.setCancelable(false);
+        pd.setCancelable(true);
         pd.show();
 
         textView.setVisibility(View.GONE);
@@ -203,7 +203,7 @@ public class GetRideActivity extends AppCompatActivity {
             final FindTripAsyncTask findTripASyncTask = new FindTripAsyncTask(new ReporterInterface() {
                 @Override
                 public void getTripData(final String uid, final String startAddress, final String endAddress, final String duration, final String rideId, String price, String leaveTime,
-                                        final long freeSlots, final List<String> wayPoints, final List<String> participants) {
+                                        final long freeSlots, final List<String> wayPoints, final List<String> participants, final String startCity, final String endCity) {
 
                     textView.setVisibility(View.GONE);
                     final float mPrice = Float.parseFloat(price);
@@ -212,18 +212,13 @@ public class GetRideActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            GetARideUtility utility = new GetARideUtility(uid, startAddress, endAddress, duration, rideId, mPrice, mLeaveTime,
-                                    freeSlots, wayPoints, participants);
+                            GetARideUtility utility = new GetARideUtility(uid,startAddress, endAddress, duration, rideId, mPrice, mLeaveTime, freeSlots,
+                                    wayPoints, participants, startCity, endCity);
 
                             adapter.setUserStartPoint(startPoint);
                             adapter.setUserEndPoint(endPoint);
                             arrayList.add(utility);
                             adapter.notifyDataSetChanged();
-
-                            if(adapter.getCount() == 0){
-                                textView.setVisibility(View.VISIBLE);
-                                textView.setText("There is no trips");
-                            }
                         }
                     });
                 }
