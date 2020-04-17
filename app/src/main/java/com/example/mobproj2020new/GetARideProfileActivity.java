@@ -65,7 +65,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         progImageView = findViewById(R.id.getRideImage);
         userNameTextView = findViewById(R.id.profTV1);
         startPointTextView = findViewById(R.id.profTV2);
-        destinationTextView = findViewById(R.id.profTV3);
+        //destinationTextView = findViewById(R.id.profTV3);
         startTimeTextView = findViewById(R.id.profTV4);
         durationTextView = findViewById(R.id.profTV5);
         priceTextView = findViewById(R.id.profTV6);
@@ -94,10 +94,11 @@ public class GetARideProfileActivity extends AppCompatActivity {
 
 
         Picasso.with(GetARideProfileActivity.this).load(bUserPic).into(progImageView);
-        userNameTextView.setText("Ride provider: " + bUser);
-        startPointTextView.setText("Start point: " + bStartP);
-        destinationTextView.setText("Destination: " + bDest);
-        durationTextView.setText("Duration: " + bDur);
+        userNameTextView.setText(bUser);
+        String my_new_str = bDur.replace("/", ".");
+        startPointTextView.setText(bStartP + " - " +bDest);
+        //destinationTextView.setText("Destination: " + bDest);
+        durationTextView.setText("Duration: " + my_new_str);
         priceTextView.setText("Price for trip: " + bPrice);
         freeSeatsTextView.setText("Available seats: " + bSeats);
 

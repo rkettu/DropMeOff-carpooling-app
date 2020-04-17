@@ -7,6 +7,27 @@
     android:background="@drawable/background_login"
     tools:context=".GetARideProfileActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/getRideImage"
         android:layout_width="150dp"
@@ -20,31 +41,43 @@
         app:layout_constraintTop_toTopOf="parent"
         android:onClick="goToProfile"/>
 
-
     <TextView
         android:id="@+id/profTV1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="User First name"
-        android:textSize="16dp"
+        android:textSize="30dp"
+        android:gravity="center"
         android:textColor="@color/white"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintStart_toEndOf="@id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
         app:layout_constraintTop_toBottomOf="@+id/getRideImage"
         android:fontFamily="@font/montserrat_medium"/>
+
+    <View
+        android:id="@+id/viewBar"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/profTV1"/>
 
     <TextView
         android:id="@+id/profTV2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="Start point"
         android:textSize="16dp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV1"
+        app:layout_constraintTop_toBottomOf="@id/viewBar"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
 
-    <TextView
+   <!-- <TextView
         android:id="@+id/profTV3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,7 +86,7 @@
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/profTV2"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
+        android:fontFamily="@font/montserrat_medium"/>-->
 
     <TextView
         android:id="@+id/profTV4"
@@ -62,7 +95,7 @@
         android:text="start time"
         android:textSize="16dp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV3"
+        app:layout_constraintTop_toBottomOf="@id/profTV2"
         app:layout_constraintLeft_toRightOf="@id/guideline_left"
         android:fontFamily="@font/montserrat_medium"/>
 
@@ -130,13 +163,14 @@
         android:id="@+id/luggageET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:background="@drawable/settings_dialog_background"
         android:gravity="top"
         android:textSize="16dp"
         android:hint="Write your items..."
         android:textColorHint="@color/hintlog"
         android:inputType="textMultiLine"
-        android:lines="5"
+        android:lines="3"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:scrollbars="vertical"
@@ -164,25 +198,6 @@
         app:layout_constraintRight_toRightOf="@id/guideline_right" />
 
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="24dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="24dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
