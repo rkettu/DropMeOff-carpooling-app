@@ -94,7 +94,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
 
 
         Picasso.with(GetARideProfileActivity.this).load(bUserPic).into(progImageView);
-        userNameTextView.setText("Ride provider: " + bUser);
+        userNameTextView.setText(bUser);
         startPointTextView.setText("Start point: " + bStartP);
         destinationTextView.setText("Destination: " + bDest);
         durationTextView.setText("Duration: " + bDur);
@@ -115,7 +115,7 @@ public class GetARideProfileActivity extends AppCompatActivity {
         String format = "%1$02d";
         String hour = String.format(format, c.get(Calendar.HOUR_OF_DAY));
         String min = String.format(format, c.get(Calendar.MINUTE));
-        String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + " - " + hour + ":" + min;
+        String timeString = c.get(Calendar.DAY_OF_MONTH) + "." + (c.get(Calendar.MONTH) + 1) + "." + c.get(Calendar.YEAR) + " - " + hour + ":" + min;
         startTimeTextView.setText("Leaves at: " + timeString);
 
         try {

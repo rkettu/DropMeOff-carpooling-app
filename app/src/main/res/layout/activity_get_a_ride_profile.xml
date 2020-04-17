@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,162 +7,9 @@
     android:background="@drawable/background_login"
     tools:context=".GetARideProfileActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/getRideImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_person_black_100dp"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="goToProfile"/>
-
-
-    <TextView
-        android:id="@+id/profTV1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="User First name"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/getRideImage"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Start point"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV1"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="destination"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV2"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="start time"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV3"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="duration"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV4"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV6"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="price"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV5"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV7"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="free seats"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/profTV6"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        android:fontFamily="@font/montserrat_medium"/>
-
-    <TextView
-        android:id="@+id/profTV8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Way points:"
-        android:textSize="16dp"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/profTV7"
-        android:fontFamily="@font/montserrat_medium"
-        android:layout_marginTop="10dp"
-        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
-        />
-
-    <CheckBox
-        android:id="@+id/luggageCB"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Luggage"
-        android:textSize="16dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/profTV8"
-        android:onClick="cbOnClick"
-        android:fontFamily="@font/montserrat_medium"
-        />
-
-    <EditText
-        android:id="@+id/luggageET"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/settings_dialog_background"
-        android:gravity="top"
-        android:textSize="16dp"
-        android:hint="Write your items..."
-        android:textColorHint="@color/hintlog"
-        android:inputType="textMultiLine"
-        android:lines="5"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:scrollbars="vertical"
-        android:scrollHorizontally="false"
-        android:windowSoftInputMode="adjustResize"
-        app:layout_constraintRight_toLeftOf="@id/guideline_right"
-        app:layout_constraintLeft_toRightOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@id/luggageCB"
-        android:fontFamily="@font/open_sans_semibold"/>
-
-
-    <Button
-        android:id="@+id/btnBookThisTrip"
-        android:layout_width="141dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/custom_button1"
-        android:fontFamily="@font/montserrat_medium"
-        android:onClick="btnBookTrip"
-        android:text="Book This Trip"
-        android:textColor="@color/pastelGreen"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
-        app:layout_constraintRight_toRightOf="@id/guideline_right" />
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -185,4 +32,181 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/getRideImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/ic_person_black_100dp"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="goToProfile"/>
+
+    <TextView
+        android:id="@+id/profTV1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="User First name"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@+id/getRideImage"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <View
+        android:id="@+id/viewBar"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/profTV1"/>
+
+    <TextView
+        android:id="@+id/profTV2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Start point"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/viewBar"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <TextView
+        android:id="@+id/profTV3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="destination"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/profTV2"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <TextView
+        android:id="@+id/profTV4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="start time"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/profTV3"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <TextView
+        android:id="@+id/profTV5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="duration"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/profTV4"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <TextView
+        android:id="@+id/profTV6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="price"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/profTV5"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <TextView
+        android:id="@+id/profTV7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="free seats"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/profTV6"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        android:fontFamily="@font/montserrat_medium"/>
+
+    <TextView
+        android:id="@+id/profTV8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Way points:"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/profTV7"
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_marginTop="5dp"
+        app:layout_constraintRight_toLeftOf="@id/guideline_middle"
+        />
+
+    <CheckBox
+        android:id="@+id/luggageCB"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Luggage"
+        android:textSize="16dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/profTV8"
+        android:onClick="cbOnClick"
+        android:fontFamily="@font/montserrat_medium"
+        />
+
+    <EditText
+        android:id="@+id/luggageET"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/settings_dialog_background"
+        android:gravity="top"
+        android:textSize="16dp"
+        android:hint="Write your items..."
+        android:textColorHint="@color/hintlog"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:layout_marginTop="1dp"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        android:windowSoftInputMode="adjustResize"
+        app:layout_constraintRight_toLeftOf="@id/guideline_right"
+        app:layout_constraintLeft_toRightOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/luggageCB"
+        android:fontFamily="@font/open_sans_semibold"/>
+
+
+    <Button
+        android:id="@+id/btnBookThisTrip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/custom_button1"
+        android:fontFamily="@font/montserrat_medium"
+        android:onClick="btnBookTrip"
+        android:text="Book This Trip"
+        android:textColor="@color/pastelGreen"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/luggageET"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_left"
+        app:layout_constraintRight_toRightOf="@id/guideline_right" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
