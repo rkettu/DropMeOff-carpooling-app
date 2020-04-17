@@ -115,7 +115,6 @@ public class CustomDialogRatingClass extends Dialog implements View.OnClickListe
                         }
                     });
             dismiss();
-
         }
 
     }

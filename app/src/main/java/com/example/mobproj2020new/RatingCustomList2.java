@@ -9,15 +9,20 @@ import android.widget.ArrayAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RatingCustomList2 extends ArrayAdapter<UserData> {
 
+    private Context context;
 
     public RatingCustomList2(Context context, List<UserData> userDataList){
         super(context, 0, userDataList);
         //super(context, R.layout.rating_list_item, startAddress);
-
+        this.context = context;
     }
 
     @Override
@@ -38,9 +43,11 @@ public class RatingCustomList2 extends ArrayAdapter<UserData> {
         }
         TextView txtStartAddress = (TextView)convertView.findViewById(R.id.startAddress);
         TextView txtUserName = (TextView)convertView.findViewById(R.id.userName);
+        CircleImageView userImage = convertView.findViewById(R.id.circleView);
+        Picasso.with(context).load(ud.user.getImgUri()).into(userImage);
 
         txtUserName.setText(ud.user.getFname());
-        txtStartAddress.setText(ud.route.getStartAddress() + " - " + ud.route.getEndAddress());
+        txtStartAddress.setText(ud.route.getStartCity()+ " - " + ud.route.getEndCity());
 
         // get TextViews etc of list item and setText to them with values from UserData object
 
