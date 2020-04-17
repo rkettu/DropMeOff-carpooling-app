@@ -10,10 +10,12 @@ import androidx.core.content.res.ResourcesCompat;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Gravity;
@@ -44,6 +47,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -101,17 +106,24 @@ public class MainActivity extends AppCompatActivity{
         Log.d("TAG", "mennään = setImageSettings: ");
         if (FirebaseHelper.loggedIn) {
             uid = FirebaseAuth.getInstance().getUid();
+
             StorageReference storageReference = FirebaseStorage.getInstance().getReference("profpics/" + uid);
             storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.getResult() != null) {
-                        image = String.valueOf(task.getResult());
-                        Picasso.with(context).load(image).into(btnSettings);
-                    }
+                    try {
+                        if (task.getResult() != null) {
+                            image = String.valueOf(task.getResult());
+                            Log.d("TAG", "onComplete: " + image);
+                            Picasso.with(context).load(image).into(btnSettings);
+                        }
+                    } catch(Exception e) {
 
+                    }
                 }
             });
+
+
         }
         else{
                 btnSettings.setImageResource(R.drawable.ic_settings_icon_foreground);
@@ -198,55 +210,63 @@ public class MainActivity extends AppCompatActivity{
 
     //----------------Button BookedTrips----------------//
     public void SelectBookedTrips(View v){
+        if(FirebaseHelper.loggedIn) {
+          
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+            TextView titleTV = new TextView(this);
+            titleTV.setText("Booked trips");
+            titleTV.setTextSize(24);
+            Typeface face = ResourcesCompat.getFont(this, R.font.montserrat_medium);
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            params.setMarginStart(24);
+            titleTV.setLayoutParams(params);
+            titleTV.setTypeface(face);
+            titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            titleTV.setTextColor(Color.WHITE);
+            builder.setCustomTitle(titleTV);
+            myBookedRidesInfoList.clear();
+            final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myBookedRidesInfoList);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
-        TextView titleTV = new TextView(this);
-        titleTV.setText("Booked trips");
-        titleTV.setTextSize(24);
-        Typeface face = ResourcesCompat.getFont(this, R.font.montserrat_medium);
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        params.setMarginStart(24);
-        titleTV.setLayoutParams(params);
-        titleTV.setTypeface(face);
-        titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        titleTV.setTextColor(Color.WHITE);
-        builder.setCustomTitle(titleTV);
 
-        myBookedRidesInfoList.clear();
-        final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myBookedRidesInfoList);
+            new DatabaseHandler().GetBookedRides(ridesAdapter, myBookedRidesInfoList);
 
-        new DatabaseHandler().GetBookedRides(ridesAdapter, myBookedRidesInfoList);
+            builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
 
-        builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final Route r = myBookedRidesInfoList.get(which);
+                    Toast.makeText(MainActivity.this, r.getEndAddress() + " ride chosen ", Toast.LENGTH_LONG).show();
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final Route r = myBookedRidesInfoList.get(which);
-                Toast.makeText(MainActivity.this, r.getEndAddress() + " ride chosen ", Toast.LENGTH_LONG).show();
-
-                final DocumentReference userDoc = FirebaseFirestore.getInstance().collection("users").document(r.getUid());
-                userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful())
-                        {
-                            DocumentSnapshot doc = task.getResult();
-                            if(doc.exists()) {
-                                User u = doc.toObject(User.class);
-                                Intent i = new Intent(MainActivity.this, BookedTripsInfoActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                i.putExtra("MYKEY1",r);
-                                i.putExtra("MYKEY2", u);
-                                startActivity(i);
+                    final DocumentReference userDoc = FirebaseFirestore.getInstance().collection("users").document(r.getUid());
+                    userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                DocumentSnapshot doc = task.getResult();
+                                if(doc.exists()) {
+                                    User u = doc.toObject(User.class);
+                                    Intent i = new Intent(MainActivity.this, BookedTripsInfoActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    i.putExtra("MYKEY1",r);
+                                    i.putExtra("MYKEY2", u);
+                                    startActivity(i);
+                                }
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "Error getting ride data", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else {
-                            Toast.makeText(MainActivity.this, "Error getting ride data", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
+        } else {
+            FirebaseHelper.GoToLogin(getApplicationContext());
+        }
 
         if(myBookedRidesInfoList.size() == 0){
             titleTV.setText("You haven't booked any trips");
@@ -259,37 +279,47 @@ public class MainActivity extends AppCompatActivity{
 
     //---------------Button OfferTrips---------------//
     public void SelectOfferedTrips(View v){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
-        TextView titleTV = new TextView(this);
-        titleTV.setText("Offered trips");
-        titleTV.setTextSize(24);
-        Typeface face = ResourcesCompat.getFont(this, R.font.montserrat_medium);
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
-        params.setMarginStart(24);
-        titleTV.setLayoutParams(params);
-        titleTV.setTypeface(face);
-        titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        titleTV.setTextColor(Color.WHITE);
-        builder.setCustomTitle(titleTV);
+        if(FirebaseHelper.loggedIn)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+            TextView titleTV = new TextView(this);
+            titleTV.setText("Offered trips");
+            titleTV.setTextSize(24);
+            Typeface face = ResourcesCompat.getFont(this, R.font.montserrat_medium);
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            params.setMarginStart(24);
+            titleTV.setLayoutParams(params);
+            titleTV.setTypeface(face);
+            titleTV.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            titleTV.setTextColor(Color.WHITE);
+            builder.setCustomTitle(titleTV);
 
-        myOfferedRidesInfoList.clear();
-        final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myOfferedRidesInfoList);
+            myOfferedRidesInfoList.clear();
+            final RideInfoListAdapter ridesAdapter = new RideInfoListAdapter(this, myOfferedRidesInfoList);
 
-        new DatabaseHandler().GetOfferedRides(ridesAdapter, myOfferedRidesInfoList);
+            new DatabaseHandler().GetOfferedRides(ridesAdapter, myOfferedRidesInfoList);
 
 
-        builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, myOfferedRidesInfoList.get(which).getEndAddress() + " ride chosen ", Toast.LENGTH_LONG).show();
+            builder.setAdapter(ridesAdapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(MainActivity.this, myOfferedRidesInfoList.get(which).getEndAddress() + " ride chosen ", Toast.LENGTH_LONG).show();
 
-                /////////////////Offered rides view\\\\\\\\\\\\\\\\\\
-                Intent i = new Intent(MainActivity.this, OfferedTripsInfoActivity.class);
-                i.putExtra("MYKEY", myOfferedRidesInfoList.get(which));
-                startActivity(i);
-            }
-        });
+                    /////////////////Offered rides view\\\\\\\\\\\\\\\\\\
+                    Intent i = new Intent(MainActivity.this, OfferedTripsInfoActivity.class);
+                    i.putExtra("MYKEY", myOfferedRidesInfoList.get(which));
+                    startActivity(i);
+                }
+            });
 
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_dialog);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "You are not signed in", Toast.LENGTH_LONG).show();
+        }
+      
         if(myOfferedRidesInfoList.size() == 0){
             titleTV.setText("You haven't offered any rides");
         }

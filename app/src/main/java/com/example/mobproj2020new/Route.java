@@ -24,6 +24,9 @@ public class Route implements Serializable {
 
     private double distance;
 
+    private String startCity;
+    private String endCity;
+
 
 
     public Route() {}
@@ -32,7 +35,7 @@ public class Route implements Serializable {
                  String startAddress, String endAddress, int freeSlots, float price, double distance,
                  List<HashMap<String,String>> points, List<String> waypointAddresses,
 
-                 List<String> participants, int pickUpDistance)
+                 List<String> participants, int pickUpDistance, String startCity, String endCity)
 
     {
         this.uid = uid;
@@ -50,6 +53,9 @@ public class Route implements Serializable {
         this.participants = participants;
 
         this.distance = distance;
+
+        this.startCity = startCity;
+        this.endCity = endCity;
 
     }
 
@@ -84,6 +90,10 @@ public class Route implements Serializable {
     public List<String> getParticipants() { return participants; }
 
     public double getDistance() { return distance; }
+
+    public String getStartCity() { return startCity; }
+
+    public String getEndCity() { return endCity; }
 
     public void removeFreeSlot() { this.freeSlots--; }
 
