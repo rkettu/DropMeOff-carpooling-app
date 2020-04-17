@@ -182,6 +182,7 @@ public class GetRideActivity extends AppCompatActivity {
 
     public void geoLocate(final String startPoint, final String endPoint) throws IOException{
 
+        textView.setText("Find your trip here!");
         Geocoder gc = new Geocoder(this);
         try{
             List<Address> listStart = gc.getFromLocationName(startPoint, 1);
@@ -211,6 +212,7 @@ public class GetRideActivity extends AppCompatActivity {
                 public void getTripData(final String uid, final String startAddress, final String endAddress, final String duration, final String rideId, String price, String leaveTime,
                                         final long freeSlots, final List<String> wayPoints, final List<String> participants) {
 
+                    textView.setVisibility(View.GONE);
                     final float mPrice = Float.parseFloat(price);
                     final long mLeaveTime = Long.parseLong(leaveTime);
 
@@ -224,19 +226,30 @@ public class GetRideActivity extends AppCompatActivity {
                             adapter.setUserEndPoint(endPoint);
                             arrayList.add(utility);
                             tripListView.setAdapter(adapter);
-
                         }
                     });
                 }
             }, GetRideActivity.this);
             findTripASyncTask.execute(startLat, startLon, stopLat, stopLon, t1, t2);
+
+            if(adapter.getCount() == 0){
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("There is no trips");
+            }
+
         }
         catch (Exception e){
             e.printStackTrace();
             textView.setVisibility(View.VISIBLE);
             Toast.makeText(GetRideActivity.this, "Failed to find trips", Toast.LENGTH_SHORT).show();
         }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
+            }
+        },1500);
     }
 
     public void btnBackArrow(View v){

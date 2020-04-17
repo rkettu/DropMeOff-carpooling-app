@@ -197,7 +197,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toBottomOf="@+id/textViewBio"
         android:background="@drawable/custom_edittext1"
-        android:typeface="@font/open_sans_semibold"/>
+        android:fontFamily="@font/open_sans_semibold"/>
 
     <Button
         android:id="@+id/saveProfileDetailButton"

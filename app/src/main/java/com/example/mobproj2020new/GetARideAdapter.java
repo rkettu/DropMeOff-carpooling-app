@@ -227,6 +227,7 @@ public class GetARideAdapter extends BaseAdapter {
                 mContext.startActivity(profileIntent);
             }
         });
+
         return view;
     }
 

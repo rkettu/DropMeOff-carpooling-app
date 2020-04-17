@@ -45,8 +45,6 @@ import java.util.List;
 
 public class RouteActivity extends AppCompatActivity implements OnMapReadyCallback, TaskLoadedCallback, View.OnClickListener{
 
-
-
     ArrayList<RideDetailPart> fullDetails = new ArrayList<>();
 
     int INTENT_ID = 8976;
@@ -126,7 +124,6 @@ public class RouteActivity extends AppCompatActivity implements OnMapReadyCallba
             }
         });
     }
-
 
     public void expandableDrawer(View view) {
         animationHandler();
