@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
-
         android:textColor="@color/white"
         android:text="Date of travel"
         app:layout_constraintTop_toTopOf="parent"
@@ -70,7 +69,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="10dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textColor="@color/white"
         android:text="Estimated time of departure"
         app:layout_constraintTop_toBottomOf="@id/dateEdit"
@@ -100,11 +99,9 @@
         android:id="@+id/passengerTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="10dp"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:text="Max passengers"
-
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/timeEdit"
         android:fontFamily="@font/montserrat_medium"
@@ -203,7 +200,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/white"
-
         android:textSize="20sp"
         android:fontFamily="@font/montserrat_medium"
         android:text="Minimum Passanger trip: 0km"

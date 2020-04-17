@@ -142,11 +142,9 @@
         android:layout_width="113dp"
         android:layout_height="60dp"
         android:background="@drawable/custom_button1"
-
         android:text="Cancel trip"
         android:textAllCaps="false"
         android:layout_gravity="right"
-
         android:textStyle="bold"
         android:textColor="@color/pastelGreen"
         android:fontFamily="@font/montserrat_medium" />
