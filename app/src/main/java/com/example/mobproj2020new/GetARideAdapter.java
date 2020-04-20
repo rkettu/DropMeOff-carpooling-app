@@ -198,12 +198,7 @@ public class GetARideAdapter extends BaseAdapter {
 
             //----------------Set time----------//
             long millis = tripList.get(position).getLeaveTime();
-            Calendar c = new GregorianCalendar();
-            c.setTimeInMillis(millis);
-            String format = "%1$02d";
-            String hour = String.format(format, c.get(Calendar.HOUR_OF_DAY));
-            String min = String.format(format, c.get(Calendar.MINUTE));
-            String timeString = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "\n" + hour + ":" + min;
+            String timeString = CalendarHelper.getFullTimeString(millis);
             holder.date.setText(timeString);
 
         }catch (Exception e){
